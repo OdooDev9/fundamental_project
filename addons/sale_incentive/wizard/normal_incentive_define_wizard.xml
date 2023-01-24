@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_normal_incentive_def_wizard" model="ir.actions.act_window">
+        <field name="name">Normal Incentive Defination  Wizard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">normal.incentive.def.wizard</field>
+        <field name="binding_view_types">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+<record id="view_normal_incentive_def_wizard" model="ir.ui.view">
+    <field name="name">norma.incentive.defination.wizard</field>
+    <field name="model">normal.incentive.def.wizard</field>
+    <field name="arch" type="xml">
+    <form string="Normal Incentive Defination Wizard">
+    <group>
+            <group>
+            <field name="calculation_type" invisible='1'/>
+            <field name="rates_definition" invisible='1'/>
+            <field name='salesperson_used' invisible='1'/>
+            <field name="government_salesperson_used" invisible='1'/>
+            <field name="bu_br_used" invisible='1'/>
+            <field name="government_pooling_used" invisible='1'/>
+            <field name="retain_for_salesperson_used" invisible='1' />
+            <field name="area_sale_manager_used" invisible='1' />
+
+                <field name="incentive_fixed_rate" attrs="{'invisible':[('calculation_type','in',['fixed_percent','fixed_percent_multi_agent'])]}"/>
+                <field name="incentive_percentage" attrs="{'invisible':[('calculation_type','in',['fixed_amount','fixed_amount_multi_agent','by_section_fixed_amount'])]}"/>
+                <field name="salesperson_incentive_rate" attrs="{'invisible':['|',('calculation_type','in',['fixed_amount','fixed_percent']),('salesperson_used','=',False)]}"/>
+            </group>
+             <group>
+                <field name="bu_br_rate" attrs="{'invisible':['|',('calculation_type','in',['fixed_amount','fixed_percent']),('bu_br_used','=',False)]}"/>
+                <field name="retain_rate" attrs="{'invisible':['|',('calculation_type','in',['fixed_amount','fixed_percent']),('retain_for_salesperson_used','=',False)]}"/>
+                <field name="sales_manager_rate" attrs="{'invisible':['|',('calculation_type','in',['fixed_amount','fixed_percent']),('area_sale_manager_used','=',False)]}"/>
+            </group>
+            </group>
+            <group>
+            <group>
+            <field name="gov_salesperson_percentage" attrs="{'invisible':['|',('calculation_type','in',['fixed_amount','fixed_percent']),('government_salesperson_used','=',False)]}"/>
+            <field name='gov_pooling_percentage' attrs="{'invisible':['|',('calculation_type','in',['fixed_amount','fixed_percent']),('government_pooling_used','=',False)]}"/>
+            <field name="lower_range" attrs="{'invisible':[('calculation_type','not in',['by_section_fixed_amount'])],'required':[('calculation_type','in',['by_section_fixed_amount'])]}"/>
+            <field name='upper_range' attrs="{'invisible':[('calculation_type','not in',['by_section_fixed_amount'])],'required':[('calculation_type','in',['by_section_fixed_amount'])]}"/>
+            </group>
+            </group>
+    <footer>
+       <button name="apply_rules" string="Apply" type="object" class="oe_highlight"/>
+         <button string="Cancel" special="cancel" class="oe_link"/>
+     </footer>
+        </form>
+    </field>
+</record>
+</odoo>

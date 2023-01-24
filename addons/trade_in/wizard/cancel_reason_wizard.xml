@@ -1,0 +1,25 @@
+<odoo>
+    <record id="reason_action" model="ir.actions.act_window">
+        <field name="name">Cancel Reason</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">trade.reason</field>
+        <field name="binding_view_types">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    <record id="view_action_cancel_wizard" model="ir.ui.view">
+    <field name="name">view.cancel.reason.wizard</field>
+    <field name="model">trade.reason</field>
+    <field name="arch" type="xml">
+        <form string="Reason">
+        <group>
+        <field name="reason"/>
+        </group>
+        <footer>
+        <button name="cancel_reason" string="Confirm" type="object" class="oe_highlight"/>
+        <button string="Cancel" special="cancel" class="oe_link"/>
+        </footer>
+        </form>
+    </field>
+    </record>
+</odoo>

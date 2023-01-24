@@ -1,0 +1,69 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_job_request,job.request user,model_job_request,group_reman_user,1,1,1,1
+access_job_request,job.request manager,model_job_request,group_reman_user,1,1,1,1
+part_order_user,part_order_user_name,model_part_order,group_reman_user,1,1,1,0
+part_order_line_user,part_order_line_user_name,model_part_order_line,group_reman_user,1,1,1,0
+asset_serial_wrapper_user,asset_serial_wrapper_user_name,model_asset_serial_wrapper,group_reman_user,1,1,1,0
+acess_stock_quant_user,acess_stock_quant_user,stock.model_stock_quant,group_reman_user,1,1,1,0
+sale_part_order_line_user,sale_part_order_line_user_name,model_sale_part_order_line,group_reman_user,1,1,1,0
+part_order_manager,part_order_manager_name,model_part_order,group_reman_user,1,1,1,1
+part_order_line_manager,part_order_line_manager_name,model_part_order_line,group_reman_user,1,1,1,1
+asset_serial_wrapper_manager,asset_serial_wrapper_manager_name,model_asset_serial_wrapper,group_reman_user,1,1,1,1
+part_history_manager,part_history_manager_name,model_part_history,,1,1,1,1
+acess_stock_quant_manager,acess_stock_quant_manager,stock.model_stock_quant,group_reman_user,1,1,1,1
+sale_part_order_line_manager,sale_part_order_line_manager_name,model_sale_part_order_line,group_reman_user,1,1,1,1
+access_job_request_line,job.request.line user,model_job_request_line,group_reman_user,1,1,1,1
+access_job_request_line,job.request.line manager,model_job_request_line,group_reman_user,1,1,1,1
+access_job_request_unbuild,job.request.unbuild,model_job_request_unbuild,group_reman_user,1,1,1,0
+access_job_request_unbuild_line,job.request.unbuild manager,model_job_request_unbuild_line,group_reman_user,1,1,1,1
+access_part_recommendation_line,part.recommendation.line user,model_part_recommendation_line,group_reman_user,1,1,1,0
+access_part_recommendation_line,part.recommendation.line manager,model_part_recommendation_line,group_reman_user,1,1,1,1
+access_part_damage_component_line,part.damage.line user,model_damage_component_line,group_reman_user,1,1,1,0
+access_part_damage_component_line,part.damage.line manager,model_damage_component_line,group_reman_user,1,1,1,1
+
+access_html_checklist_template,access_html_checklist_template,model_html_checklist_template,group_reman_user,1,1,1,0
+access_html_checklist_template,access_html_checklist_template,model_html_checklist_template,group_reman_user,1,1,1,1
+
+access_job_html_checklist_template,access_job_html_checklist_template,model_job_html_checklist_template,group_reman_user,1,1,1,0
+access_job_html_checklist_template,access_job_html_checklist_template,model_job_html_checklist_template,group_reman_user,1,1,1,1
+
+access_html_checklist_template,access_html_checklist_template,model_html_checklist_template,group_reman_user,1,1,1,0
+access_html_checklist_template,access_html_checklist_template,model_html_checklist_template,group_reman_user,1,1,1,1
+
+access_job_html_checklist_template,access_job_html_checklist_template,model_job_html_checklist_template,group_reman_user,1,1,1,0
+access_job_html_checklist_template,access_job_html_checklist_template,model_job_html_checklist_template,group_reman_user,1,1,1,1
+
+access_checklist_template,access_checklist_template,model_checklist_template,group_reman_user,1,1,1,0
+access_checklist_template,access_checklist_template,model_checklist_template,group_reman_user,1,1,1,1
+
+access_model_checklist_template,access_model_checklist_template,model_checklist_template,group_reman_user,1,1,1,0
+access_model_checklist_template,access_model_checklist_template,model_checklist_template,group_reman_user,1,1,1,1
+
+access_radiobutton,access_radiobutton,model_radiobutton,base.group_user,1,0,0,0
+access_base_checklist,access_base_checklist,model_base_checklist,base.group_user,1,0,0,0
+access_checklist,access_checklist,model_checklist,base.group_user,1,0,0,0
+access_checklist_job,access_checklist_job,model_checklist_job,base.group_user,1,0,0,0
+access_job_checklist,access_job_checklist,model_job_checklist,base.group_user,1,0,0,0
+access_job_checklist_templates,access_job_checklist_templates,model_job_checklist_templates,base.group_user,1,0,0,0
+access_checklist_line,access_checklist_line,model_checklist_line,base.group_user,1,0,0,0
+access_checklist_template2,access_checklist_template2,model_checklist_template2,base.group_user,1,0,0,0
+access_checklist_template,access_checklist_template,model_checklist_template,base.group_user,1,0,0,0
+access_task_checklist,access_task_checklist,model_task_checklist,base.group_user,1,0,0,0
+access_unbuild_components,unbuild.components,model_unbuild_components,,1,1,1,0
+access_order_created_wizard,order.created.wizard,model_order_created_wizard,,1,1,1,0
+access_job_request_build,job.request.build,model_job_request_build,,1,1,1,0
+access_build_components,build.components,model_build_components,,1,1,1,0
+access_build_part_order_components,build.part.order.components,model_build_part_order_components,,1,1,1,0
+access_build_damage_components,build.damage.components,model_build_damage_components,,1,1,1,0
+access_receiving_part_components,receiving.part.components,model_receiving_part_components,,1,1,1,0
+access_job_request_deliver,job.request.deliver,model_job_request_deliver,,1,1,1,0
+access_job_request_invoice,job.request.invoice,model_job_request_invoice,,1,1,1,0
+access_sale_replace_product,sale.replace.product,model_sale_replace_product,,1,1,1,0
+access_replace_product_line,replace.product.line,model_replace_product_line,group_reman_user,1,1,1,1
+access_job_request_close,job.request.close,model_job_request_close,,1,1,1,0
+access_job_order_delivery,job.order.delivery,model_job_order_delivery,,1,1,1,0
+access_job_order_type,job.order.type,model_job_order_type,group_reman_user,1,1,1,1
+mrp.access_product_template_mrp_manager,product.template mrp_manager,product.model_product_template,mrp.group_mrp_manager,1,0,0,0
+mrp.access_product_product_mrp_manager,product.product mrp_manager,product.model_product_product,mrp.group_mrp_manager,1,0,0,0
+
+access_part_replace_product,part.replace.product,model_part_replace_product,,1,1,1,0

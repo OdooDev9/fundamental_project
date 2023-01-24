@@ -1,0 +1,30 @@
+<odoo>
+    <data>
+
+
+        <record model="ir.ui.view" id="view_order_form_inherit_add_split_button">
+            <field name="name">view.order.form.inherit.add.split.button</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="priority">1000</field>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_view_invoice']" position="before">
+                    <button type="object" name="action_view_delivery_rental"
+                        class="oe_stat_button" icon="fa-truck"
+                        attrs="{'invisible': [('goods_request_count', '=', 0)]}" groups="base.group_user">
+                        <field name="goods_request_count" widget="statinfo" string="Goods Request" />
+                       
+                    </button>
+                </xpath>
+                <xpath expr="//button[@name='action_confirm']" position="after">
+                 <field name="is_good_request" invisible="1"/>
+
+                    <button name="%(action_quotes_form_request)d" string="Goods Request" type="action" class="oe_stat_button" attrs="{'invisible': ['|',('service_type', '=', True),('is_good_request','=',True)]}"/>
+                </xpath>
+
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

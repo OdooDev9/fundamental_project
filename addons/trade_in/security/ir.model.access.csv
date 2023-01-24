@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_trade_in_trade_in,trade_in.trade_in,model_trade_in_trade_in,,1,1,1,1
+access_trade_line,trade.line,model_trade_line,,1,1,1,1
+access_trade_reason,trade.reason,model_trade_reason,,1,1,1,1

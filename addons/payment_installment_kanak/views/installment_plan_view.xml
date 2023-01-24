@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+	<record id="installment_plan_form_view" model="ir.ui.view">
+		<field name="name">Installment Plan</field>
+		<field name="model">installment.plan</field>
+		<field name="arch" type="xml">
+		
+			<form string="Installment Plan">
+			<header>
+			<button name="action_approve" string="Approve By Finance &amp; Account Head" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', 'new')]}" groups='product_configure.group_finance_account_head'/>
+				<button name="action_cancel" string="Cancel" type="object" class="oe_stat_button" attrs="{'invisible': [('state', 'in', 'cancel')]}"/>
+				<button name="action_new" string="Set To New" type="object" class="oe_stat_button" attrs="{'invisible': [('state', 'not in', 'cancel')]}"/>
+				<field name="state" widget="statusbar" />
+			</header>
+
+				<sheet>
+					<field name="is_bu_user" invisible="1"/>
+					<div class="oe_title">
+						<h1>
+							<field name="name" attrs="{'readonly':[('state','=','approved_finance')]}"/>
+						</h1>
+					</div>
+					<group>
+						<group>
+							
+							<label for="tenure" />
+							<div class="o_row" name="Tenure" attrs="{'readonly':[('state','=','approved_finance')]}">
+								<field name="tenure" class="oe_inline" attrs="{'readonly':[('state','=','approved_finance')]}"/>
+								<field name="tenure_type" nolabel="1" class="oe_inline" style="margin-left:5px" attrs="{'readonly':[('state','=','approved_finance')]}"/>
+							</div>
+							<field name="down_payment_type" attrs="{'readonly':[('state','=','approved_finance')]}"/>
+							<field name="down_payment_percent" attrs="{'invisible':[('down_payment_type','=','fix')],'readonly':[('state', '=', 'approved_finance')]}"/>
+							<field name="down_payment_fixed" attrs="{'invisible':[('down_payment_type','=','percent')],'readonly':[('state', '=', 'approved_finance')]}"/>
+							<field name="interest_rate" attrs="{'readonly':[('state','=','approved_finance')]}"/>
+							<field name="interest_start_from" attrs="{'readonly':[('state','=','approved_finance')]}"/>
+							<field name="payment_circle_count" attrs="{'readonly':[('state','=','approved_finance')]}"/>
+							<field name="fine_rate" attrs="{'readonly':[('state','=','approved_finance')]}"/>
+							<label for="fine_threshold" attrs="{'readonly':[('state','=','approved_finance')]}"/>
+							<div class="o_row" name="fine_threshold" attrs="{'readonly':[('state','=','approved_finance')]}">
+								<field name="fine_threshold" nolabel="1" attrs="{'readonly':[('state','=','approved_finance')]}"/>
+								<span>Days</span>
+							</div>				
+							<field name="user_id" invisible="1" attrs="{'readonly':[('state','=','approved_finance')]}"/>			
+							<field name="business_id" required = "1" attrs="{'readonly':[('state','=','approved_finance')]}"/>
+						</group>
+					</group>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<record id="installment_plan_tree_view" model="ir.ui.view">
+		<field name="name">Installment Plan</field>
+		<field name="model">installment.plan</field>
+		<field name="arch" type="xml">
+			<tree string="Installment Plan List">
+				<field name="name"/>
+				<field name="business_id"/>
+			</tree>
+		</field>
+	</record>
+
+	<record id="installment_plan_action" model="ir.actions.act_window">
+		<field name="name">Installment Plan</field>
+		<field name="res_model">installment.plan</field>
+		<field name="view_mode">tree,form</field>
+<!--		<field name="domain">[('show_plan_for_bu','=',True)]</field>-->
+	</record>
+
+	<menuitem name="Installment Plan" id="installment_plan_menu" parent="sale.menu_sale_config"
+		action="installment_plan_action" sequence="100" groups='master_data_extension.group_hr_bu_user,master_data_extension.group_hr_bu_manager'/>
+	</data>
+</odoo>

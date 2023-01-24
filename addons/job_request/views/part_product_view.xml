@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="view_production_lot_form_inherit_add_history" model="ir.ui.view">
+            <field name="name">view.production.lot.form.inherit.add.history</field>
+            <field name="model">stock.production.lot</field>
+            <field name="inherit_id" ref="stock.view_production_lot_form"/>
+            <field name="arch" type="xml">
+
+                <field name="ref" position="after">
+                    <field name="total_invoice_amount"/>
+
+                </field>
+                <xpath expr="//sheet" position="inside">
+                    <notebook>
+                        <page string="Rental History">
+                            <field name="part_history">
+                                <tree>
+                                    <field name="part_id"/>
+                                    <field name="start_date"/>
+                                    <field name="end_date"/>
+                                    <field name="invoice_amount"/>
+                                    <field name="state"/>
+                                </tree>
+
+                            </field>
+                        </page>
+
+                    </notebook>
+                </xpath>
+
+            </field>
+        </record>
+        <record id="rental_account_invoice_form_view" model="ir.ui.view">
+            <field name="name">account.invoice.form.rental.view</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form" />
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <field name="team_id" position="after">
+                    <field name="from_part_order" attrs="{'readonly': [('state', '=', 'posted')]}" invisible='0'/>
+                    <field name="job_re_id" attrs="{'readonly': [('state', '=', 'posted')]}"/>
+                </field>
+                <xpath expr="//button[@name='action_post']" position="before">
+                    <button name="action_app_reman_sale_head" string="Approve By Sale Head" class="oe_highlight"
+                    type="object" groups="product_configure.group_sale_head" data-hotkey="v"
+                    attrs="{'invisible': ['|','|',('from_part_order','!=',True),('state', '!=', 'draft'),('move_type', 'in', ['entry','in_invoice'])]}"/>
+                    <button name="action_app_reman_finance_head" string="Approve By F &amp; A Head" class="oe_highlight"
+                    type="object" data-hotkey="v" attrs="{'invisible': ['|','|',('from_part_order','!=',True),('state', '!=', 'approved_sale_head'),('move_type', 'in', ['entry','in_invoice'])]}" groups="product_configure.group_finance_account_head"/>
+                    <button name="action_app_reman_gm_agm" string="Approve By GM/AGM" class="oe_highlight"
+                    type="object" data-hotkey="v" attrs="{'invisible': ['|','|',('from_part_order','!=',True),('state', '!=', 'approved_finance_head'),('move_type', 'in', ['entry','in_invoice'])]}" groups='product_configure.group_gm_agm'/>
+                    <button name="action_post" string="Confirm" class="oe_highlight"
+                    type="object" groups="account.group_account_invoice" data-hotkey="v"
+                    attrs="{'invisible': ['|', '|', '|',('state', '!=', 'approved_gm_agm'),('from_part_order','!=',True),('auto_post', '=', True),('display_inactive_currency_warning','=',True)]}"/>
+                     <button name="action_post" string="Confirm" class="oe_highlight"
+                    type="object" groups="account.group_account_invoice" data-hotkey="v"
+                    attrs="{'invisible': ['|', '|', '|','|',('service_type','=',False),('state', '!=', 'approved_finance_pic'),('service_type','!=',True),('auto_post', '=', True),('display_inactive_currency_warning','=',True)]}"/>
+
+                </xpath>
+            </field>
+        </record>
+
+        <record id="add_finance_pic_approve_move_inherit" model="ir.ui.view">
+            <field name="name">account.move.form.view.inherited</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="umg_customize_sale.account_move_broker_inherited_orm"/>
+            <field name="arch" type="xml">                
+                <xpath expr="//button[@name='action_approve_finance_pic']" position="replace">
+                 <button name="action_approve_finance_pic" string="Approve By F &amp; A PIC" class="oe_highlight" type="object" groups="product_configure.group_finance_account_pic" data-hotkey="v" attrs="{'invisible': ['|', '|','|','|',('service_type','=',False),('from_part_order','=',True),('job_re_id','!=',False),('state', '!=', 'draft'),('move_type', 'not in', ['out_invoice'])]}"/>
+                 <button name="action_approve_finance_pic" string="Approve By F &amp; A PIC" class="oe_highlight" type="object" groups="product_configure.group_finance_account_pic" data-hotkey="v" attrs="{'invisible': ['|', '|','|','|',('service_type','=',True),('from_part_order','=',True),('job_re_id','!=',False),('state', '!=', 'draft'),('move_type', 'in', ['entry','in_invoice'])]}"/>
+                 <button name="action_approve_service_head" string="Approve By Service Department Head" class="oe_highlight" type="object" groups="job_request.group_service_head" data-hotkey="v" attrs="{'invisible': ['|', '|','|','|',('service_type','=',True),('from_part_order','=',True),('job_re_id','=',False),('state', '!=', 'draft'),('move_type', 'in', ['entry','in_invoice'])]}"/>
+                 <button name="action_approve_finance_head" string="Approve By F &amp; A Head" class="oe_highlight" type="object" groups="product_configure.group_finance_account_head" data-hotkey="v" attrs="{'invisible': ['|', '|','|','|',('service_type','=',True),('from_part_order','=',True),('job_re_id','=',False),('state', '!=', 'approved_service_head'),('move_type', 'not in', ['out_invoice'])]}"/>
+                 <button name="action_approve_gm_agm" string="Approve By GM/AGM" class="oe_highlight" type="object" groups="product_configure.group_gm_agm" data-hotkey="v" attrs="{'invisible': ['|', '|','|','|',('service_type','=',True),('from_part_order','=',True),('job_re_id','=',False),('state', '!=', 'approved_finance_head'),('move_type', 'in', ['entry','in_invoice'])]}"/>
+                 <button name="action_post" string="Confirm" class="oe_highlight" type="object" groups="account.group_account_invoice" data-hotkey="v" attrs="{'invisible': ['|', '|', '|','|','|',('service_type','=',True),('from_part_order','=',True),('job_re_id','=',False),('state', '!=', 'approved_gm_agm'),('auto_post', '=', True),('display_inactive_currency_warning','=',True)]}"/>
+                </xpath>
+            </field>
+            </record>
+</odoo>

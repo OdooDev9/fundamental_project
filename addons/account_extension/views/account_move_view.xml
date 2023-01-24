@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Form view for "account.move" -->
+    <record id="account_move_view_inherit" model="ir.ui.view">
+        <field name="name">account.move.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/div[@name='button_box']" position="after">
+                <widget name="web_ribbon" title="Extra Transaction" bg_color="bg-info"
+                        attrs="{'invisible': [('is_extra_move', '=', False)]}"/>
+            </xpath>
+            <xpath expr="//group[last()]" position="after">
+                <field name="is_extra_move" invisible="1"/>
+                <field name="extra_source_id" attrs="{'readonly': [('state', '=', 'posted')]}"/>
+                <field name="move_type" invisible="1"/>
+            </xpath>
+            <!-- NHS UPDATED -->
+            <xpath expr="//field[@name='payment_reference']" position="after">
+                <field name="hr_br_id" options="{'no_create': True}"
+                       attrs="{'invisible': [('move_type', 'in', ['in_invoice','in_refund'])], 'readonly': [('state', '=', 'posted')]}"/>
+                <field name="hr_bu_id" required="0" options="{'no_create': True}"
+                       attrs="{'readonly': [('state', '=', 'posted')]}"/>
+                <field name="unit_or_part" attrs="{'readonly': [('state', '=', 'posted')]}"/>
+            </xpath>
+            <!-- Invoice Line IDS-->
+            <xpath expr="//page[@id='invoice_tab']/field[@name='invoice_line_ids']/tree/field[@name='account_id']" position="after">
+                <field name="business_id" options="{'no_create': True}"/>
+                <field name="discount_type" invisible="1"/>
+                <field name="discount_view" invisible="1"/>
+                <field name="br_dis_value" attrs="{'column_invisible': [('parent.br_discount', '=', False)]}"/>
+            </xpath>
+            
+            <!-- Line IDS  -->
+            <xpath expr="//page[@id='aml_tab']/field[@name='line_ids']/tree/field[@name='account_id']" position="after">
+                <field name="discount_type" invisible="1"/>
+                <field name="discount_view" invisible="1"/>
+                <field name="br_dis_value" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='discount']" position="attributes">
+                <attribute name="string">Discount</attribute>
+                <attribute name="attrs">{'column_invisible':[('parent.discount_view', 'not in', ['line_discount','doc_discount'])]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='line_ids']/tree/field [@name = 'account_id']" position="before">
+                <field name="business_id" required="0" options="{'no_create_edit': True}" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='invoice_line_ids']" position="attributes">
+                <attribute name="context">{'default_move_type': context.get('default_move_type'), 'journal_id':
+                    journal_id, 'default_partner_id': commercial_partner_id, 'default_currency_id': currency_id or
+                    company_currency_id,'default_business_id': hr_bu_id or hr_br_id or False,'default_discount_type':discount_type,'default_discount_view':discount_view}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='narration']" position="before">
+                <group>
+                    <!-- <field name="discount_type" readonly="0"/>
+                    <field name="discount_view" readonly="0"/> -->
+                    <field name="discount_type" attrs="{'readonly': [('state', '=', 'posted')]}"/>
+                    <field name="discount_view" attrs="{'readonly': [('state', '=', 'posted')]}"/>
+                    <field name="br_discount" attrs="{'invisible':[('discount_view', 'not in', 'line_discount')]}"
+                           readonly="0"/>
+                    <!-- <field name="discount_value" attrs="{'invisible':[('discount_view', 'not in', ['doc_discount'])]}"
+                           readonly="0"/> -->
+                    <field name="discount_value" attrs="{'invisible':[('discount_view', 'not in', ['doc_discount'])],'readonly': [('state', '=', 'posted')]}"/>
+                </group>
+            </xpath>
+
+            <xpath expr="//page[@name='other_info']//field[@name='ref']" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', '=', 'posted')]}</attribute>
+            </xpath>
+
+            <xpath expr="//page[@name='other_info']//field[@name='team_id']" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', '=', 'posted')]}</attribute>
+            </xpath>
+
+            <xpath expr="//page[@name='other_info']//field[@name='campaign_id']" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', '=', 'posted')]}</attribute>
+            </xpath>
+
+            <xpath expr="//page[@name='other_info']//field[@name='medium_id']" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', '=', 'posted')]}</attribute>
+            </xpath>
+
+            <xpath expr="//page[@name='other_info']//field[@name='source_id']" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', '=', 'posted')]}</attribute>
+            </xpath>
+
+            <xpath expr="//page[@name='other_info']//field[@name='invoice_incoterm_id']" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', '=', 'posted')]}</attribute>
+            </xpath>
+
+            <xpath expr="//page[@name='other_info']//field[@name='to_check']" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', '=', 'posted')]}</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='invoice_user_id']" position="attributes">
+                <attribute name="invisible">
+                    True
+                </attribute>
+            </xpath>
+            <xpath expr="//group[@id='header_right_group']" position="inside">
+                <field name="invoice_user_id" domain="[('share', '=', False)]"
+                       attrs="{'readonly': [('state', '=', 'posted')]}"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_extra_transaction_move_line_tree" model="ir.ui.view">
+        <field name="name">account.move.line.tree</field>
+        <field name="model">account.move.line</field>
+        <field eval="100" name="priority"/>
+        <field name="arch" type="xml">
+            <tree string="Journal Items" create="false" edit="false" sample="1" expand="1"
+                  decoration-bf="parent_state == 'posted'" decoration-it="parent_state == 'draft'"
+                  decoration-danger="color == 'danger'" decoration-primary="color == 'primary'"
+                  decoration-info="color == 'info'" decoration-success="color == 'success'"
+                  decoration-warning="color == 'warning'">
+                <field name="date" optional="show"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+                <field name="journal_id" options="{'no_open':True}"/>
+                <field name="move_id" optional="show"/>
+                <field name="account_id" options="{'no_open': True}" groups="account.group_account_readonly"/>
+                <field name="partner_id" optional="show"/>
+                <field name="statement_id" invisible="1"/>
+                <field name="ref" optional="hide"/>
+                <field name="name" optional="show"/>
+                <field name="analytic_account_id" groups="account.group_account_readonly" optional="hide"
+                       attrs="{'readonly':[('parent_state','=','posted')]}"/>
+                <field name="analytic_tag_ids" widget="many2many_tags" groups="analytic.group_analytic_tags"
+                       optional="hide"/>
+                <field name="tax_ids" widget="many2many_tags" width="0.5" optional="hide"/>
+                <field name="debit" sum="Total Debit"/>
+                <field name="credit" sum="Total Credit"/>
+                <field name="amount_currency" groups="base.group_multi_currency" optional="hide"/>
+                <field name="currency_id" readonly="1" groups="base.group_multi_currency" optional="hide"
+                       string="Original Currency"/>
+                <field name="tax_tag_ids" widget="many2many_tags" width="0.5" optional="hide"/>
+                <field name="matching_number" optional="hide"/>
+                <field name="reconcile_model_id" invisible="1"/>
+                <field name="reconciled" invisible="1"/>
+                <field name="date_maturity" optional="hide"/>
+                <field name="company_currency_id" invisible="1"/>
+                <field name="parent_state" invisible="1"/>
+                <field name="color" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

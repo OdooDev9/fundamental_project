@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+      <!-- <record id="manage_bu_quotation" model="ir.rule">
+         <field name="name">Manage BU Sale Quotation</field>
+         <field name="model_id" ref="model_request_quotation"/>
+         <field name="domain_force">['|',('hr_bu_id', '=',user.current_bu_br_id.id),('hr_br_id', '=', user.current_bu_br_id.id)]</field>
+      </record> -->
+      <!-- <record id="manage_br_quotation" model="ir.rule">
+         <field name="name">Manage BR Sale Quotation</field>
+         <field name="model_id" ref="model_request_quotation"/>
+         <field name="domain_force">[('hr_br_id', '=', user.current_bu_br_id)]</field>
+      </record> -->
+      
+      <!-- Quoation Access -->
+      <record id="manage_bu_quotation" model="ir.rule">
+         <field name="name">Manage BU Quotation</field>
+         <field name="model_id" ref="model_request_quotation"/>
+         <field name="domain_force">[('hr_bu_id', '=',user.current_bu_br_id.id)]</field>
+         <field name="groups" eval="[(4, ref('master_data_extension.group_bu_user'))]"/>
+      </record>
+      <record id="manage_br_quotation" model="ir.rule">
+         <field name="name">Manage BR Quotation</field>
+         <field name="model_id" ref="model_request_quotation"/>
+         <field name="domain_force">[('hr_br_id', '=',user.current_bu_br_id.id)]</field>
+         <field name="groups" eval="[(4, ref('master_data_extension.group_br_user'))]"/>
+      </record>
+      <record id="manage_cfd_quotation" model="ir.rule">
+         <field name="name">Manage CFD Quotation</field>
+         <field name="model_id" ref="model_request_quotation"/>
+         <field name="domain_force">[]</field>
+         <field name="groups" eval="[(4, ref('master_data_extension.group_cfd_user'))]"/>
+      </record>
+
+      <!-- PriceList -->
+      <record id="manage_br_product_pricelist" model="ir.rule">
+         <field name="name">Manage BR Price List</field>
+         <field name="model_id" ref="product.model_product_pricelist"/>
+         <field name="domain_force">[('hr_br_ids', 'in',user.current_bu_br_id.id)]</field>
+         <field name="groups" eval="[(4, ref('master_data_extension.group_br_user'))]"/>
+         <field name="perm_create" eval="False"/>
+         <field name="perm_write" eval="False"/>
+         <field name="perm_unlink" eval="False"/>
+      </record>
+      <record id="manage_bu_product_pricelist" model="ir.rule">
+         <field name="name">Manage BU Price List</field>
+         <field name="model_id" ref="product.model_product_pricelist"/>
+         <field name="domain_force">[('hr_bu_id', '=',user.current_bu_br_id.id),('state', '=', 'draft')]</field>
+         <field name="groups" eval="[(4, ref('master_data_extension.group_bu_user'))]"/>
+      </record>
+
+      <record id="manage_bu_product_pricelist_readonly" model="ir.rule">
+         <field name="name">Manage BU Price List Readonly</field>
+         <field name="model_id" ref="product.model_product_pricelist"/>
+         <field name="domain_force">[('hr_bu_id', '=',user.current_bu_br_id.id),('state', '!=', 'draft')]</field>
+         <field name="perm_read" eval="True"/>
+         <field name="perm_write" eval="False"/>
+         <field name="perm_create" eval="False"/>
+         <field name="perm_unlink" eval="False"/>         
+         <field name="groups" eval="[(4, ref('master_data_extension.group_bu_user'))]"/>
+      </record>
+
+</odoo>

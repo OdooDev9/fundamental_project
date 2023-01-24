@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="manage_bu_quotation" model="ir.rule">
+        <field name="name">Manage BU Sale Quotation</field>
+        <field name="model_id" ref="model_request_quotation"/>
+        <field name="domain_force">['|',('hr_bu_id', 'in', [g.id for g in user.hr_bu_ids])]</field>
+     </record>
+    <record id="manage_br_quotation" model="ir.rule">
+        <field name="name"> BU User Product Pricelist Sale Quotation</field>
+        <field name="model_id" ref="model_request_quotation"/>
+        <field name="domain_force">['|',('hr_br_id', 'in', [g.id for g in user.hr_br_ids])]</field>
+     </record>
+</odoo>

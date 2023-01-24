@@ -1,0 +1,181 @@
+<odoo>
+   <data>
+      <!-- <record id="manage_bu_account_move" model="ir.rule">
+         <field name="name">Manage BU Account Move</field>
+         <field name="model_id" ref="model_account_move"/>
+         <field name="domain_force">[('hr_bu_id', '=',user.current_bu_br_id.id)]</field>
+         <field name="groups" eval="[(4, ref('master_data_extension.group_bu_user'))]"/>
+      </record>
+      <record id="manage_br_account_move" model="ir.rule">
+         <field name="name">Manage BR Account Move</field>
+            <field name="model_id" ref="model_account_move"/>
+         <field name="domain_force">[('hr_br_id', '=',user.current_bu_br_id.id)]</field>
+         <field name="groups" eval="[(4, ref('master_data_extension.group_br_user'))]"/>
+      </record>
+      <record id="manage_cfd_account_move" model="ir.rule">
+         <field name="name">Manage CFD Account Move</field>
+            <field name="model_id" ref="model_account_move"/>
+         <field name="domain_force">[]</field>
+         <field name="groups" eval="[(4, ref('master_data_extension.group_cfd_user'))]"/>
+      </record> -->
+
+      <!-- <record id="account.account_move_rule_group_readonly" model="ir.rule">
+         <field name="name">Readonly Move</field>
+         <field name="model_id" ref="model_account_move"/>
+         <field name="domain_force">[('hr_br_id', '=',user.current_bu_br_id.id)]</field>
+         <field name="groups" eval="[(4, ref('account.group_account_readonly'))]"/>
+         <field name="perm_write" eval="False"/>
+         <field name="perm_create" eval="False"/>
+         <field name="perm_unlink" eval="False"/>
+      </record>         -->
+
+      <!-- <record id="account.group_account_readonly" model="res.groups">
+            <field name="name">Auditor</field>
+            <field name="category_id" ref="base.module_category_accounting_accounting"/>
+      </record> -->
+      
+      <!-- New Role -->
+      <!-- Account: All Documents (Branch) -->
+      <!-- <record id="group_br_account_access" model="res.groups">
+         <field name="name">Account: All Documents (Branch)</field>
+         <field name="implied_ids" eval="[(4, ref('base.group_user')),(4, ref('account.group_account_readonly'))]"/>
+         <field name="category_id" ref="base.module_category_accounting_accounting"/>
+      </record> -->
+
+      <!-- IR RULE -->
+      <!-- BR filter for account move -->
+      <!-- <record id="manage_br_account_move" model="ir.rule">
+         <field name="name">Manage BR Account Move</field>
+         <field name="model_id" ref="model_account_move"/>
+         <field name="domain_force">[('hr_br_id', '=',user.current_bu_br_id.id)]</field>
+         <field name="groups" eval="[(4, ref('account_extension.group_br_account_access'))]"/>
+      </record> -->
+      <!-- BR filter for account move line -->
+      <!-- <record id="manage_br_account_move_line" model="ir.rule">
+         <field name="name">Manage BR Account Move Line</field>
+         <field name="model_id" ref="model_account_move_line"/>
+         <field name="domain_force">[('move_id.hr_br_id', '=',user.current_bu_br_id.id)]</field>
+         <field name="groups" eval="[(4, ref('account_extension.group_br_account_access'))]"/>
+      </record> -->
+
+      <!-- Account: All Documents (Business Unit) -->
+      <!-- <record id="group_bu_account_access" model="res.groups">
+         <field name="name">Account: All Documents (Business Unit)</field>
+         <field name="implied_ids" eval="[(4, ref('base.group_user')),(4, ref('account.group_account_readonly'))]"/>
+         <field name="category_id" ref="base.module_category_accounting_accounting"/>
+      </record> -->
+
+      <!-- Account: All Documents (HO) -->
+      <!-- <record id="group_head_off_account_access" model="res.groups">
+         <field name="name">Account: All Documents (CFD)</field>
+         <field name="implied_ids" eval="[(4, ref('base.group_user')),(4, ref('account.group_account_readonly'))]"/>
+         <field name="category_id" ref="base.module_category_accounting_accounting"/>
+      </record> -->
+
+      <!-- IR RULE -->
+      <!-- BU filter for account move -->
+      <!-- <record id="manage_bu_account_move" model="ir.rule">
+         <field name="name">Manage BU Account Move</field>
+         <field name="model_id" ref="model_account_move"/>
+         <field name="domain_force">[('hr_bu_id', '=',user.current_bu_br_id.id)]</field>
+         <field name="groups" eval="[(4, ref('account_extension.group_bu_account_access'))]"/>
+      </record> -->
+      <!-- BU filter for account move line -->
+      <!-- <record id="manage_bu_account_move_line" model="ir.rule">
+         <field name="name">Manage BU Account Move Line</field>
+         <field name="model_id" ref="model_account_move_line"/>
+         <field name="domain_force">[('move_id.hr_bu_id', '=',user.current_bu_br_id.id)]</field>
+         <field name="groups" eval="[(4, ref('account_extension.group_bu_account_access'))]"/>
+      </record> -->
+
+      <!-- <record id="manage_head_off_account_move" model="ir.rule">
+         <field name="name">Manage Account Move[CFD]</field>
+         <field name="model_id" ref="model_account_move"/>
+         <field name="domain_force">[('line_ids.account_id.bu_br_id', '=', user.current_bu_br_id.id)]</field>
+         <field name="groups" eval="[(4, ref('account_extension.group_head_off_account_access'))]"/>
+      </record> -->
+      <!-- BU filter for account move line -->
+      <!-- <record id="manage_head_off_account_move_line" model="ir.rule">
+         <field name="name">Manage Account Move Line[CFD]</field>
+         <field name="model_id" ref="model_account_move_line"/>
+         <field name="domain_force">[('account_id.bu_br_id', '=', user.current_bu_br_id.id)]</field>
+         <field name="groups" eval="[(4, ref('account_extension.group_head_off_account_access'))]"/>
+      </record>       -->
+
+
+
+
+
+
+      <!-- Override OLD Role -->
+      <!-- <record id="account.group_account_invoice" model="res.groups">
+         <field name="implied_ids" eval="[(4, ref('base.group_user')), (4, ref('account_extension.group_head_off_account_access'))]"/>
+      </record> -->
+      
+      <!-- Before modifying the rule, to override the record values set with noupdate="1" -->
+      <!-- ACCOUNT MOVE: FOR AUDITOR Group -->
+      <!-- <function name="write" model="ir.model.data">
+         <function name="search" model="ir.model.data">
+            <value eval="[('module', '=', 'account'), ('name', 'in', [
+            'account_move_rule_group_readonly', 'account_move_line_rule_group_readonly',
+            'account_move_rule_group_invoice', 'account_move_line_rule_group_invoice'
+            ])]"/>
+         </function>
+         <value eval="{'noupdate': False}"/>
+      </function> -->
+
+      
+      <!-- 
+         Some modules (i.e. sale) restrict the access for some users 
+         We want the readonly group to still have the read access on all moves of each Related BU/BR/DIV.
+      -->
+      <!-- <record id="account.account_move_rule_group_readonly" model="ir.rule">
+         <field name="name">Readonly Move</field>
+         <field name="model_id" ref="account.model_account_move"/>
+         <field name="domain_force">['|', ('hr_bu_id', '=',user.current_bu_br_id.id), ('hr_br_id', '=',user.current_bu_br_id.id)]</field>
+         <field name="groups" eval="[(4, ref('account.group_account_readonly'))]"/>
+         <field name="perm_write" eval="False"/>
+         <field name="perm_create" eval="False"/>
+         <field name="perm_unlink" eval="False"/>
+      </record>
+      <record id="account.account_move_line_rule_group_readonly" model="ir.rule">
+         <field name="name">Readonly Move Line</field>
+         <field name="model_id" ref="account.model_account_move_line"/>
+         <field name="domain_force">['|', ('move_id.hr_bu_id', '=',user.current_bu_br_id.id), ('move_id.hr_br_id', '=',user.current_bu_br_id.id)]</field>
+         <field name="groups" eval="[(4, ref('account.group_account_readonly'))]"/>
+         <field name="perm_write" eval="False"/>
+         <field name="perm_create" eval="False"/>
+         <field name="perm_unlink" eval="False"/>
+      </record> -->
+
+      <!-- 
+         Some modules (i.e. sale) restrict the access for some users
+         We want the invoice group to still have all access on all moves of each Related BU/BR/DIV.
+      -->
+      <!-- <record id="account.account_move_rule_group_invoice" model="ir.rule">
+         <field name="name">Readonly Move</field>
+         <field name="model_id" ref="model_account_move"/>
+         <field name="domain_force">['|', ('hr_bu_id', '=',user.current_bu_br_id.id), ('hr_br_id', '=',user.current_bu_br_id)]</field>
+         <field name="groups" eval="[(4, ref('account.group_account_invoice'))]"/>
+      </record>
+
+      <record id="account.account_move_line_rule_group_invoice" model="ir.rule">
+         <field name="name">Readonly Move Line</field>
+         <field name="model_id" ref="model_account_move_line"/>
+         <field name="domain_force">['|', ('move_id.hr_bu_id', '=',user.current_bu_br_id.id), ('move_id.hr_br_id', '=',user.current_bu_br_id.id)]</field>
+         <field name="groups" eval="[(4, ref('account.group_account_invoice'))]"/>
+      </record> -->
+         <!-- <record id="add_group_into_action_post" model="ir.ui.view">
+            <field name="name">account.move.form.view.inherited</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+               <xpath expr="//button[@name='action_post'][2]" position="attributes">
+                  <attribute name="groups">account.group_account_invoice,account_extension.group_head_off_account_access</attribute>
+               </xpath>
+            </field>
+         </record> -->
+
+   </data>
+   
+</odoo>

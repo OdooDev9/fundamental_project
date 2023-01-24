@@ -1,0 +1,1291 @@
+<odoo>
+    <data>
+        <record id="action_multi_trial_date_end" model="ir.actions.server">
+            <field name="name">Trial Date Generate</field>
+            <field name="type">ir.actions.server</field>
+            <field name="state">code</field>
+            <field name="model_id" ref="model_hr_employee"/>
+            <field name="binding_model_id" ref="model_hr_employee"/>
+            <field name="code">
+                records._compute_trial_date_end()
+            </field>
+        </record>
+
+        <record id="view_employee_tree" model="ir.ui.view">
+            <field name="name">hr.employee.tree</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_tree"/>
+            <field name="arch" type="xml">
+                <tree position="attributes">
+                    <attribute name="delete">0</attribute>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_hr_employee_inherit" model="ir.ui.view">
+            <field name="name">Employee</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <form position="attributes">
+                    <attribute name="delete">0</attribute>
+                </form>
+                <xpath expr="//field[@name='name']" position="replace">
+                    <field name="name"/>
+                </xpath>
+                <xpath expr="//div/h1/field[@name='name']" position="replace">
+                    <field name="name" placeholder="Employee's Name" readonly="1" required="0"/>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="after">
+                    <h2>
+                        <field name="burmese_name" placeholder="နာမည်" readonly="1"/>
+                    </h2>
+                </xpath>
+                <xpath expr="//field[@name='mobile_phone']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//sheet/div[2]" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='work_location_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='work_phone']" position="replace">
+                    <field name="company_ids" widget="many2many_tags"/>
+                </xpath>
+                <xpath expr="//field[@name='job_title']" position="replace">
+                    <field name="job_title" placeholder="Job Position" readonly="1"/>
+                </xpath>
+                <xpath expr="//field[@name='job_id']" position="attributes">
+                    <attribute name="string">Job Title</attribute>
+                </xpath>
+                <!--                <xpath expr="//field[@name='station_id']" position="attributes">-->
+                <!--                    <attribute name="options">{'no_create': True, 'no_create_edit':True, 'no_open':True}</attribute>-->
+                <!--                </xpath>-->
+                <xpath expr="//sheet/group[1]" position="replace">
+                    <group>
+                        <label for="sir_id" string="Name" class="oe_inline"/>
+                        <div class="application_form">
+                            <field name="sir_id" class="oe_inline" placeholder="eg. U"
+                                   options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"/>
+                            <field name="first_name" class="oe_inline" placeholder="First Name"/>
+                            <field name="last_name" class="oe_inline" placeholder="Last Name"/>
+                        </div>
+                        <label for="sir_mm_id" string="Burmese Name" class="oe_inline"/>
+                        <div class="application_form">
+                            <field name="sir_mm_id" class="oe_inline" placeholder="eg. ဦး" required="0"/>
+                            <field name="burmese_name" class="oe_inline" placeholder="Burmese Name" required="0"/>
+                            <!-- <field name="last_name_mm" class="oe_inline" placeholder="Burmese Last Name" /> -->
+                        </div>
+                    </group>
+                    <field name="company_id" invisible="1"/>
+                    <group>
+                        <group>
+                            <!-- <field name="name"/> -->
+                            <field name="work_email"/>
+                            <field name="parent_id" required="0"/>
+                            <!--Start::  Add Field WYM 10/1/2022  -->
+                            <field name="country_phone"
+                                   options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"/>
+                            <label for="work_phone" string="Phone" class="oe_inline"/>
+                            <div>
+                                <field name="country_code" class="oe_inline"/>
+                                <field name="work_phone" placeholder="eg.99672435634" class="oe_inline"/>
+                            </div>
+                            <!--End::  Add Field WYM 10/1/2022  -->
+                        </group>
+                        <group>
+                            <field name="emp_qr_code" widget="image"/>
+                        </group>
+                    </group>
+
+                </xpath>
+                <xpath expr="//group[@name='managers']" position="replace">
+                    <group name="managers" string="Responsibles">
+                        <field name="report_id" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"/>
+                    </group>
+                    <group name="work_status" string="Work Status">
+                        <field name="wage_type" required="0"/>
+                        <field name="jd_id" invisible="1"/>
+                        <field name="employee_status" required="0"/>
+                        <field name="company_id" required="0"
+                               options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"/>
+                        <field name="station_id" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}" required="1"/>
+                        <field name="holding_id" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}" required="1"/>
+                        <field name="sub_id" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}" required="1"/>
+                        <field name="department_id" required="0"
+                               options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"/>
+                        <field name="job_id" required="0"
+                               options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"/>
+                        <field name="position_level_id" required="0"
+                               options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"/>
+                        <field name="job_function_id" required="0"
+                               options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"/>
+                        <field name="employment_type" required="0"/>
+                        <field name="is_shift" required="0"/>
+                        <field name="has_internship" required="0"/>
+                    </group>
+                    <group string="Office Information" name="office_information">
+                        <field name="emp_id" readonly="1" force_save="1"/>
+                        <field name="old_id" required="0"/>
+                        <field name="disc_type"/>
+                        <field name="ssnid"/>
+                        <field name="password" password="True" required="0"/>
+                    </group>
+                    <group string="Employment Information">
+                        <table>
+                            <tr>
+                                <td>
+                                    <label for="probation_period" style="font-weight:bold;"/>
+                                </td>
+                                <td>
+                                    <field name="probation_period" required="0" nolabel="1"/>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="trial_date_start" style="font-weight:bold;"/>
+                                </td>
+                                <td>
+                                    <field name="trial_date_start" nolabel="1" required="0"/>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="trial_date_end" style="font-weight:bold;"/>
+                                </td>
+                                <td>
+                                    <field name="trial_date_end" nolabel="1"/>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="extend_date" style="font-weight:bold;"/>
+                                </td>
+                                <td>
+                                    <field name="extend_date" nolabel="1"/>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="service_year" style="font-weight:bold;"/>
+
+
+                                </td>
+                                <td>
+
+                                    <field name="service_year" nolabel="1"/>
+                                    <span>years</span>
+                                </td>
+
+                                <td>
+                                    <label for="service_year" style="font-weight:bold; visibility:hidden;"/>
+                                </td>
+                                <span></span>
+                                <td>
+                                    <field name="service_month" nolabel="1"/>
+                                    months
+                                </td>
+
+                                <td>
+                                    <label for="service_year" style="font-weight:bold;visibility:hidden;"/>
+                                </td>
+                                <span></span>
+                                <td>
+                                    <field name="service_day" nolabel="1"/>
+                                    days
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="emp_active" style="font-weight:bold;"/>
+                                </td>
+                                <td>
+                                    <field name="emp_active" nolabel="1"/>
+                                </td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </group>
+                </xpath>
+                <!--				<xpath expr="//notebook/page[@name='public']/div/div/group[4]" position="attributes">-->
+                <!--					<attribute name="invisible">1</attribute>-->
+                <!--				</xpath>-->
+                <xpath expr="//page[@name='personal_information']" position="replace">
+                    <page name="personal_information" string="Personal Information" groups="hr.group_hr_user">
+                        <group>
+                            <group string="Private Contact">
+                                <field name="address_home_id"
+                                       context="{
+										'show_address': 1,
+										'default_type': 'private',
+										'form_view_ref': 'base.res_partner_view_form_private'}"
+                                       options='{"always_reload": True, "highlight_first_line": True}' invisible="1"/>
+                                <label for="no" string="Address" class="oe_inline"/>
+                                <div class="o_address_format">
+                                    <field name="no" placeholder="No..." required="0"
+                                           options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"/>
+                                    <field name="street" class="o_address_street" placeholder="Street" required="0"/>
+                                    <field name="quarter" class="o_address_street" placeholder="Quarter" required="0"/>
+                                    <field name="township_id" placeholder="Select Township" required="0"
+                                           options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"/>
+                                    <field name="city_id" class="o_address_city" placeholder="Select City"
+                                           required="0"
+                                           options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"/>
+                                    <field name="region_id" class="o_address_state" placeholder="Select State or Region"
+                                           required="0"
+                                           options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"/>
+                                    <field name="country_id"
+                                           options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"
+                                           class="o_address_state" placeholder="Select Country"/>
+                                </div>
+                                <label for="nomm" string="လိပ်စာ" class="oe_inline"/>
+                                <div class="o_address_format">
+                                    <field name="nomm" placeholder="နံပါတ်" required="0"/>
+                                    <field name="streetmm" class="o_address_street" placeholder="လမ်း" required="0"/>
+                                    <field name="quartermm" class="o_address_street" placeholder="ရပ်ကွက်"
+                                           required="0"/>
+                                    <field name="townshipmm" placeholder="မြို့နယ်" required="0"/>
+                                    <field name="citymm" class="o_address_city" placeholder="မြို့တော်" required="0"/>
+                                    <field name="regionmm" class="o_address_state" placeholder="နေရာဒေသ" required="0"/>
+                                    <field name="per_no" placeholder="No..." required="0"/>
+                                    <field name="countrymm" class="o_address_state" placeholder="နိုင်ငံ" required="0"/>
+                                </div>
+                                <label for="per_no" string="Permanant Address" class="oe_inline"/>
+                                <div class="o_address_format">
+                                    <field name="per_no" placeholder="No..." required="0"/>
+                                    <field name="per_no" placeholder="No..." required="0"/>
+                                    <field name="per_street" class="o_addres s_street" placeholder="Street"
+                                           required="0"/>
+                                    <field name="per_quarter" class="o_address_street" placeholder="Quarter"
+                                           required="0"/>
+                                    <field name="per_township_id"
+                                           options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"
+                                           placeholder="Select Township" required="0"/>
+                                    <field name="per_city_id"
+                                           options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"
+                                           class="o_address_city" placeholder="Select City"
+                                           required="0"/>
+                                    <field name="per_region_id"
+                                           options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"
+                                           class="o_address_state"
+                                           placeholder="Select State or Region" required="0"/>
+                                    <field name="per_country_id"
+                                           options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"
+                                           class="o_address_country"
+                                           placeholder="Select Country"/>
+                                </div>
+                                <label for="permm_no" string="အမြဲတမ်းလိပ်စာ" class="oe_inline"/>
+                                <div class="o_address_format">
+                                    <field name="permm_no" placeholder="နံပါတ်" required="0"/>
+                                    <field name="permm_street" class="o_address_street" placeholder="လမ်း"
+                                           required="0"/>
+                                    <field name="permm_quarter" class="o_address_street" placeholder="ရပ်ကွက်"
+                                           required="0"/>
+                                    <field name="permm_township" placeholder="မြို့နယ်" required="0"/>
+                                    <field name="permm_city" class="o_address_city" placeholder="မြို့တော်"
+                                           required="0"/>
+                                    <field name="permm_region" class="o_address_state" placeholder="နေရာဒေသ"
+                                           required="0"/>
+                                    <field name="permm_country" class="o_address_country" placeholder="နိုင်ငံ"
+                                           required="0"/>
+                                </div>
+                                <field name="home_phone"/>
+                                <field name="personal_phone" string="Phone"/>
+                                <field name="bank_account_id" context="{'default_partner_id': address_home_id}"
+                                       invisible="1"/>
+                                <field name="personal_email"/>
+                                <field name="km_home_work" groups="hr.group_hr_user" invisible="1"/>
+                            </group>
+                            <group string="Citizenship">
+                                <field name="country_id" options='{"no_open": True, "no_create": True}'/>
+                                <field name="nationality" widget="radio" options="{'horizontal': true}"/>
+                                <label for="nrc_no" string="NRC" class="oe_inline"
+                                       attrs="{'invisible': [('nationality','=','non_citizen')]}"/>
+                                <div>
+                                    <div>
+                                        <field name="nrc_no"
+                                               options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"
+                                               class="oe_inline nrc_no" widget="selection"
+                                               attrs="{'required': [('nationality','=','citizen')],'invisible': [('nationality','=','non_citizen')]}"/>
+                                        /
+                                        <field name="nrc_desc"
+                                               options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"
+                                               class="oe_inline nrc_desc" widget="selection"
+                                               attrs="{'required': [('nationality','=','citizen')],'invisible': [('nationality','=','non_citizen')]}"/>
+                                        (
+                                        <field name="nrc_type"
+                                               options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"
+                                               class="oe_inline nrc_type" widget="selection"
+                                               attrs="{'required': [('nationality','=','citizen')],'invisible': [('nationality','=','non_citizen')]}"/>
+                                        )
+                                        <field name="nrc_number" style="width: 250px;" class="oe_inline"
+                                               attrs="{'required': [('nationality','=','citizen')],'invisible': [('nationality','=','non_citizen')]}"/>
+                                    </div>
+                                </div>
+                                <label for="nrc_no_mm" string="မှတ်ပုံတင်နံပါတ်" class="oe_inline"/>
+                                <div class="application_form">
+                                    <div>
+                                        <field name="nrc_no_mm" class="oe_inline nrc_no_mm"/>
+                                        /
+                                        <field name="nrc_desc_mm"
+                                               class="oe_inline nrc_desc_mm"/>
+                                        (<field name="nrc_type_mm"
+                                                class="oe_inline nrc_type_mm"/>)
+                                        <field name="nrc_number_mm" class="oe_inline" readonly="1" force_save="1"/>
+                                    </div>
+                                </div>
+                                <field name="passport_id"
+                                       attrs="{'required': [('nationality','=','non_citizen')],'invisible': [('nationality','=','citizen')]}"/>
+                                <field name="religion_id" required="0"
+                                       options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"/>
+                                <field name="race_id" required="0"
+                                       options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"/>
+                                <field name="blood_id"/>
+                                <field name="faceid"/>
+                                <field name="driving_license" widget="radio" options="{'horizontal': true}"/>
+                                <field name="license_type"
+                                       attrs="{'invisible': [('driving_license','=','no')],'required': [('driving_license','=','yes')]}"/>
+                                <field name="license_no"
+                                       attrs="{'invisible': [('driving_license','=','no')],'required': [('driving_license','=','yes')]}"/>
+                                <field name="expire_license"
+                                       attrs="{'invisible': [('driving_license','=','no')],'required': [('driving_license','=','yes')]}"/>
+                                <field name="gender" required="0"/>
+                                <field name="birthday" required="0"/>
+                                <field name="real_dob"/>
+                                <field name="age"/>
+                                <field name="place_of_birth" groups="hr.group_hr_user"/>
+                                <field name="country_of_birth" groups="hr.group_hr_user"/>
+                            </group>
+                            <group string="Marital Status">
+                                <field name="marital" required="0"/>
+                                <field name="spouse_complete_name"
+                                       attrs="{'invisible': [('marital', 'not in', ['married', 'cohabitant'])]}"
+                                       groups="hr.group_hr_user"/>
+                                <field name="spouse_birthdate"
+                                       attrs="{'invisible': [('marital', 'not in', ['married', 'cohabitant'])]}"
+                                       groups="hr.group_hr_user"/>
+                            </group>
+                            <group string="Work Permit" name="work_permit">
+                                <field name="visa_no"/>
+                                <field name="permit_no"/>
+                                <field name="visa_expire"/>
+                            </group>
+                            <group string="Emergency">
+                                <field name="emergency_contact"/>
+                                <field name="emergency_phone" class="o_force_ltr"/>
+                                <field name="relation_id"/>
+                            </group>
+
+                        </group>
+                    </page>
+                    <page name="hr_education" string="Education">
+                        <field name="education_ids" nolabel="1">
+                            <tree editable="1">
+                                <!-- For University -->
+                                <field name="education_type"/>
+
+                                <field name="major_id"
+                                       attrs="{'invisible': [('education_type','!=','university')]}"
+                                       string="Major"/>
+                                <field name="institute_id"
+                                       attrs="{'invisible': [('education_type','!=','university')]}"/>
+                                <field name="from_year"
+                                       attrs="{'invisible': [('education_type','!=','university')]}"/>
+                                <field name="to_year"
+                                       attrs="{'invisible': [('education_type','!=','university')]}"/>
+                                <!-- For School -->
+                                <field name="school_type"
+                                       attrs="{'invisible': [('education_type','!=','school')]}"/>
+                                <field name="school_name"
+                                       attrs="{'invisible': [('education_type','!=','school')]}"/>
+                                <field name="school_from"
+                                       attrs="{'invisible': [('education_type','!=','school')]}"/>
+                                <field name="school_to"
+                                       attrs="{'invisible': [('education_type','!=','school')]}"/>
+                                <field name="city_id"/>
+                                <field name="country_id"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page name="hr_other" string="Other Qualification">
+                        <field name="other_ids" nolabel="1">
+                            <tree editable="1">
+                                <!-- <field name="degree" /> -->
+                                <field name="education_type" required="0"/>
+                                <field name="major" invisible="1"/>
+                                <field name="quali_type_id" invisible="1"/>
+                                <field name="name" invisible="1"/>
+                                <field name="institute"/>
+                                <field name="year"/>
+                                <field name="city_id"/>
+                                <field name="country_id"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page name="hr_experience" string="Working Experience">
+                        <field name="exp_ids" nolabel="1">
+                            <tree editable="1">
+                                <field name="name"/>
+                                <field name="current_job"/>
+                                <field name="company"/>
+                                <field name="from_period"/>
+                                <field name="to_period"/>
+                                <field name="start_position"/>
+                                <field name="end_position"/>
+                                <field name="city_id"/>
+                                <field name="last_salary"/>
+                                <field name="job_function_id"/>
+                                <field name="position_level_id"/>
+                                <field name="job_industry_id"/>
+                                <field name="resign_reason"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page name="hr_bank" string="Bank">
+                        <field name="bank_ids" nolabel="1">
+                            <tree editable="1">
+                                <field name="bank_id" invisible="1"/>
+                                <field name="name"/>
+                                <field name="branch_name"/>
+                                <field name="branch_code"/>
+                                <field name="account_title"/>
+                                <field name="smart_card"/>
+                                <field name="account_type"/>
+                                <field name="smart_pay"/>
+                                <field name="payment_method"/>
+                                <field name="active"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Language">
+                        <field name="language_ids" nolabel="1">
+                            <tree editable="1">
+                                <field name="language_id" required="0"/>
+                                <field name="speaking"/>
+                                <field name="listening"/>
+                                <field name="reading"/>
+                                <field name="writing"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page name="hr_family" string="Family">
+                        <field name="family_ids" nolabel="1">
+                            <tree editable="1">
+                                <field name="name" required="0"/>
+                                <field name="burmese_name"/>
+                                <field name="dob"/>
+                                <field name="relation_id"/>
+                            </tree>
+                        </field>
+                        <group string="Family Information" invisible="1">
+                            <field name="has_spouse"/>
+                            <field name="has_father"/>
+                            <field name="has_mother"/>
+                            <field name="children"/>
+                        </group>
+                    </page>
+                </xpath>
+                <xpath expr="//field[@name='work_email']" position="replace">
+                    <field name="work_email" required="0"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- NRC Code -->
+        <record model="ir.ui.view" id="nrc_no_tree">
+            <field name="name">NRC Code</field>
+            <field name="model">nrc.no</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="nrc_no_mm"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="nrc_no_form">
+            <field name="name">NRC Code</field>
+            <field name="model">nrc.no</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                            </group>
+                            <group>
+                                <field name="nrc_no_mm"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="nrc_no_action_window">
+            <field name="name">NRC Code</field>
+            <field name="res_model">nrc.no</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!-- End -->
+
+        <!-- NRC Township Code -->
+        <record model="ir.ui.view" id="nrc_description_tree">
+            <field name="name">NRC Township Code</field>
+            <field name="model">nrc.description</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="nrc_desc_mm"/>
+                    <field name="nrc_no_id"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="nrc_description_form">
+            <field name="name">NRC Township Code</field>
+            <field name="model">nrc.description</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="nrc_desc_mm"/>
+                            <field name="nrc_no_id"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="nrc_description_action_window">
+            <field name="name">NRC Township Code</field>
+            <field name="res_model">nrc.description</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!-- End -->
+
+        <!-- NRC Township Code -->
+        <record model="ir.ui.view" id="nrc_type_tree">
+            <field name="name">NRC Type</field>
+            <field name="model">nrc.type</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="nrc_type_mm"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="nrc_type_form">
+            <field name="name">NRC Type</field>
+            <field name="model">nrc.type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="name"/>
+                        <field name="nrc_type_mm"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="nrc_type_action_window">
+            <field name="name">NRC Type</field>
+            <field name="res_model">nrc.type</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!-- End -->
+
+        <!-- NRC Code MM -->
+        <record model="ir.ui.view" id="nrc_no_mm_tree">
+            <field name="name">NRC Code</field>
+            <field name="model">nrc.no.mm</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="nrc_no_mm_form">
+            <field name="name">NRC Code</field>
+            <field name="model">nrc.no.mm</field>
+            <field name="arch" type="xml">
+                <form>
+                    <field name="name"/>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="nrc_no_mm_action_window">
+            <field name="name">NRC Code</field>
+            <field name="res_model">nrc.no.mm</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!-- End -->
+
+        <!-- NRC Township Code  MM-->
+        <record model="ir.ui.view" id="nrc_description_mm_tree">
+            <field name="name">NRC Township Code</field>
+            <field name="model">nrc.description.mm</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="nrc_no_id"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="nrc_description_mm_form">
+            <field name="name">NRC Township Code</field>
+            <field name="model">nrc.description.mm</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="nrc_no_id"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="nrc_description_mm_action_window">
+            <field name="name">NRC Township Code</field>
+            <field name="res_model">nrc.description.mm</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!-- End -->
+
+        <!-- NRC Township Code MM -->
+        <record model="ir.ui.view" id="nrc_type_mm_tree">
+            <field name="name">NRC Type</field>
+            <field name="model">nrc.type.mm</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="nrc_type_mm_form">
+            <field name="name">NRC Type</field>
+            <field name="model">nrc.type.mm</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="nrc_type_mm_action_window">
+            <field name="name">NRC Type</field>
+            <field name="res_model">nrc.type.mm</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!-- End -->
+
+        <!--        <menuitem name="NRC နံပါတ်" id="nrc_no_mm_menu" parent="master_data_extension.master_data_menu"-->
+        <!--                  action="nrc_no_mm_action_window" sequence="4"/>-->
+
+        <!--        <menuitem name="NRC မြို့နယ်" id="nrc_description_mm_menu" parent="master_data_extension.master_data_menu"-->
+        <!--                  action="nrc_description_mm_action_window" sequence="4"/>-->
+
+        <!--        <menuitem name="NRC အမျိုးအစား" id="nrc_type_mm_menu" parent="master_data_extension.master_data_menu"-->
+        <!--                  action="nrc_type_mm_action_window" sequence="4"/>-->
+
+        <!-- Education -->
+        <record model="ir.ui.view" id="hr_education_tree">
+            <field name="name">Education</field>
+            <field name="model">hr.education</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="education_type"/>
+                    <field name="degree_id"/>
+                    <field name="major_id"/>
+                    <field name="institute_id"/>
+                    <field name="from_year"/>
+                    <field name="to_year"/>
+                    <field name="school_type"/>
+                    <field name="school_name"/>
+                    <field name="school_from"/>
+                    <field name="school_to"/>
+                    <field name="city_id"/>
+                    <field name="country_id"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="hr_education_form">
+            <field name="name">Education</field>
+            <field name="model">hr.education</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="education_type"/>
+                                <!-- University -->
+                                <field name="university_type"
+                                       attrs="{'invisible': [('education_type','!=','university')],'required': [('education_type','=','university')]}"/>
+                                <field name="current_year"
+                                       attrs="{'invisible': [('university_type','!=','student')],'required': [('university_type','=','student')]}"/>
+                                <field name="highest_year"
+                                       attrs="{'invisible': [('current_year','not in',['honus','master','phd'])],'required': [('current_year','in',['honus','master','phd'])]}"/>
+                                <field name="degree_id"
+                                       attrs="{'invisible': [('education_type','!=','university')],'required': [('education_type','=','university')]}"/>
+                                <field name="major_id"
+                                       attrs="{'invisible': [('education_type','!=','university')],'required': [('education_type','=','university')]}"/>
+                                <field name="institute_id"
+                                       attrs="{'invisible': [('education_type','!=','university')],'required': [('education_type','=','university')]}"/>
+                                <!-- School -->
+                                <field name="school_type"
+                                       attrs="{'invisible': [('education_type','!=','school')],'required': [('education_type','=','school')]}"/>
+                                <field name="school_name"
+                                       attrs="{'invisible': [('education_type','!=','school')],'required': [('education_type','=','school')]}"/>
+                                <field name="school_from"
+                                       attrs="{'invisible': [('education_type','!=','school')],'required': [('education_type','=','school')]}"/>
+                            </group>
+                            <group>
+                                <field name="from_year"
+                                       attrs="{'invisible': [('education_type','!=','university')],'required': [('education_type','=','university')]}"/>
+                                <field name="to_year"
+                                       attrs="{'invisible': [('education_type','!=','university')],'required': [('education_type','=','university')]}"/>
+                                <field name="school_to"
+                                       attrs="{'invisible': [('education_type','!=','school')],'required': [('education_type','=','school')]}"/>
+                                <field name="city_id" required="0"/>
+                                <field name="country_id"/>
+                                <field name="employee_id" required="0"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="hr_education_search" model="ir.ui.view">
+            <field name="name">hr.education.search</field>
+            <field name="model">hr.education</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="education_type"/>
+                    <field name="degree_id"/>
+                    <field name="major_id"/>
+                    <field name="institute_id"/>
+                    <field name="from_year"/>
+                    <field name="to_year"/>
+                    <field name="school_type"/>
+                    <field name="school_name"/>
+                    <field name="school_from"/>
+                    <field name="school_to"/>
+                    <field name="city_id"/>
+                    <field name="country_id"/>
+                </search>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="hr_education_action_window">
+            <field name="name">Education</field>
+            <field name="res_model">hr.education</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="hr_education_search"/>
+        </record>
+        <!-- End -->
+
+        <!-- Family -->
+        <record model="ir.ui.view" id="hr_family_tree">
+            <field name="name">Family</field>
+            <field name="model">hr.family</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="burmese_name"/>
+                    <field name="dob"/>
+                    <field name="relation_id"/>
+                    <field name="employee_id"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="hr_family_form">
+            <field name="name">Family</field>
+            <field name="model">hr.family</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="burmese_name"/>
+                            </group>
+                            <group>
+                                <field name="dob"/>
+                                <field name="relation_id"/>
+                                <field name="employee_id"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="hr_family_action_window">
+            <field name="name">Family</field>
+            <field name="res_model">hr.family</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!-- End -->
+        
+
+        <!-- Family Relation -->
+        <record model="ir.ui.view" id="hr_family_relation_tree">
+            <field name="name">Family Relation</field>
+            <field name="model">hr.family.relation</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="hr_family_relation_form">
+            <field name="name">Family Relation</field>
+            <field name="model">hr.family.relation</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="hr_family_relation_action_window">
+            <field name="name">Family Relation</field>
+            <field name="res_model">hr.family.relation</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!-- End -->
+
+        <!-- Working Experience -->
+        <record model="ir.ui.view" id="hr_experience_tree">
+            <field name="name">Working Experience</field>
+            <field name="model">hr.experience</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="current_job"/>
+                    <field name="company"/>
+                    <field name="from_period"/>
+                    <field name="to_period"/>
+                    <field name="start_position"/>
+                    <field name="end_position"/>
+                    <field name="city_id"/>
+                    <field name="last_salary"/>
+                    <field name="job_function_id"/>
+                    <field name="position_level_id"/>
+                    <field name="job_industry_id"/>
+                    <field name="resign_reason"/>
+                    <field name="employee_id"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="hr_experience_form">
+            <field name="name">Working Experience</field>
+            <field name="model">hr.experience</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="current_job"/>
+                                <field name="company"/>
+                                <field name="from_period"/>
+                                <field name="to_period"/>
+                                <field name="start_position"/>
+                                <field name="end_position"/>
+                            </group>
+                            <group>
+                                <field name="city_id"/>
+                                <field name="last_salary"/>
+                                <field name="job_function_id"/>
+                                <field name="position_level_id"/>
+                                <field name="job_industry_id"/>
+                                <field name="employee_id"/>
+                            </group>
+                            <label for="resign_reason" string="Reason For Leaving" class="oe_inline"/>
+                            <field name="resign_reason" nolabel="1"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="hr_experience_search" model="ir.ui.view">
+            <field name="name">chr.experience.search</field>
+            <field name="model">hr.experience</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="current_job"/>
+                    <field name="company"/>
+                    <field name="from_period"/>
+                    <field name="to_period"/>
+                    <field name="start_position"/>
+                    <field name="end_position"/>
+                    <field name="city_id"/>
+                    <field name="last_salary"/>
+                    <field name="job_function_id"/>
+                    <field name="position_level_id"/>
+                    <field name="job_industry_id"/>
+                    <field name="resign_reason"/>
+                    <field name="employee_id"/>
+                </search>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="hr_experience_action_window">
+            <field name="name">Working Experience</field>
+            <field name="res_model">hr.experience</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="hr_experience_search"/>
+        </record>
+        <!-- End -->
+
+        <!-- Other Qualification -->
+        <record model="ir.ui.view" id="hr_other_qualification_tree">
+            <field name="name">Other Qualification</field>
+            <field name="model">hr.other.qualification</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="institute"/>
+                    <field name="year"/>
+                    <field name="employee_id"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="hr_other_qualification_form">
+            <field name="name">Other Qualification</field>
+            <field name="model">hr.other.qualification</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="institute"/>
+                                <field name="year"/>
+                                <field name="employee_id"/>
+                            </group>
+                            <group>
+                                <field name="major"/>
+                                <field name="quali_type_id"/>
+                                <field name="city_id"/>
+                                <field name="country_id"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="hr_other_qualification_action_window">
+            <field name="name">Other Qualification</field>
+            <field name="res_model">hr.other.qualification</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!-- End -->
+
+        <!-- Bank -->
+        <record model="ir.ui.view" id="hr_bank_tree">
+            <field name="name">Bank</field>
+            <field name="model">hr.bank</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="branch_name"/>
+                    <field name="branch_code"/>
+                    <field name="account_title"/>
+                    <field name="smart_card"/>
+                    <field name="account_type"/>
+                    <field name="smart_pay"/>
+                    <field name="payment_method"/>
+                    <field name="active"/>
+                    <field name="employee_id"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="hr_bank_form">
+            <field name="name">Bank</field>
+            <field name="model">hr.bank</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="branch_name"/>
+                                <field name="branch_code"/>
+                                <field name="account_title"/>
+                                <field name="employee_id"/>
+                            </group>
+                            <group>
+                                <field name="smart_card"/>
+                                <field name="account_type"/>
+                                <field name="smart_pay"/>
+                                <field name="payment_method"/>
+                                <field name="active"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="hr_bank_action_window">
+            <field name="name">Bank</field>
+            <field name="res_model">hr.bank</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!-- End -->
+
+        <!-- Account Type -->
+        <record model="ir.ui.view" id="hr_bank_type_tree">
+            <field name="name">Account Type</field>
+            <field name="model">hr.bank.type</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="hr_bank_type_form">
+            <field name="name">Account Type</field>
+            <field name="model">hr.bank.type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="hr_bank_type_action_window">
+            <field name="name">Account Type</field>
+            <field name="res_model">hr.bank.type</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!-- End -->
+
+        <!-- SSB -->
+        <record model="ir.ui.view" id="hr_ssb_tree">
+            <field name="name">SSB</field>
+            <field name="model">hr.ssb</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="ssb_no"/>
+                    <field name="emp_no"/>
+                    <field name="attach_id"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="hr_ssb_form">
+            <field name="name">SSB</field>
+            <field name="model">hr.ssb</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="ssb_no"/>
+                                <field name="emp_no"/>
+                                <field name="attach_id"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="hr_ssb_action_window">
+            <field name="name">SSB</field>
+            <field name="res_model">hr.ssb</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!-- End -->
+        <!-- <menuitem name="SSB" id="hr_ssb_menu" parent="master_data_extension.master_data_menu" action="hr_ssb_action_window" sequence="5"/> -->
+
+        <!-- Religion -->
+        <record model="ir.ui.view" id="hr_religion_tree">
+            <field name="name">Religion</field>
+            <field name="model">hr.religion</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="hr_religion_form">
+            <field name="name">Religion</field>
+            <field name="model">hr.religion</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="hr_religion_action_window">
+            <field name="name">Religion</field>
+            <field name="res_model">hr.religion</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!-- End -->
+
+        <!-- Race -->
+        <record model="ir.ui.view" id="hr_race_tree">
+            <field name="name">Race</field>
+            <field name="model">hr.race</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="hr_race_form">
+            <field name="name">Race</field>
+            <field name="model">hr.race</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="hr_race_action_window">
+            <field name="name">Race</field>
+            <field name="res_model">hr.race</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!-- End -->
+
+        <!-- Blood Type -->
+        <record model="ir.ui.view" id="hr_blood_type_tree">
+            <field name="name">Blood Type</field>
+            <field name="model">hr.blood.type</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="hr_blood_type_form">
+            <field name="name">Blood Type</field>
+            <field name="model">hr.blood.type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="hr_blood_type_action_window">
+            <field name="name">Blood Type</field>
+            <field name="res_model">hr.blood.type</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!-- End -->
+
+        <!-- Rank to Salary -->
+        <record model="ir.ui.view" id="hr_rank_salary_tree">
+            <field name="name">Rank To Salary</field>
+            <field name="model">hr.rank.salary</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="from_rank_id"/>
+                    <field name="to_rank_id"/>
+                    <field name="min_salary"/>
+                    <field name="max_salary"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="hr_rank_salary_form">
+            <field name="name">Rank To Salary</field>
+            <field name="model">hr.rank.salary</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="from_rank_id"/>
+                                <field name="to_rank_id"/>
+                            </group>
+                            <group>
+                                <field name="min_salary"/>
+                                <field name="max_salary"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="hr_rank_salary_action_window">
+            <field name="name">Rank To Salary</field>
+            <field name="res_model">hr.rank.salary</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!-- End -->
+        <!-- <menuitem name="Rank to Salary" id="hr_rank_salary_menu" parent="master_data_extension.master_data_menu" action="hr_rank_salary_action_window" sequence="1"/> -->
+        <!-- Department -->
+        <record id="hr.view_department_tree" model="ir.ui.view">
+            <field name="name">hr.department.tree</field>
+            <field name="model">hr.department</field>
+            <field name="arch" type="xml">
+                <tree string="Companies">
+                    <field name="name"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                    <field name="manager_id"/>
+                    <field name="parent_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Adding Gener Field for hr.job model for Salesman Activities developed by ZHA -->
+        <record id="view_hr_job_form_inherit_for_audit" model="ir.ui.view">
+            <field name="name">hr.job.view.form.inherit</field>
+            <field name="model">hr.job</field>
+            <field name="inherit_id" ref="hr.view_hr_job_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='department_id']" position="after">
+                    <field name="gender" />
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

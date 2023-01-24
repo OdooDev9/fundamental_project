@@ -1,0 +1,15 @@
+<!-- <?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="ar_assign" name="ar_assign" inherit_id="web.assets_backend" >
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" type="text/scss" href="/hi5_fa/static/src/scss/style.scss"/>
+        </xpath>
+    </template>
+    <data id="ar_assign" name="ar_assign" inherit_id="web.assets_backend" >
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" type="text/scss" href="/hi5_fa/static/src/scss/style.scss"/>
+        </xpath>
+    </data>
+
+</odoo> -->

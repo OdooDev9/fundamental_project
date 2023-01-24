@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<menuitem name="Configurations" id="ar_config_menu" parent="ar_assign_root_menu" sequence="20"/>
+	<record model="ir.ui.view" id="assign_team_tree">
+			<field name="name">AR Assign Team</field>
+			<field name="model">assign.team</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="name" />
+					<field name="employee_ids" widget="many2many_tags" />
+					<field name="business_ids" widget="many2many_tags" />
+					<field name="branch_ids" widget="many2many_tags" />
+				</tree>
+			</field>
+		</record>
+		<record model="ir.ui.view" id="assign_team_form">
+			<field name="name">Assign Team</field>
+			<field name="model">assign.team</field>
+			<field name="arch" type="xml">
+				<form string="Sales Team">
+					<!-- <div class="alert alert-info text-center" role="alert" attrs="{'invisible': ['|', ('is_membership_multi', '=', True), ('member_warning', '=', False)]}">
+						<field name="member_warning"/>
+					</div> -->
+					<sheet>
+						<div class="oe_button_box" name="button_box"/>
+						<!-- <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/> -->
+						<div class="oe_title">
+							<label for="name" string="Assign Team"/>
+							<h1>
+								<field class="o_text_overflow" name="name"/>
+							</h1>
+							<!-- <div name="options_active"/> -->
+						</div>
+						<group>
+							<group string="Team Details">
+								<field name="employee_ids" widget="many2many_tags" />
+								<field name="business_ids" widget="many2many_tags" />
+								<field name="branch_ids" widget="many2many_tags" />
+
+							</group>
+							<group string="Due Type">
+								<div >
+									<span class="d-inline-block">
+										<field name="over_due"/>
+										<label for="over_due"/>
+									</span>
+									<span class="d-inline-block">
+										<field name="future_due"/>
+										<label for="future_due"/>
+									</span>
+									<span class="d-inline-block">
+										<field name="current_due"/>
+										<label for="current_due"/>
+									</span>
+								</div>
+							</group>
+						</group>
+					</sheet>
+					<div class="oe_chatter">
+						<field name="message_follower_ids" help="Follow this assign to automatically track the events associated to users of this team."/>
+						<field name="message_ids"/>
+					</div>
+				</form>
+			</field>
+		</record>
+		<record model="ir.actions.act_window" id="assign_team_action_window">
+			<field name="name">Assign Team</field>
+			<field name="res_model">assign.team</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+		<menuitem name="Assign Team" id="assing_team_menu" parent="ar_config_menu" action="assign_team_action_window" sequence="2"/>
+	<!-- End -->
+	<!-- Followup Customer -->
+		<record model="ir.ui.view" id="followup_customer_tree">
+			<field name="name">Followup Customer</field>
+			<field name="model">followup.customer</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+		<record model="ir.ui.view" id="followup_customer_form">
+			<field name="name">Followup Customer</field>
+			<field name="model">followup.customer</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group>
+							<group>
+								<field name="name" />
+							</group>
+						</group>
+					</sheet>
+					<div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+						<field name="activity_ids" widget="mail_activity"/>
+						<field name="message_ids" widget="mail_thread"/>
+					</div>
+				</form>
+			</field>
+		</record>
+		<record model="ir.actions.act_window" id="followup_customer_action_window">
+			<field name="name">Followup Customer</field>
+			<field name="res_model">followup.customer</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+		<menuitem name="Followup Customer" id="followup_customer_menu" parent="ar_config_menu" action="followup_customer_action_window" sequence="5"/>
+	<!-- End -->
+
+    <!-- Followup Ontarget Feedback -->
+		<record model="ir.ui.view" id="followup_ontarget_feedback_tree">
+			<field name="name">Followup Ontarget Feedback</field>
+			<field name="model">followup.ontarget.feedback</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+		<record model="ir.ui.view" id="followup_ontarget_feedback_form">
+			<field name="name">Followup Ontarget Feedback</field>
+			<field name="model">followup.ontarget.feedback</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group>
+							<group>
+								<field name="name" />
+							</group>
+						</group>
+					</sheet>
+					<div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+						<field name="activity_ids" widget="mail_activity"/>
+						<field name="message_ids" widget="mail_thread"/>
+					</div>
+				</form>
+			</field>
+		</record>
+		<record model="ir.actions.act_window" id="followup_ontarget_feedback_action_window">
+			<field name="name">Followup Ontarget Feedback</field>
+			<field name="res_model">followup.ontarget.feedback</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+		<menuitem name="Followup Ontarget Feedback" id="followup_ontarget_feedback_menu" parent="ar_config_menu" action="followup_ontarget_feedback_action_window" sequence="5"/>
+	<!-- End -->
+
+    <!-- Followup BR Feedback -->
+		<record model="ir.ui.view" id="followup_br_feedback_tree">
+			<field name="name">Followup BR Feedback</field>
+			<field name="model">followup.br.feedback</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+		<record model="ir.ui.view" id="followup_br_feedback_form">
+			<field name="name">Followup BR Feedback</field>
+			<field name="model">followup.br.feedback</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group>
+							<group>
+								<field name="name" />
+							</group>
+						</group>
+					</sheet>
+					<div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+						<field name="activity_ids" widget="mail_activity"/>
+						<field name="message_ids" widget="mail_thread"/>
+					</div>
+				</form>
+			</field>
+		</record>
+		<record model="ir.actions.act_window" id="followup_br_feedback_action_window">
+			<field name="name">Followup BR Feedback</field>
+			<field name="res_model">followup.br.feedback</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+		<menuitem name="Followup Ontarget Feedback" id="followup_br_feedback_menu" parent="ar_config_menu" action="followup_br_feedback_action_window" sequence="5"/>
+	<!-- End -->
+
+	<!-- AR Confirm Resson -->
+		<record model="ir.ui.view" id="ar_confirm_reason_tree">
+			<field name="name">AR Confirm Reason</field>
+			<field name="model">ar.confirm.reason</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+		<record model="ir.ui.view" id="ar_confirm_reason_form">
+			<field name="name">AR Confirm Reason</field>
+			<field name="model">ar.confirm.reason</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group>
+							<group>
+								<field name="name" />
+							</group>
+						</group>
+					</sheet>
+					<div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+						<field name="activity_ids" widget="mail_activity"/>
+						<field name="message_ids" widget="mail_thread"/>
+					</div>
+				</form>
+			</field>
+		</record>
+		<record model="ir.actions.act_window" id="ar_confirm_reason_action_window">
+			<field name="name">AR Confirm Reason</field>
+			<field name="res_model">ar.confirm.reason</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+		<menuitem name="AR Confirm Reason" id="ar_confirm_reason_menu" parent="ar_config_menu" action="ar_confirm_reason_action_window" sequence="5"/>
+	<!-- End -->
+
+	<!-- Remind Customer Feedback -->
+		<record model="ir.ui.view" id="remind_customer_feedback_tree">
+			<field name="name">Remind Customer Feedback</field>
+			<field name="model">remind.customer.feedback</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+		<record model="ir.ui.view" id="remind_customer_feedback_form">
+			<field name="name">Remind Customer Feedback</field>
+			<field name="model">remind.customer.feedback</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group>
+							<group>
+								<field name="name" />
+							</group>
+						</group>
+					</sheet>
+					<div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+						<field name="activity_ids" widget="mail_activity"/>
+						<field name="message_ids" widget="mail_thread"/>
+					</div>
+				</form>
+			</field>
+		</record>
+		<record model="ir.actions.act_window" id="remind_customer_feedback_action_window">
+			<field name="name">Remind Customer Feedback</field>
+			<field name="res_model">remind.customer.feedback</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+		<menuitem name="Remind Customer Feedback" id="remind_customer_feedback_menu" parent="ar_config_menu" action="remind_customer_feedback_action_window" sequence="5"/>
+	<!-- End -->
+
+	<!-- Repossess Onterget Feedback -->
+		<record model="ir.ui.view" id="remind_customer_feedback_tree">
+			<field name="name">Repossess Onterget Feedback</field>
+			<field name="model">repossess.ontarget.feedback</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+		<record model="ir.ui.view" id="remind_customer_feedback_form">
+			<field name="name">Repossess Onterget Feedback</field>
+			<field name="model">repossess.ontarget.feedback</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group>
+							<group>
+								<field name="name" />
+							</group>
+						</group>
+					</sheet>
+					<div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+						<field name="activity_ids" widget="mail_activity"/>
+						<field name="message_ids" widget="mail_thread"/>
+					</div>
+				</form>
+			</field>
+		</record>
+		<record model="ir.actions.act_window" id="remind_customer_feedback_action_window">
+			<field name="name">Repossess Onterget Feedback</field>
+			<field name="res_model">repossess.ontarget.feedback</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+		<menuitem name="Repossess Onterget Feedback" id="remind_customer_feedback_menu" parent="ar_config_menu" action="remind_customer_feedback_action_window" sequence="5"/>
+	<!-- End -->
+
+	<!-- Customer recontract Action -->
+		<record model="ir.ui.view" id="customer_recontract_action_tree">
+			<field name="name">Customer Recontract Action</field>
+			<field name="model">customer.recontract.action</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+		<record model="ir.ui.view" id="customer_recontract_action_form">
+			<field name="name">Customer Recontract Action</field>
+			<field name="model">customer.recontract.action</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group>
+							<group>
+								<field name="name" />
+							</group>
+						</group>
+					</sheet>
+					<div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+						<field name="activity_ids" widget="mail_activity"/>
+						<field name="message_ids" widget="mail_thread"/>
+					</div>
+				</form>
+			</field>
+		</record>
+		<record model="ir.actions.act_window" id="customer_recontract_action_action_window">
+			<field name="name">Customer Recontract Action</field>
+			<field name="res_model">customer.recontract.action</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+		<menuitem name="Customer Recontract Action" id="customer_recontract_action_menu" parent="ar_config_menu" action="customer_recontract_action_action_window" sequence="5"/>
+	<!-- End -->
+
+	<!-- Legal Ontarget Feedback -->
+		<record model="ir.ui.view" id="legal_ontarget_feedback_tree">
+			<field name="name">Legal Ontarget Feedback</field>
+			<field name="model">legal.ontarget.feedback</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+		<record model="ir.ui.view" id="legal_ontarget_feedback_form">
+			<field name="name">Legal Ontarget Feedback</field>
+			<field name="model">legal.ontarget.feedback</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group>
+							<group>
+								<field name="name" />
+							</group>
+						</group>
+					</sheet>
+					<div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+						<field name="activity_ids" widget="mail_activity"/>
+						<field name="message_ids" widget="mail_thread"/>
+					</div>
+				</form>
+			</field>
+		</record>
+		<record model="ir.actions.act_window" id="legal_ontarget_feedback_action_window">
+			<field name="name">Legal Ontarget Feedback</field>
+			<field name="res_model">legal.ontarget.feedback</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+		<menuitem name="Legal Ontarget Feedback" id="legal_ontarget_feedback_menu" parent="ar_config_menu" action="legal_ontarget_feedback_action_window" sequence="5"/>
+	<!-- End -->
+
+
+
+</odoo>

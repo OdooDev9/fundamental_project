@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="ir_cron_installment_reminder" model="ir.cron">
+        <field name="name">Installment Reminder</field>
+        <field name="model_id" ref="model_invoice_installment_line"/>
+        <field name="state">code</field>
+        <field name="code">model.installment_reminder()</field>
+        <field name="user_id" ref="base.user_root" />
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+    </record>
+
+    <record id="installment_fine_calculator" model="ir.cron">
+        <field name="name">Installment Fine Calculator</field>
+        <field name="model_id" ref="model_invoice_installment_line"/>
+        <field name="state">code</field>
+        <field name="code">model.installment_fine_calculator()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="installment_fine_calculator_tester" model="ir.cron">
+        <field name="name">Installment Fine Calculator Tester For OverDue</field>
+        <field name="model_id" ref="model_invoice_installment_line"/>
+        <field name="state">code</field>
+        <field name="code">model.installment_fine_calculator_tester()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="active" eval="False"/>
+    </record>
+
+
+    <record id="installment_fine_calculator_tester_follow_up" model="ir.cron">
+        <field name="name">Installment Fine Calculator Tester For Follow Up</field>
+        <field name="model_id" ref="model_invoice_installment_line"/>
+        <field name="state">code</field>
+        <field name="code">model.installment_fine_calculator_tester_follow_up()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="active" eval="False"/>
+    </record>
+
+
+    <record id="installment_fine_calculator_tester_remind" model="ir.cron">
+        <field name="name">Installment Fine Calculator Tester For Remind</field>
+        <field name="model_id" ref="model_invoice_installment_line"/>
+        <field name="state">code</field>
+        <field name="code">model.installment_fine_calculator_tester_remind()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="active" eval="False"/>
+    </record>
+
+
+    <record id="installment_fine_calculator_tester_need_action" model="ir.cron">
+        <field name="name">Installment Fine Calculator Tester For Need Action</field>
+        <field name="model_id" ref="model_invoice_installment_line"/>
+        <field name="state">code</field>
+        <field name="code">model.installment_fine_calculator_tester_need_action()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="active" eval="False"/>
+    </record>
+
+
+    <record id="installment_fine_calculator_tester_take_action" model="ir.cron">
+        <field name="name">Installment Fine Calculator Tester For Take Action</field>
+        <field name="model_id" ref="model_invoice_installment_line"/>
+        <field name="state">code</field>
+        <field name="code">model.installment_fine_calculator_tester_take_action()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="active" eval="False"/>
+    </record>
+
+    <!-- <record id="mail_template_installment_reminder" model="mail.template">
+        <field name="name">Installment Reminder</field>
+        <field name="model_id" ref="payment_installment_kanak.model_invoice_installment_line"/>
+        <field name="subject">Reminder for Installment</field>
+        <field name="email_from">${user.email_formatted | safe}</field>
+        <field name="email_to">${object.invoice_id.partner_id.email_formatted|safe}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                    <b>Ref: ${object.invoice_id.invoice_origin}</b>
+                    <br/>
+                    Hello,
+                    <br/>
+                    Your ${object.description} of amount ${format_amount(object.amount, object.invoice_id.currency_id)} is due for debit on ${object.payment_date},
+                    so please kindly proceed for it.
+                    <br/>
+                    Do not hesitate to contact us if you have any questions.
+                    <br/>
+                    Thanks.
+                </p>
+            </div>
+        </field>
+        <field name="lang">${object.invoice_id.partner_id.lang}</field>
+        <field name="auto_delete" eval="True"/>
+        <field name="user_signature" eval="False"/>
+    </record> -->
+</odoo>

@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- <record model="ir.ui.view" id="business_unit_form_budget_control">
+        <field name="name">business.unit.form.budget.control</field>
+        <field name="model">business.unit</field>
+        <field name="inherit_id" ref="master_data_extension.business_unit_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Budget" name="budget_setting">
+                    <group name="budget_setting_group" string="">
+                        <group>
+                            <field name="budget_control_percent"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record> -->
+    <record id="view_monthly_budget_form" model="ir.ui.view">
+        <field name="name">monthly.budget.request.form</field>
+        <field name="model">monthly.budget.request</field>
+        <field name="arch" type="xml">
+            <form string="Monthly Budget">
+                <header>
+                    <!-- Approval Button -->
+                    <!-- CFD -->
+                    <button name="action_budget_pic_submit" string="Budget PIC Submit" type="object" class="oe_highlight" groups="budget_management.group_budget_pic" attrs="{'invisible':[('state','not in','draft')]}"/>
+
+                    <button name="action_superior_approve" string="Superior Approve" type="object" class="oe_highlight" attrs="{'invisible':['|',('btn_superior','=',False),('can_superior_approve','=',False)]}"/>
+
+                    <!-- F & A -->
+                    <!-- BU -->
+                    <button name="action_f_and_a_manager_approve" string="F&amp;A Manager Approve" type="object" class="oe_highlight" groups="product_configure.group_finance_account_head"  attrs="{'invisible':['|',('btn_f_n_a_m','=',False),('bu_br_div_user_approve','=',False)]}"/>
+                    <button name="action_f_and_a_approve" string="F&amp;A Approve" type="object" class="oe_highlight" groups="product_configure.group_finance_account_pic"  attrs="{'invisible':['|',('btn_f_n_a','=',False),('bu_br_div_user_approve','=',False)]}"/>
+                    <button name="action_f_and_a_approve" string="Manager Approve" type="object" class="oe_highlight" groups="master_data_extension.group_hr_div_manager"  attrs="{'invisible':['|',('btn_manager','=',False),('bu_br_div_user_approve','=',False)]}"/>
+
+                    <button string="Reject" name="action_reject" type="object" class="oe_highlight" groups="product_configure.group_finance_account_head"  
+                    attrs="{'invisible':['|',('btn_f_n_a_m','=',False),('bu_br_div_user_approve','=',False)]}"/>
+                    <button string="Reject" name="action_reject" type="object" class="oe_highlight" groups="product_configure.group_finance_account_pic"  
+                    attrs="{'invisible':['|',('btn_f_n_a','=',False),('bu_br_div_user_approve','=',False)]}"/>
+                    <button string="Reject" name="action_reject" type="object" class="oe_highlight" groups="master_data_extension.group_hr_div_manager"  
+                    attrs="{'invisible':['|',('btn_manager','=',False),('bu_br_div_user_approve','=',False)]}"/>
+
+                    <!-- For BU and DIV -->
+                    <button name="action_bu_gm_agm_approve" string="GM/AGM Approve" type="object" class="oe_highlight" attrs="{'invisible':['|',('btn_gm','=',False),('bu_br_div_user_approve','=',False)]}" groups="product_configure.group_gm_agm,product_configure.group_cfo,product_configure.group_ceo"/>
+                    <button string="Reject" name="action_reject" type="object" class="oe_highlight" attrs="{'invisible':['|',('btn_gm','=',False),('bu_br_div_user_approve','=',False)]}" groups="product_configure.group_gm_agm,product_configure.group_cfo,product_configure.group_ceo"/>
+
+                    <!-- For COO -->
+                    <button name="coo_approved" string="COO Approve" type="object" class="oe_highlight" attrs="{'invisible':['|',('btn_coo','=',False),('div_user_approve','=',False)]}" groups="product_configure.group_coo_dept,product_configure.group_po_management_dept"/>
+                    <button string="Reject" name="action_reject" type="object" class="oe_highlight" attrs="{'invisible':['|',('btn_coo','=',False),('div_user_approve','=',False)]}" groups="product_configure.group_coo_dept,product_configure.group_po_management_dept"/>
+
+                    <!-- For CFD Budget PIC -->
+                    <button name="budget_pic_checked" string="CFD Budget PIC Approve" type="object" class="oe_highlight" attrs="{'invisible':['|',('btn_pic','=',False),('cfd_user_approve','=',False)]}" groups="budget_management.group_budget_pic"/>
+                    <button string="Reject" name="action_reject" type="object" class="oe_highlight" attrs="{'invisible':['|',('btn_pic','=',False),('cfd_user_approve','=',False)]}" groups="budget_management.group_budget_pic"/>
+
+                    <!-- CFD GM/AGM -->
+                    <button name="cfd_gm_agm_approve" string="CFD GM/AGM Approve" type="object" class="oe_highlight" attrs="{'invisible':['|',('btn_cfd','=',False),('cfd_user_approve','=',False)]}" groups="product_configure.group_gm_agm,product_configure.group_cfo,product_configure.group_ceo" />
+                    <button string="Reject" name="action_reject" type="object" class="oe_highlight" attrs="{'invisible':['|',('btn_cfd','=',False),('cfd_user_approve','=',False)]}" groups="product_configure.group_gm_agm,product_configure.group_cfo,product_configure.group_ceo"/>
+
+                    <!-- CFD CFO -->
+                    <button name="cfd_cfo_approve" string="CFD CFO Approve" type="object" class="oe_highlight" attrs="{'invisible':['|',('btn_cfo','=',False),('cfd_user_approve','=',False)]}" groups="product_configure.group_cfo,product_configure.group_ceo"/>
+                    <button string="Reject" name="action_reject" type="object" class="oe_highlight" attrs="{'invisible':['|',('btn_cfo','=',False),('cfd_user_approve','=',False)]}" groups="product_configure.group_cfo,product_configure.group_ceo"/>
+
+                    <!-- CMC GM -->
+                    <button name="cmc_gm_approve" string="CMC GM Approve" type="object" class="oe_highlight" attrs="{'invisible':['|',('btn_cmc','=',False),('cfd_user_approve','=',False)]}" groups="product_configure.group_gm_agm,product_configure.group_cfo,product_configure.group_ceo"/>
+                    <button string="Reject" name="action_reject" type="object" class="oe_highlight" attrs="{'invisible':['|',('btn_cmc','=',False),('cfd_user_approve','=',False)]}" groups="product_configure.group_gm_agm,product_configure.group_cfo,product_configure.group_ceo"/>
+
+                    <!-- For BR BOH-->
+                    <button name="action_boh_approve" string="BOH Approve" type="object" class="oe_highlight" attrs="{'invisible':['|',('bu_br_div_user_approve','=',False),('btn_boh','=',False)]}" groups="product_configure.group_boh,product_configure.group_inventory_head"/>
+                    <button string="Reject" name="action_reject" type="object" class="oe_highlight" attrs="{'invisible':['|',('bu_br_div_user_approve','=',False),('btn_boh','=',False)]}" groups="product_configure.group_boh,product_configure.group_inventory_head"/>
+
+                    <!-- For CCD -->
+                    <button name="action_ccd_approve" string="CCD Approve" type="object" class="oe_highlight" attrs="{'invisible':['|',('div_user_approve','=',False),('btn_ccd','=',False)]}" groups="budget_management.group_ccd"/>
+                    <button string="Reject" name="action_reject" type="object" class="oe_highlight" attrs="{'invisible':['|',('div_user_approve','=',False),('btn_ccd','=',False)]}" groups="budget_management.group_ccd"/>
+
+                    <!-- CEO -->
+                    <button name="action_ceo_approve" string="CEO Approve" type="object" class="oe_highlight" attrs="{'invisible':[('btn_ceo','=',False)]}" groups="product_configure.group_ceo"/>
+                    <button string="Reject" name="action_reject" type="object" class="oe_highlight" attrs="{'invisible':[('btn_ceo','=',False)]}" groups="product_configure.group_ceo"/>
+
+                    <!-- MD Office -->
+                    <button name="action_md_approve" string="MD Office Approve" type="object" class="oe_highlight" attrs="{'invisible':[('btn_md','=',False)]}" groups="product_configure.group_ceo"/>
+                    <button string="Reject" name="action_reject" type="object" class="oe_highlight" attrs="{'invisible':[('btn_md','=',False)]}" groups="product_configure.group_ceo"/>
+
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirm"/>                                    
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_weekly_items" type="object" class="oe_stat_button" icon="fa-bars" attrs="{'invisible':[('weekly_count','=',0)]}">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="weekly_count"/>
+                                </span>
+                                <span class="o_stat_text">Weekly Items</span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="oe_title mb24">
+                        <h2>
+                            <field name="name" nolabel="1" readonly="1"/>
+                        </h2>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="business_id" required="1" attrs="{'readonly':[('state','!=','draft')]}" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"/>
+                            <field name="user_id" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"  attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="date" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="ref" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <div class="o_td_label">
+                                <label for="date_start" string="Budget Date (Monthly)"/>
+                            </div>
+                            <div class="o_row" name="budget_period">
+                                <field name="date_start" widget="date" nolabel="1" class="oe_inline" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <i class="fa fa-long-arrow-right mx-2" aria-label="Arrow icon" title="Arrow"/>
+                                <field name="date_end" widget="date" class="oe_inline" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            </div>
+                            <field name="currency_id" required="1" attrs="{'readonly':[('state','!=','draft')]}" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"/>
+                            <field name="company_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="reject_user_id" attrs="{'invisible': [('state', '!=', 'rejected')]}" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}" readonly="1" force_save="1"/>
+                            <!-- User Approve Access -->
+                            <field name="bu_br_div_user_approve" invisible="1"/>
+                            <field name="cfd_user_approve" invisible="1"/>
+                            <field name="div_user_approve" invisible="1"/>
+                            <field name="can_superior_approve" invisible="1"/>
+                            <!-- Approval Stages -->
+                            <field name="superior" invisible="1"/>
+                            <field name="f_n_a_m" invisible="1"/>
+                            <field name="f_n_a" invisible="1"/>
+                            <field name="manager" invisible="1"/>
+                            <field name="gm" invisible="1"/>
+                            <field name="coo" invisible="1"/>
+                            <field name="pic" invisible="1"/>
+                            <field name="cfd" invisible="1"/>
+                            <field name="cfo" invisible="1"/>
+                            <field name="cmc" invisible="1"/>
+                            <field name="ceo" invisible="1"/>
+                            <field name="md" invisible="1"/>
+                            <field name="boh" invisible="1"/>
+                            <field name="ccd" invisible="1"/>
+                            <!-- For Button attributes-->
+                            <field name="btn_superior" invisible="1"></field>
+                            <field name="btn_f_n_a_m" invisible="1"></field>
+                            <field name="btn_f_n_a" invisible="1"></field>
+                            <field name="btn_manager" invisible="1"></field>
+                            <field name="btn_gm" invisible="1"></field>
+                            <field name="btn_coo" invisible="1"></field>
+                            <field name="btn_pic" invisible="1"></field>
+                            <field name="btn_cfd" invisible="1"></field>
+                            <field name="btn_cmc" invisible="1"></field>
+                            <field name="btn_cfo" invisible="1"></field>
+                            <field name="btn_ceo" invisible="1"></field>
+                            <field name="btn_md" invisible="1"></field>
+                            <field name="btn_boh" invisible="1"></field>
+                            <field name="btn_ccd" invisible="1"></field>
+                            <field name="superior_id" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}" attrs="{'readonly':[('state','!=','draft')],'invisible':[('superior','=',False)]}" domain="[('current_bu_br_id','=',business_id)]"/>
+                        </group>
+                    </group>
+                    <label for="reject_reason" string="Reject Reason" attrs="{'invisible': [('state', '!=', 'rejected')]}"/>
+                    <field name="reject_reason" attrs="{'invisible': [('state', '!=', 'rejected')]}" readonly="1"/>
+                    <notebook>
+                        <page string="Budget Items">
+                            <field name="line_ids" attrs="{'readonly':[('state','!=','draft')]}" context="{'business_id': business_id,'default_business_id':business_id}">
+                                <tree editable="bottom">
+                                    <field name="account_id" required="1" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"/>
+                                    <field name="name" required="1" string="Description(Must be filled)"/>
+                                    <field name="analytic_account_id" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}" required="1"/>
+                                    <field name="amount" widget="monetary"/>
+                                    <field name="currency_id" invisible="1" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"/>
+                                    <field name="remark" />
+                                    <field name="expense_nature_type"/>
+                                    <field name="business_id" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}" optional="hide" invisible="1"/>
+                                </tree>
+                            </field>
+                            <group name="note_group" col="6" class="mt-2 mt-md-0">
+                                <group colspan="4">
+                                    <field name="note" class="oe-bordered-editor" nolabel="1" placeholder="Terms and conditions..." attrs="{'readonly':[('state','!=','draft')]}"/>
+                                </group>
+                                <group class="oe_subtotal_footer oe_right" colspan="2" name="monthly_total">
+                                    <field name="total" string="Total" colspan="2" widget="monetary"/>
+                                </group>
+                                <div class="oe_clear"/>
+                            </group>
+                        </page>
+                        <page name="weekly_page" class="oe_read_only"  string="Weekly Items" attrs="{'invisible': [('weekly_count', '=', '0')]}">
+                            <field class="oe_read_only" name="weekly_ids">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="business_id" optional="hide"/>
+                                    <field name="date"/>
+                                    <field name="user_id"/>
+                                    <field name="monthly_id"/>
+                                    <field name="date_start" optional="show"/>
+                                    <field name="date_end" optional="show"/>
+                                    <field name="currency_id" optional="hide"/>
+                                    <!-- <field name="total"/> -->
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="view_monthly_budget_tree" model="ir.ui.view">
+        <field name="name">monthly.budget.request.tree</field>
+        <field name="model">monthly.budget.request</field>
+        <field name="arch" type="xml">
+            <tree string="Monthly Budget Tree">
+                <field name="name" />
+                <field name="business_id" />
+                <field name="date" />
+                <field name="date_start" string="From"/>
+                <field name="date_end" string="To"/>
+                <field name="total"/>
+                <field name="ref" />
+                <field name="state" />
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="action_monthly_budget">
+        <field name="name">Monthly Budget Request</field>
+        <field name="res_model">monthly.budget.request</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

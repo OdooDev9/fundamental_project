@@ -1,0 +1,1199 @@
+<!--<odoo>-->
+<!--    <data>-->
+<!--        <template id="report_quotation_parts_header_id">-->
+<!--            <div class="header" style="width:100%;height:100px;font-size:20px;">-->
+<!--                <table style="width:100%;font-size:10px">-->
+<!--                    <tr style="width:100%">-->
+<!--                        <th style="width:30%;">-->
+<!--                            <img src="/report_form/static/description/images.png" style="max-height: 80px;"/>-->
+<!--                        </th>-->
+<!--                        <th style="width:40%;font-size:23px;text-align:center">-->
+<!--                            <span>-->
+<!--                                <strong>Quotation</strong>-->
+<!--                            </span>-->
+<!--                        </th>-->
+<!--                        <th style="width:30%;" class="text-right">-->
+<!--                            &lt;!&ndash;                            <img src="/report_form/static/description/images.png" style="max-height: 80px;"/>&ndash;&gt;-->
+<!--                        </th>-->
+<!--                    </tr>-->
+<!--                </table>-->
+<!--                <br/>-->
+<!--            </div>-->
+<!--            <div class="footer o_standard_footer">-->
+<!--                <div class="last-page">-->
+<!--                    <table style="width:100%;text-align:center">-->
+<!--                        <tr style="width:100%">-->
+<!--                            <th style="text-align:left;width:33%;height:48px">-->
+<!--                                <span style="font-size:15px;padding-left:70px;">Prepared By</span>-->
+<!--                            </th>-->
+
+<!--                            <th style="text-align:center;width:33%">-->
+<!--                                <span style="font-size:15px;margin-left:-190px">Checked By</span>-->
+<!--                            </th>-->
+
+<!--                            &lt;!&ndash;<th style="text-align:left;width:33%">&ndash;&gt;-->
+<!--                            &lt;!&ndash;    <span style="font-size:15px;margin-left:-115px">Acknowledge By</span>&ndash;&gt;-->
+<!--                            &lt;!&ndash;</th>&ndash;&gt;-->
+
+<!--                            <th style="text-align:left;width:30%">-->
+<!--                                <span style="font-size:15px;margin-left:-45px">Checked By</span>-->
+<!--                            </th>-->
+
+<!--                            <th style="text-align:left;width:33%">-->
+<!--                                <span style="font-size:15px;margin-left:-80px">Agreed By</span>-->
+<!--                            </th>-->
+<!--                        </tr>-->
+<!--                        <tr style="width:100%">-->
+<!--                            <th style="text-align:left;width:33%;height:48px">-->
+<!--                                <span style="font-size:15px;padding-left:70px;">Part Admin</span>-->
+<!--                            </th>-->
+
+<!--                            <th style="text-align:left;width:33%">-->
+<!--                                <span style="font-size:15px;margin-left:-5px">Parts Head</span>-->
+<!--                            </th>-->
+
+<!--                            &lt;!&ndash;<th style="text-align:left;width:33%">&ndash;&gt;-->
+<!--                            &lt;!&ndash;    <span style="font-size:15px;margin-left:-83px">BU FNA</span>&ndash;&gt;-->
+<!--                            &lt;!&ndash;</th>&ndash;&gt;-->
+
+<!--                            <th style="text-align:left;width:30%">-->
+<!--                                <span style="font-size:15px;margin-left:-30px">Salesman</span>-->
+<!--                            </th>-->
+
+<!--                            <th style="text-align:left;width:33%">-->
+<!--                                <span style="font-size:15px;margin-left:-80px">Customers</span>-->
+<!--                            </th>-->
+<!--                        </tr>-->
+<!--                    </table>-->
+<!--                </div>-->
+<!--                <div class="text-muted" style="width:100%;text-align:center;">-->
+<!--                    <div class="col-md-12" style="width:100%;text-align:center">-->
+<!--                        <strong>No-589/592 Bo Aung Kyaw Street, Yangon-Pathein Highway Road</strong>-->
+<!--                        <br/>-->
+<!--                        <strong>Tel: +959690443, +959450043173, +959250745310, +959254903695</strong>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </template>-->
+<!--        <template id="report_sale_quotation_parts_body">-->
+<!--            <t t-call="web.external_layout">-->
+<!--                <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>-->
+<!--                <div class="page"-->
+<!--                     style="font-family: Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif, Myanmar3;">-->
+<!--                    <div class="row" style="width:100%">-->
+<!--                        <div class="col-md-12" style="width:50%;font-size:12px;">-->
+<!--                            <div class="row" style="width:100%">-->
+<!--                                <div class="col-md-5" style="width:43%">-->
+<!--                                    <strong>To</strong>-->
+<!--                                </div>-->
+<!--                                <div class="col-md-1" style="width:1%">-->
+<!--                                    <strong>:</strong>-->
+<!--                                </div>-->
+<!--                                <div class="col-md-6" style="width:62%;text-align:left;">-->
+<!--                                    <span t-esc="o.partner_id.name"/>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="row" style="width:100%">-->
+<!--                                <div class="col-md-5" style="width:43%">-->
+<!--                                    <strong>Attention Person</strong>-->
+<!--                                </div>-->
+<!--                                <div class="col-md-1" style="width:1%">-->
+<!--                                    <strong>:</strong>-->
+<!--                                </div>-->
+<!--                                <div class="col-md-6" style="width:62%;text-align:left">-->
+<!--                                    <span t-esc="o.partner_id.name"/>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="row" style="width:100%">-->
+<!--                                <div class="col-md-5" style="width:43%">-->
+<!--                                    <strong>Phone</strong>-->
+<!--                                </div>-->
+<!--                                <div class="col-md-1" style="width:1%">-->
+<!--                                    <strong>:</strong>-->
+<!--                                </div>-->
+<!--                                <div class="col-md-6" style="width:62%;text-align:left">-->
+<!--                                    <span t-esc="o.partner_id.phone"/>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="row" style="width:100%">-->
+<!--                                <div class="col-md-5" style="width:43%">-->
+<!--                                    <strong>Address</strong>-->
+<!--                                </div>-->
+<!--                                <div class="col-md-1" style="width:1%">-->
+<!--                                    <strong>:</strong>-->
+<!--                                </div>-->
+<!--                                <div class="col-md-6" style="width:62%;text-align:left">-->
+<!--                                    <span t-esc="o.partner_id.street"/>-->
+<!--                                    <span t-esc="o.partner_id.street2"/>-->
+<!--                                    <span t-esc="o.partner_id.city"/>,<span t-esc="o.partner_id.state_id.name"/>,<span-->
+<!--                                        t-esc="o.partner_id.zip"/>, Tel:<span t-esc="o.partner_id.phone"/>,<span-->
+<!--                                        t-esc="o.partner_id.mobile"/>,-->
+<!--                                    <span t-esc="o.partner_id.country_id.name"/>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="row" style="width:100%">-->
+<!--                                <div class="col-md-5" style="width:43%">-->
+<!--                                    <strong>Email</strong>-->
+<!--                                </div>-->
+<!--                                <div class="col-md-1" style="width:1%">-->
+<!--                                    <strong>:</strong>-->
+<!--                                </div>-->
+<!--                                <div class="col-md-6" style="width:62%;text-align:left">-->
+<!--                                    <span t-esc="o.partner_id.email"/>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="row" style="width:100%">-->
+<!--                                <div class="col-md-5" style="width:43%">-->
+<!--                                    <strong>Date</strong>-->
+<!--                                </div>-->
+<!--                                <div class="col-md-1" style="width:1%">-->
+<!--                                    <strong>:</strong>-->
+<!--                                </div>-->
+<!--                                <div class="col-md-6" style="width:62%;text-align:left">-->
+<!--                                    <span t-esc="o.date_order"/>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="row" style="width:100%">-->
+<!--                                <div class="col-md-5" style="width:43%">-->
+<!--                                    <strong>Ref</strong>-->
+<!--                                </div>-->
+<!--                                <div class="col-md-1" style="width:1%">-->
+<!--                                    <strong>:</strong>-->
+<!--                                </div>-->
+<!--                                <div class="col-md-6" style="width:62%;text-align:left">-->
+<!--                                    <span t-esc="o.name"/>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <br/>-->
+<!--                    <br/>-->
+<!--                    <br/>-->
+<!--                    <table class="table table-sm o_main_table" style="margin-top:-48px">-->
+<!--                        <thead>-->
+<!--                            <tr style="width:100%;font-size:12px">-->
+<!--                                <th rowspan="2" name="th_no" style="width:5%;border:1px solid black;color:black"-->
+<!--                                    class="text-center">-->
+<!--                                    <strong>No</strong>-->
+<!--                                </th>-->
+<!--                                <th rowspan="2" style="color:black;width:5%;border:1px solid black" class="text-center">-->
+<!--                                    <strong>Brand</strong>-->
+<!--                                </th>-->
+<!--                                <th rowspan="2" class="text-center"-->
+<!--                                    style="color:black;width:10%;border:1px solid black">-->
+<!--                                    <strong>Description</strong>-->
+<!--                                </th>-->
+<!--                                <th rowspan="2" class="text-center" style="color:black;width:7%;border:1px solid black">-->
+<!--                                    <strong>Part No.</strong>-->
+<!--                                </th>-->
+<!--                                <th rowspan="2" class="text-center" style="color:black;width:3%;border:1px solid black">-->
+<!--                                    <strong>Replacement Number</strong>-->
+<!--                                </th>-->
+<!--                                <th rowspan="2" class="text-center" style="color:black;width:3%;border:1px solid black">-->
+<!--                                    <span>QTY</span>-->
+<!--                                </th>-->
+<!--                                <th rowspan="2" class="text-center" style="color:black;width:5%;border:1px solid black">-->
+<!--                                    <span>UOM</span>-->
+<!--                                </th>-->
+<!--                                <th rowspan="2" class="text-center" style="color:black;width:5%;border:1px solid black">-->
+<!--                                    <span>Discount</span>-->
+<!--                                </th>-->
+<!--                                <th colspan="2" class="text-center" style="color:black;width:5%;border:1px solid black">-->
+<!--                                    <span>Unit Price</span>-->
+<!--                                </th>-->
+<!--                                <th colspan="2" class="text-center" style="color:black;width:5%;border:1px solid black">-->
+<!--                                    <strong>Amount</strong>-->
+<!--                                </th>-->
+<!--                                <th rowspan="2" class="text-center"-->
+<!--                                    style="color:black;width:20%;border:1px solid black">-->
+<!--                                    <strong>Remark</strong>-->
+<!--                                </th>-->
+<!--                            </tr>-->
+<!--                            <tr style="font-size:12px">-->
+<!--                                <th class="text-center" style="color:black;border:1px solid black">USD</th>-->
+<!--                                <th class="text-center" style="color:black;border:1px solid black">MMK</th>-->
+<!--                                <th class="text-center" style="color:black;border:1px solid black">USD</th>-->
+<!--                                <th class="text-center" style="color:black;border:1px solid black">MMK</th>-->
+<!--                            </tr>-->
+<!--                        </thead>-->
+<!--                        <tbody style="font-size:12px">-->
+<!--                            <t t-set="current_subtotal" t-value="0"/>-->
+<!--                            <t t-set="no" t-value="0"/>-->
+<!--                            <tr t-foreach="o.req_quotation_line" t-as="line">-->
+<!--                                <t t-set="no" t-value="no+1"/>-->
+<!--                                <td style="text-align:center;color:black;width:5%;border:1px solid black">-->
+<!--                                    <span t-esc="no"/>-->
+<!--                                </td>-->
+<!--                                <td style="width:5%;border:1px solid black" class="text-left">-->
+<!--                                    <span t-esc="line.product_id.brand.name"/>-->
+<!--                                </td>-->
+<!--                                <td class="text-center" style="width:10%;border:1px solid black">-->
+<!--                                    <span t-esc="line.product_id.name"/>-->
+<!--                                </td>-->
+<!--                                <td class="text-center" style="width:7%;border:1px solid black">-->
+<!--                                    &lt;!&ndash; Part No.&ndash;&gt;-->
+<!--                                    <span t-esc="line.default_code"/>-->
+<!--                                </td>-->
+<!--                                <td class="text-center" style="width:5%;border:1px solid black">-->
+<!--                                    &lt;!&ndash;Replacement Number&ndash;&gt;-->
+<!--                                    &lt;!&ndash;                                    <span t-esc="line.product_uom_qty"/>&ndash;&gt;-->
+<!--                                </td>-->
+<!--                                <td t-attf-class="text-right" style="width:3%;border:1px solid black">-->
+<!--                                    &lt;!&ndash;                                    <span t-esc="line.date.strftime('%d-%m-%Y')"/>&ndash;&gt;-->
+<!--                                    <span t-esc="'%.2f'% line.product_uom_qty"/>-->
+<!--                                </td>-->
+<!--                                <td t-attf-class="text-center" style="width:5%;border:1px solid black">-->
+<!--                                    &lt;!&ndash;                                    <span t-esc="line.date.strftime('%d-%m-%Y')"/>&ndash;&gt;-->
+<!--                                    <span t-esc="line.product_uom.name"/>-->
+<!--                                </td>-->
+<!--                                <td t-attf-class="text-center" style="width:5%;border:1px solid black">-->
+<!--                                    <t t-if="o.discount_view == 'line_discount'">-->
+<!--                                        <span t-esc="line.discount_value"/>-->
+<!--                                    </t>-->
+
+<!--                                </td>-->
+<!--                                <td t-attf-class="text-right" style="width:5%;border:1px solid black">-->
+<!--                                    &lt;!&ndash;USD and MMK&ndash;&gt;-->
+<!--                                    <t t-if="o.pricelist_id.currency_id.name == 'USD'">-->
+<!--                                        <span t-esc="'%.2f'% line.price_unit"/>-->
+<!--                                    </t>-->
+<!--                                </td>-->
+<!--                                <td t-attf-class="text-right" style="width:5%;border:1px solid black">-->
+<!--                                    &lt;!&ndash;USD and MMK&ndash;&gt;-->
+<!--                                    <t t-if="o.pricelist_id.currency_id.name == 'MMK'">-->
+<!--                                        <span t-esc="'%.2f'% line.price_unit"/>-->
+<!--                                    </t>-->
+<!--                                </td>-->
+<!--                                <td t-attf-class="text-right" style="width:5%;border:1px solid black">-->
+<!--                                    <t t-if="o.pricelist_id.currency_id.name == 'USD'">-->
+<!--                                        <span t-esc="'%.2f'% line.price_subtotal"/>-->
+<!--                                    </t>-->
+<!--                                    &lt;!&ndash;USD and MMK&ndash;&gt;-->
+<!--                                </td>-->
+<!--                                <td t-attf-class="text-right" style="width:5%;border:1px solid black">-->
+<!--                                    <t t-if="o.pricelist_id.currency_id.name == 'MMK'">-->
+<!--                                        <span t-esc="'%.2f'% line.price_subtotal"/>-->
+<!--                                    </t>-->
+<!--                                </td>-->
+
+<!--                                <td t-attf-class="text-center" style="width:10%;border:1px solid black">-->
+
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                        </tbody>-->
+<!--                    </table>-->
+<!--                    <table class="total" style="width:100%;font-size:12px">-->
+<!--                        <tr>-->
+<!--                            <th style="width:5%;"/>-->
+<!--                            <th style="width:30%"/>-->
+<!--                            <th style="width:10%;"/>-->
+<!--                            <th style="width:15%;"/>-->
+<!--                            <th style="width:15%;"/>-->
+<!--                            <th style="width:10%;text-align:right;margin-right:-80px;">Discount(0%):</th>-->
+<!--                            <th style="width:13%;text-align:right;">-->
+<!--                                <span style="padding-left:20px" t-esc="'{0:,.2f}'.format(o.discount_value)"/>-->
+<!--                                &lt;!&ndash;                            <span t-esc="o.currency_id.symbol"/>&ndash;&gt;-->
+<!--                            </th>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <th style="width:5%"/>-->
+<!--                            <th style="width:30%"/>-->
+<!--                            <th style="width:10%"/>-->
+<!--                            <th style="width:15%"/>-->
+<!--                            <th style="width:15%"/>-->
+<!--                            <th style="width:12%;text-align:right">Freight Cost:</th>-->
+<!--                            <th style="width:13%;text-align:right">-->
+<!--                                &lt;!&ndash;<span t-esc="o.amount_tax"/>&ndash;&gt;-->
+<!--                                &lt;!&ndash;                            <span t-esc="o.currency_id.symbol"/>&ndash;&gt;-->
+<!--                            </th>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <th style="width:5%"/>-->
+<!--                            <th style="width:30%"/>-->
+<!--                            <th style="width:10%"/>-->
+<!--                            <th style="width:15%"/>-->
+<!--                            <th style="width:15%"/>-->
+<!--                            <th style="width:10%;text-align:right">Commercial TX:</th>-->
+<!--                            <th style="width:13%;text-align:right">-->
+<!--                                <span t-esc="'%.2f'% o.amount_tax"/>-->
+<!--                                &lt;!&ndash;                            <span t-esc="o.currency_id.symbol"/>&ndash;&gt;-->
+<!--                            </th>-->
+<!--                        </tr>-->
+<!--                        <tr t-if="o.amount_total">-->
+<!--                            <th style="width:5%"/>-->
+<!--                            <th style="width:30%"/>-->
+<!--                            <th style="width:10%"/>-->
+<!--                            <th style="width:15%"/>-->
+<!--                            <th style="width:15%"/>-->
+<!--                            <th style="width:12%;text-align:right;">-->
+<!--                                Total:-->
+<!--                            </th>-->
+<!--                            <th style="width:13%;text-align:right;">-->
+<!--                                <span t-esc="'%.2f'% o.amount_total"/>-->
+<!--                                &lt;!&ndash;                            <span t-esc="o.currency_id.symbol"/>&ndash;&gt;-->
+<!--                            </th>-->
+<!--                        </tr>-->
+<!--                    </table>-->
+<!--                    <div class="oe_structure"/>-->
+<!--                    <div class="row" style="width:100%">-->
+<!--                        <div class="col-md-6" style="width:50%;font-size:12px;">-->
+<!--                            <div class="row" style="width:100%">-->
+<!--                                <div class="col-md-5" style="width:40%">-->
+<!--                                    <strong>Delivery Terms</strong>-->
+<!--                                </div>-->
+<!--                                <div class="col-md-1" style="width:1%">-->
+<!--                                    <strong>:</strong>-->
+<!--                                </div>-->
+<!--                                <div class="col-md-6" style="width:54%;text-align:left;">-->
+<!--                                    &lt;!&ndash;                                    <span t-esc="o.commitment_date.strftime('%d-%m-%Y %I:%M:%S %p')"/>&ndash;&gt;-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="row" style="width:100%">-->
+<!--                                <div class="col-md-5" style="width:40%">-->
+<!--                                    <strong>Price Validity</strong>-->
+<!--                                </div>-->
+<!--                                <div class="col-md-1" style="width:1%">-->
+<!--                                    <strong>:</strong>-->
+<!--                                </div>-->
+<!--                                <div class="col-md-6" style="width:54%;text-align:left">-->
+<!--                                    <span t-foreach="o.payment_term_id.line_ids" t-as="p">-->
+<!--                                        <span t-esc="p.value"/>-->
+<!--                                        <br/>-->
+<!--                                        <span t-esc="p.value_amount"/>-->
+<!--                                        <br/>-->
+<!--                                        <span t-esc="p.days"/>- -->
+<!--                                        <span t-esc="p.option"/>-->
+<!--                                    </span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <t t-if="o.note">-->
+<!--                                <div class="row" style="width:100%">-->
+<!--                                    <div class="col-md-5" style="width:40%">-->
+<!--                                        <strong>Payment</strong>-->
+<!--                                    </div>-->
+<!--                                    <div class="col-md-1" style="width:1%">-->
+<!--                                        <strong>:</strong>-->
+<!--                                    </div>-->
+<!--                                    <div class="col-md-6" style="width:54%;text-align:left">-->
+<!--                                        &lt;!&ndash;                                        <span t-esc="o.payment_term_id.name"/>&ndash;&gt;-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </t>-->
+<!--                            <div class="row" style="width:100%">-->
+<!--                                <div class="col-md-5" style="width:40%">-->
+<!--                                    <strong>Note</strong>-->
+<!--                                </div>-->
+<!--                                <div class="col-md-1" style="width:1%">-->
+<!--                                    <strong>:</strong>-->
+<!--                                </div>-->
+<!--                                <div class="col-md-6" style="width:54%;text-align:left">-->
+<!--                                    <span t-esc="o.note"/>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </t>-->
+<!--        </template>-->
+<!--        <template id="report_sale_quotation_parts_document">-->
+<!--            <t t-call="web.html_container">-->
+<!--                <t t-foreach="docs" t-as="o">-->
+<!--                    <t t-call="report_form.report_quotation_parts_header_id" t-lang="o.partner_id.lang"/>-->
+<!--                    <t t-call="report_form.report_sale_quotation_parts_body" t-lang="o.partner_id.lang"/>-->
+<!--                </t>-->
+<!--            </t>-->
+<!--        </template>-->
+
+
+<!--    </data>-->
+<!--</odoo>-->
+
+<odoo>
+    <data>
+        <template id="report_quotation_header_id">
+            <div class="header" style="width:100%;height:100px;font-size:20px;">
+                <table style="width:100%;font-size:10px">
+                    <tr style="width:100%">
+                        <th style="width:30%;">
+                            <img src="/report_form/static/description/images.png" style="max-height: 80px;"/>
+                        </th>
+                        <th style="width:40%;font-size:23px;text-align:center">
+                            <span>
+                                <strong>Sale Invoice</strong>
+                            </span>
+                        </th>
+                        <th style="width:30%;" class="text-right">
+                            <!--<img src="/report_form/static/description/images.png" style="max-height: 80px;"/>-->
+                        </th>
+                    </tr>
+                </table>
+                <br/>
+            </div>
+            <div class="footer o_standard_footer">
+                <div class="last-page">
+                    <table style="width:100%;text-align:center">
+                        <tr style="width:100%">
+                            <th style="text-align:left;width:33%;height:48px">
+                                <span style="font-size:15px;padding-left:70px;">Prepared By</span>
+                            </th>
+
+                            <th style="text-align:center;width:33%">
+                                <span style="font-size:15px;margin-left:-190px">Checked By</span>
+                            </th>
+
+                            <!--<th style="text-align:left;width:33%">-->
+                            <!--    <span style="font-size:15px;margin-left:-115px">Acknowledge By</span>-->
+                            <!--</th>-->
+
+                            <th style="text-align:left;width:30%">
+                                <span style="font-size:15px;margin-left:-45px">Checked By</span>
+                            </th>
+
+                            <th style="text-align:left;width:33%">
+                                <span style="font-size:15px;margin-left:-80px">Agreed By</span>
+                            </th>
+                        </tr>
+                        <tr style="width:100%">
+                            <th style="text-align:left;width:33%;height:48px">
+                                <span style="font-size:15px;padding-left:70px;">Part Admin</span>
+                            </th>
+
+                            <th style="text-align:left;width:33%">
+                                <span style="font-size:15px;margin-left:-5px">Parts Head</span>
+                            </th>
+
+                            <!--<th style="text-align:left;width:33%">-->
+                            <!--    <span style="font-size:15px;margin-left:-83px">BU FNA</span>-->
+                            <!--</th>-->
+
+                            <th style="text-align:left;width:30%">
+                                <span style="font-size:15px;margin-left:-30px">Salesman</span>
+                            </th>
+
+                            <th style="text-align:left;width:33%">
+                                <span style="font-size:15px;margin-left:-80px">Customers</span>
+                            </th>
+                        </tr>
+                    </table>
+                </div>
+                <div class="text-muted" style="width:100%;text-align:center;">
+                    <div class="col-md-12" style="width:100%;text-align:center">
+                        <strong>No-589/592 Bo Aung Kyaw Street, Yangon-Pathein Highway Road</strong>
+                        <br/>
+                        <strong>Tel: +959690443, +959450043173, +959250745310, +959254903695</strong>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <template id="report_sale_quotation_unit_body">
+            <t t-call="web.external_layout">
+                <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+                <div class="page" style="font-family: Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif, Myanmar3;">
+                    <div class="row" style="width:100%">
+                        <div class="col-md-12" style="width:50%;font-size:12px;">
+                            <div class="row" style="width:100%">
+                                <div class="col-md-5" style="width:43%">
+                                    <strong>To</strong>
+                                </div>
+                                <div class="col-md-1" style="width:1%">
+                                    <strong>:</strong>
+                                </div>
+                                <div class="col-md-6" style="width:62%;text-align:left;">
+                                    <span t-esc="o.partner_id.parent_id.name"/>
+                                </div>
+                            </div>
+                            <div class="row" style="width:100%">
+                                <div class="col-md-5" style="width:43%">
+                                    <strong>Attention Person</strong>
+                                </div>
+                                <div class="col-md-1" style="width:1%">
+                                    <strong>:</strong>
+                                </div>
+                                <div class="col-md-6" style="width:62%;text-align:left">
+                                    <span t-esc="o.partner_id.name"/>
+                                </div>
+                            </div>
+                            <div class="row" style="width:100%">
+                                <div class="col-md-5" style="width:43%">
+                                    <strong>Phone</strong>
+                                </div>
+                                <div class="col-md-1" style="width:1%">
+                                    <strong>:</strong>
+                                </div>
+                                <div class="col-md-6" style="width:62%;text-align:left">
+                                    <span t-esc="o.partner_id.phone"/>
+                                </div>
+                            </div>
+                            <div class="row" style="width:100%">
+                                <div class="col-md-5" style="width:43%">
+                                    <strong>Address</strong>
+                                </div>
+                                <div class="col-md-1" style="width:1%">
+                                    <strong>:</strong>
+                                </div>
+                                <div class="col-md-6" style="width:62%;text-align:left">
+                                    <span t-esc="o.partner_id.street"/>
+                                    <span t-esc="o.partner_id.street2"/>
+                                    <span t-esc="o.partner_id.city"/>, <span t-esc="o.partner_id.state_id.name"/>, <span t-esc="o.partner_id.zip"/>, Tel: <span t-esc="o.partner_id.phone"/>, <span t-esc="o.partner_id.mobile"/>
+                                </div>
+                            </div>
+                            <div class="row" style="width:100%">
+                                <div class="col-md-5" style="width:43%">
+                                    <strong>Email</strong>
+                                </div>
+                                <div class="col-md-1" style="width:1%">
+                                    <strong>:</strong>
+                                </div>
+                                <div class="col-md-6" style="width:62%;text-align:left">
+                                    <span t-esc="o.partner_id.email"/>
+                                </div>
+                            </div>
+                            <div class="row" style="width:100%">
+                                <div class="col-md-5" style="width:43%">
+                                    <strong>Date</strong>
+                                </div>
+                                <div class="col-md-1" style="width:1%">
+                                    <strong>:</strong>
+                                </div>
+                                <div class="col-md-6" style="width:62%;text-align:left">
+                                    <span t-esc="o.date_order"/>
+                                </div>
+                            </div>
+                            <div class="row" style="width:100%">
+                                <div class="col-md-5" style="width:43%">
+                                    <strong>Ref</strong>
+                                </div>
+                                <div class="col-md-1" style="width:1%">
+                                    <strong>:</strong>
+                                </div>
+                                <div class="col-md-6" style="width:62%;text-align:left">
+                                    <span t-esc="o.name"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <table class="table table-sm o_main_table" style="margin-top:-48px">
+                        <thead>
+                            <tr style="width:100%;font-size:12px">
+                                <th rowspan="2" name="th_no" style="width:5%;border:1px solid black;color:black" class="text-center">
+                                    <strong>No</strong>
+                                </th>
+                                <th rowspan="2" style="color:black;width:30%;border:1px solid black" class="text-center">
+                                    <strong>Brand</strong>
+                                </th>
+                                <th rowspan="2" class="text-center" style="color:black;width:10%;border:1px solid black">
+                                    <strong>Description</strong>
+                                </th>
+                                <th rowspan="2" class="text-center" style="color:black;width:3%;border:1px solid black">
+                                    <strong>Part No.</strong>
+                                </th>
+                                <th rowspan="2" class="text-center" style="color:black;width:3%;border:1px solid black">
+                                    <strong>Replacement Number</strong>
+                                </th>
+                                <th rowspan="2" class="text-center" style="color:black;width:5%;border:1px solid black">
+                                    <span>QTY</span>
+                                </th>
+                                <th rowspan="2" class="text-center" style="color:black;width:5%;border:1px solid black">
+                                    <span>UOM</span>
+                                </th>
+                                <th colspan="2" class="text-center" style="color:black;width:10%;border:1px solid black">
+                                    <span>Unit Price</span>
+                                </th>
+                                <th colspan="2" class="text-center" style="color:black;width:20%;border:1px solid black">
+                                    <strong>Amount</strong>
+                                </th>
+                                <th rowspan="2" class="text-center" style="color:black;width:20%;border:1px solid black">
+                                    <strong>Remark</strong>
+                                </th>
+                            </tr>
+                            <tr style="font-size:12px">
+                                <th class="text-center" style="color:black;border:1px solid black">USD</th>
+                                <th class="text-center" style="color:black;border:1px solid black">MMK</th>
+                                <th class="text-center" style="color:black;border:1px solid black">USD</th>
+                                <th class="text-center" style="color:black;border:1px solid black">MMK</th>
+                            </tr>
+                        </thead>
+                        <tbody style="font-size:14px">
+                            <t t-set="current_subtotal" t-value="0"/>
+                            <t t-set="no" t-value="0"/>
+                            <tr t-foreach="o.req_quotation_line" t-as="line">
+                                <t t-set="no" t-value="no+1"/>
+                                <td style="text-align:center;color:black;width:5%;border:1px solid black">
+                                    <span t-esc="no"/>
+                                </td>
+                                <td style="width:30%;border:1px solid black" class="text-left">
+                                    <span t-esc="line.product_id.brand.name"/>
+                                </td>
+                                <td class="text-center" style="width:10%;border:1px solid black">
+                                    <span t-esc="line.product_id.name"/>
+                                </td>
+                                <td class="text-center" style="width:3%;border:1px solid black">
+                                    <!-- Part No.-->
+                                    <!--<span t-esc="line.name"/>-->
+                                </td>
+                                <td class="text-center" style="width:5%;border:1px solid black">
+                                    <!--Replacement Number-->
+                                    <!--<span t-esc="line.product_uom_qty"/>-->
+                                </td>
+                                <td t-attf-class="text-center" style="width:10%;border:1px solid black">
+                                    <!--                                    <span t-esc="line.date.strftime('%d-%m-%Y')"/>-->
+                                    <span t-esc="line.product_uom_qty"/>
+                                </td>
+                                <td t-attf-class="text-center" style="width:10%;border:1px solid black">
+                                    <!--                                    <span t-esc="line.date.strftime('%d-%m-%Y')"/>-->
+                                    <span t-esc="line.product_uom.name"/>
+                                </td>
+                                <td t-attf-class="text-center" style="width:10%;border:1px solid black">
+                                    <!--USD and MMK-->
+                                    <span t-esc="line.price_unit"/>
+                                </td>
+                                <td t-attf-class="text-center" style="width:10%;border:1px solid black">
+                                    <!--USD and MMK-->
+                                    <span t-esc="line.price_unit"/>
+                                </td>
+                                <td t-attf-class="text-center" style="width:10%;border:1px solid black">
+                                    <span t-esc="line.price_subtotal"/>
+                                    <!--USD and MMK-->
+                                </td>
+                                <td t-attf-class="text-center" style="width:10%;border:1px solid black">
+                                    <span t-esc="line.price_subtotal"/>
+                                </td>
+
+                                <td t-attf-class="text-center" style="width:10%;border:1px solid black">
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="total" style="width:100%;font-size:12px">
+                        <tr t-if="o.discount_value">
+                            <th style="width:5%;"/>
+                            <th style="width:30%"/>
+                            <th style="width:10%;"/>
+                            <th style="width:15%;"/>
+                            <th style="width:15%;"/>
+                            <th style="width:10%;text-align:right;margin-right:-80px;">Discount(0%):</th>
+                            <th style="width:13%;text-align:right;">
+                                <span style="padding-left:20px" t-esc="'{0:,.2f}'.format(o.discount_value)"/>
+                                <!--                            <span t-esc="o.currency_id.symbol"/>-->
+                            </th>
+                        </tr>
+                        <tr>
+                            <th style="width:5%"/>
+                            <th style="width:30%"/>
+                            <th style="width:10%"/>
+                            <th style="width:15%"/>
+                            <th style="width:15%"/>
+                            <th style="width:12%;text-align:right">Freight Cost:</th>
+                            <th style="width:13%;text-align:right">
+                                <!--<span t-esc="o.amount_tax"/>-->
+                                <!--                            <span t-esc="o.currency_id.symbol"/>-->
+                            </th>
+                        </tr>
+                        <tr>
+                            <th style="width:5%"/>
+                            <th style="width:30%"/>
+                            <th style="width:10%"/>
+                            <th style="width:15%"/>
+                            <th style="width:15%"/>
+                            <th style="width:12%;text-align:right;">Commercial Tax:</th>
+                            <th style="width:13%;text-align:right">
+                                <span t-esc="o.amount_tax"/>
+                                <!--                            <span t-esc="o.currency_id.symbol"/>-->
+                            </th>
+                        </tr>
+                        <tr t-if="o.amount_total">
+                            <th style="width:5%"/>
+                            <th style="width:30%"/>
+                            <th style="width:10%"/>
+                            <th style="width:15%"/>
+                            <th style="width:15%"/>
+                            <th style="width:12%;text-align:right;">
+                                Total:
+                            </th>
+                            <th style="width:13%;text-align:right;">
+                                <span t-esc="o.amount_total"/>
+                                <!--                            <span t-esc="o.currency_id.symbol"/>-->
+                            </th>
+                        </tr>
+                    </table>
+                    <div class="oe_structure"/>
+                    <div class="row" style="width:100%">
+                        <div class="col-md-6" style="width:50%;font-size:14px;">
+                            <div class="row" style="width:100%">
+                                <div class="col-md-5" style="width:40%">
+                                    <strong>Delivery Terms</strong>
+                                </div>
+                                <div class="col-md-1" style="width:1%">
+                                    <strong>:</strong>
+                                </div>
+                                <div class="col-md-6" style="width:54%;text-align:left;">
+                                    <!--                                    <span t-esc="o.commitment_date.strftime('%d-%m-%Y %I:%M:%S %p')"/>-->
+                                </div>
+                            </div>
+                            <div class="row" style="width:100%">
+                                <div class="col-md-5" style="width:40%">
+                                    <strong>Price Validity</strong>
+                                </div>
+                                <div class="col-md-1" style="width:1%">
+                                    <strong>:</strong>
+                                </div>
+                                <div class="col-md-6" style="width:54%;text-align:left">
+                                    <!--<span t-foreach="o.payment_term_id.line_ids" t-as="p">-->
+                                    <!--    <span t-esc="p.value"/><br/>-->
+                                    <!--    <span t-esc="p.value_amount"/><br/>-->
+                                    <!--    <span t-esc="p.days"/>-<span t-esc="p.option"/>-->
+                                    <!--</span>-->
+                                </div>
+                            </div>
+                            <t t-if="o.note">
+                                <div class="row" style="width:100%">
+                                    <div class="col-md-5" style="width:40%">
+                                        <strong>Payment</strong>
+                                    </div>
+                                    <div class="col-md-1" style="width:1%">
+                                        <strong>:</strong>
+                                    </div>
+                                    <div class="col-md-6" style="width:54%;text-align:left">
+                                        <span t-esc="o.note"/>
+                                    </div>
+                                </div>
+                            </t>
+                            <div class="row" style="width:100%">
+                                <div class="col-md-5" style="width:40%">
+                                    <strong>Note</strong>
+                                </div>
+                                <div class="col-md-1" style="width:1%">
+                                    <strong>:</strong>
+                                </div>
+                                <div class="col-md-6" style="width:54%;text-align:left">
+                                    <span t-foreach="o.payment_term_id.line_ids" t-as="p">
+                                        <span t-esc="p.value"/><br/>
+                                        <span t-esc="p.value_amount"/><br/>
+                                        <span t-esc="p.days"/>-<span t-esc="p.option"/>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <template id="report_sale_quotation_unit_document">
+            <t t-call="web.html_container">
+                <t t-set="first" t-value="docs[0]"/>
+                    <!-- d -->
+                <div class="header" style="width:100%;height:100px;font-size:20px;">
+                    <table style="width:100%;font-size:10px">
+                        <tr style="width:100%">
+                            <th style="width:30%;">
+                                <t t-if="first.env.user.user_type_id=='bu'">
+                                    <span t-field="first.env.user.current_bu_br_id.logo" t-options='{"widget": "image","style":"width: 120px;height: 120px"}'/>
+                                </t>
+                            </th>
+                            <th style="width:40%;font-size:23px;text-align:center">
+                                <span>
+                                    <strong>Quotation</strong>
+                                </span>
+                            </th>
+                            <th style="width:30%;" class="text-right">
+                                <!-- <img src="/report_form/static/description/images.png" style="max-height: 80px;"/> -->
+                                <span t-field="first.company_id.logo" t-options='{"widget": "image","style":"width: 120px;height: 120px"}'/>
+                            </th>
+                        </tr>
+                    </table>
+                    <br/>
+                </div>
+                <!-- Customer Information -->
+                <!-- <t t-foreach="docs" t-as="o"> -->
+                <!-- <t t-set="check" t-value="first.check_records()"/> -->
+                <div class="row" style="width:100%">
+                    <table style="width:100%;font-size:12px">
+                        <tr>
+                            <td>
+                                <span><strong>To</strong></span>
+                            </td>
+                             <td>
+                                <span><strong>:</strong></span>
+                            </td>
+                             <td>
+                                <strong><span t-esc="first.partner_id.name"/></strong>
+                            </td>
+                            <td>
+                                <span></span>
+                            </td>
+                             <td>
+                                <span><strong>Email</strong></span>
+                            </td>
+                             <td>
+                                <span><strong>:</strong></span>
+                            </td>
+                             <td>
+                                <strong><span t-esc="first.partner_id.email"/></strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span><strong>Attention Person</strong></span>
+                            </td>
+                             <td>
+                                <span><strong>:</strong></span>
+                            </td>
+                             <td>
+                                <strong><span t-esc="first.partner_id.name"/></strong>
+                            </td>
+                             <td>
+                                <span></span>
+                            </td>
+                            <td>
+                                <span><strong>Date</strong></span>
+                            </td>
+                             <td>
+                                <span><strong>:</strong></span>
+                            </td>
+                             <td>
+                                <strong> <span t-esc="first.date_order"/></strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span><strong>Phone</strong></span>
+                            </td>
+                             <td>
+                                <span><strong>:</strong></span>
+                            </td>
+                             <td>
+                                <strong><span t-esc="first.partner_id.phone"/></strong>
+                            </td>
+                            <td>
+                                <span></span>
+                            </td>
+                            <td>
+                                <span><strong>Ref</strong></span>
+                            </td>
+                             <td>
+                                <span><strong>:</strong></span>
+                            </td>
+                             <td>
+                                <strong><span t-esc="first.name"/></strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span><strong>Address</strong></span>
+                            </td>
+                            <td>
+                                <span><strong>:</strong></span>
+                            </td>
+                            <td>
+                                <strong>
+                                    <span t-esc="first.partner_id.street"/>
+                                    <span t-esc="first.partner_id.street2"/>
+                                </strong>
+                            </td>
+                            <td>
+                                <span></span>
+                            </td>
+                            <td>
+                                <span></span>
+                            </td>
+                            <td>
+                                <span></span>
+                            </td>
+                            <td>
+                                <span></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span><strong></strong></span>
+                            </td>
+                            <td>
+                                <span><strong></strong></span>
+                            </td>
+                            <td>
+                                <strong>
+                                    <span t-esc="first.partner_id.city"/>, <span t-esc="first.partner_id.state_id.name"/>, <span t-esc="first.partner_id.zip"/>, Tel: <span t-esc="first.partner_id.phone"/>, <span t-esc="first.partner_id.mobile"/>
+                                </strong>
+                            </td>
+                            <td>
+                                <span></span>
+                            </td>
+                            <td>
+                                <span></span>
+                            </td>
+                            <td>
+                                <span></span>
+                            </td>
+                            <td>
+                                <span></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <br/>
+                <br/>
+                <br/>
+
+                <!-- Body -->
+                <table class="table table-sm o_main_table" style="margin-top:-48px;border: 1px solid #ddd;border-collapse: collapse;width:100%;">
+                    <thead>
+                        <tr style="width:100%;font-size:12px;border:1px solid black">
+                            <th rowspan="2" name="th_no" style="width:5%;border:1px solid black;color:black" class="text-center">
+                                <strong>No</strong>
+                            </th>
+                            <th rowspan="2" style="color:black;width:5%;border:1px solid black" class="text-center">
+                                <strong>Brand</strong>
+                            </th>
+                            <th rowspan="2" style="color:black;width:5%;border:1px solid black" class="text-center">
+                                <strong>Model</strong>
+                            </th>
+                            <th rowspan="2" class="text-center" style="color:black;width:10%;border:1px solid black">
+                                <strong>Description</strong>
+                            </th>
+                            <th rowspan="2" class="text-center" style="color:black;width:10%;border:1px solid black">
+                                <strong>Part No.</strong>
+                            </th>
+                            <th rowspan="2" class="text-center" style="color:black;width:5%;border:1px solid black">
+                                <span>QTY</span>
+                            </th>
+                            <th rowspan="2" class="text-center" style="color:black;width:5%;border:1px solid black">
+                                <span>UOM</span>
+                            </th>
+                            <th colspan="2" class="text-center" style="color:black;width:10%;border:1px solid black">
+                                <span>Unit Price</span>
+                            </th>
+                            <th colspan="2" class="text-center" style="color:black;width:10%;border:1px solid black">
+                                <span>Discount</span>
+                            </th>
+                            <th rowspan="2" class="text-center" style="color:black;width:10%;border:1px solid black">
+                                <span>Taxes</span>
+                            </th>
+                            <th colspan="2" class="text-center" style="color:black;width:20%;border:1px solid black">
+                                <strong>Amount</strong>
+                            </th>
+                            <th rowspan="2" class="text-center" style="color:black;width:20%;border:1px solid black">
+                                <strong>Remark</strong>
+                            </th>
+                        </tr>
+                        <tr style="font-size:12px">
+                            <th class="text-center" style="color:black;border:1px solid black">USD</th>
+                            <th class="text-center" style="color:black;border:1px solid black">MMK</th>
+                            <th class="text-center" style="color:black;border:1px solid black">Disc(Fixed)</th>
+                            <th class="text-center" style="color:black;border:1px solid black">Disc(%)</th>
+                            <th class="text-center" style="color:black;border:1px solid black">USD</th>
+                            <th class="text-center" style="color:black;border:1px solid black">MMK</th>
+                        </tr>
+                    </thead>
+                    <tbody style="font-size:12px">
+                        <t t-set="total_untax_usd" t-value="0"/>
+                        <t t-set="total_untax_mmk" t-value="0"/>
+                        <t t-set="total_usd" t-value="0"/>
+                        <t t-set="total_mmk" t-value="0"/>
+                        <t t-set="total_tax_mmk" t-value="0"/>
+                        <t t-set="total_tax_usd" t-value="0"/>
+                        <t t-set="br_discount" t-value="0"/>
+                        <t t-set="discount" t-value="0"/>
+                        <t t-set="no" t-value="0"/>
+                        <t t-foreach="docs" t-as="o">
+                            <tr t-foreach="o.req_quotation_line" t-as="line">
+                                <t t-set="no" t-value="no+1"/>
+                                <td style="text-align:center;color:black;width:5%;border:1px solid black">
+                                    <span t-esc="no"/>
+                                </td>
+                                <td style="width:5%;border:1px solid black" class="text-left">
+                                    <span t-esc="line.product_id.brand.name"/>
+                                </td>
+                                <td class="text-center" style="width:5%;border:1px solid black">
+                                    <span t-esc="line.product_id.brand_model_id.name"/>
+                                </td>
+                                <td class="text-center" style="width:10%;border:1px solid black">
+                                    <span t-esc="line.product_id.name"/>
+                                </td>
+                                <td class="text-center" style="width:10%;border:1px solid black">
+                                    <!-- Part No.-->
+                                    <span t-esc="line.product_id.default_code"/>
+                                </td>
+                                <td t-attf-class="text-center" style="width:5%;border:1px solid black">
+                                    <!--                                    <span t-esc="line.date.strftime('%d-%m-%Y')"/>-->
+                                    <span t-esc="line.product_uom_qty"/>
+                                </td>
+
+                                <td t-attf-class="text-center" style="width:10%;border:1px solid black">
+                                    <!--                                    <span t-esc="line.date.strftime('%d-%m-%Y')"/>-->
+                                    <span t-esc="line.product_uom.name"/>
+                                </td>
+                                
+                                <td t-attf-class="text-center" style="width:10%;border:1px solid black">
+                                    <!--USD and MMK-->
+                                    <t t-if="o.pricelist_id.currency_id.name == 'USD'">
+                                        <span t-esc="line.price_unit"/>
+                                    </t>
+
+                                </td>
+                                <td t-attf-class="text-center" style="width:10%;border:1px solid black">
+                                    <!--USD and MMK-->
+                                    <t t-if="o.pricelist_id.currency_id.name == 'MMK'">
+                                        <span t-esc="line.price_unit"/>
+                                    </t>
+                                </td>
+                            <td t-attf-class="text-center" style="width:10%;border:1px solid black">
+                                    <!--Fixed-->
+                                    <t t-if="line.discount_type == 'fixed'">
+                                        <t t-set="fixed_disc" t-value="line.discount_value+line.br_dis_value"/>
+                                        <span t-esc="fixed_disc"/>
+                                    </t>
+
+                                </td>
+                                <td t-attf-class="text-center" style="width:10%;border:1px solid black">
+                                    <!--Percentage-->
+                                    <t t-if="line.discount_type == 'percentage'">
+                                        <t t-set="percent_disc" t-value="line.discount_value+line.br_dis_value"/>
+                                        <span t-esc="percent_disc"/>
+                                    </t>
+                                </td>
+
+                                <td t-attf-class="text-center" style="width:10%;border:1px solid black">
+                                    <span t-esc="line.tax_id.name"/>
+                                </td>
+                                <td t-attf-class="text-center" style="width:10%;border:1px solid black">
+                                    <t t-if="o.pricelist_id.currency_id.name == 'USD'">
+                                        <t t-set="total_untax_usd" t-value="total_untax_usd+line.price_subtotal"/>
+                                        <t t-set="total_tax_usd" t-value="o.count_tax_usd_amount(docs)"/>
+                                        <t t-set="total_usd" t-value="total_untax_usd+total_tax_usd"/>
+                                        <span t-esc="line.price_subtotal"/>
+                                    </t>
+                                </td>
+                                <td t-attf-class="text-center" style="width:10%;border:1px solid black">
+                                    <t t-if="o.pricelist_id.currency_id.name == 'MMK'">
+                                        <t t-set="total_untax_mmk" t-value="total_untax_mmk+line.price_subtotal"/>
+                                        <t t-set="total_tax_mmk" t-value="o.count_tax_mmk_amount(docs)"/>
+                                        <t t-set="total_mmk" t-value="total_untax_mmk+total_tax_mmk"/>
+                                        <span t-esc="line.price_subtotal"/>
+                                    </t>
+                                </td>
+
+                                <td t-attf-class="text-center" style="width:10%;border:1px solid black">
+
+                                </td>
+                            </tr>
+
+                        </t>
+                    </tbody>
+                    <tr style="font-size:12px">
+                        <td t-attf-class="text-center" colspan="10">
+                            <span>
+            
+                            </span>
+                        </td>
+                        <td t-attf-class="text-center" colspan="2" style="border:1px solid black;text-align:right;padding-right:10px;">
+                            <span>
+                                Untaxed Amount
+                            </span>
+                        </td>
+                        
+                        <td t-attf-class="text-center" colspan="1" style="border:1px solid black">
+                            <span t-esc="total_untax_usd"/>
+                        </td>
+                        <td t-attf-class="text-center" colspan="1" style="border:1px solid black">
+                            <span t-esc="total_untax_mmk"/>
+                        </td>
+                    </tr>
+                    <tr style="font-size:12px">
+                        <td t-attf-class="text-center" colspan="10">
+                            
+                        </td>
+                        
+                        <td t-attf-class="text-center" colspan="2" style="border:1px solid black;text-align:right;padding-right:10px;">
+                            Taxed Amount
+                        </td>
+                        <td t-attf-class="text-center" colspan="1" style="border:1px solid black">
+                            <span t-esc="total_tax_usd"/>
+                        </td>
+                        <td t-attf-class="text-center" colspan="1" style="border:1px solid black">
+                            <span t-esc="total_tax_mmk"/>
+                        </td>
+                    </tr>
+                    
+                    <tr style="font-size:12px">
+                        <td t-attf-class="text-center" colspan="10">
+                            <span>
+                                
+                            </span>
+                        </td>
+                        <td t-attf-class="text-center" colspan="2" style="border:1px solid black;text-align:right;padding-right:10px;">
+                            <span>
+                                Total Amount
+                            </span>
+                        </td>
+                        
+                        <td t-attf-class="text-center" colspan="1" style="border:1px solid black">
+                            <span t-esc="total_usd"/>
+                        </td>
+                        <td t-attf-class="text-center" colspan="1" style="border:1px solid black">
+                            <span t-esc="total_mmk"/>
+                        </td>
+                    </tr>
+
+                </table>
+                <!-- Footer -->
+                <div class="footer o_standard_footer">
+                    <div class="last-page">
+                        <table style="width:100%;text-align:center">
+                            <tr style="width:100%">
+                                <th style="text-align:left;width:33%;height:48px">
+                                    <span style="font-size:15px;padding-left:70px;">Prepared By</span>
+                                </th>
+
+                                <th style="text-align:left;width:33%;">
+                                    <span style="font-size:15px;margin-left:-5px">Checked By</span>
+                                </th>
+
+                            
+                                <th style="text-align:left;width:30%">
+                                    <span style="font-size:15px;margin-left:-45px">Checked By</span>
+                                </th>
+
+                                <th style="text-align:left;width:33%">
+                                    <span style="font-size:15px;margin-left:-80px">Agreed By</span>
+                                </th>
+                            </tr>
+                            <tr style="width:100%">
+                                <th style="text-align:left;width:33%;height:48px">
+                                    <span style="font-size:15px;padding-left:70px;">Part Admin</span>
+                                </th>
+
+                                <th style="text-align:left;width:33%">
+                                    <span style="font-size:15px;margin-left:-5px">Parts Head</span>
+                                </th>
+
+                                <th style="text-align:left;width:30%">
+                                    <span style="font-size:15px;margin-left:-30px">Salesman</span>
+                                </th>
+
+                                <th style="text-align:left;width:33%">
+                                    <span style="font-size:15px;margin-left:-80px">Customers</span>
+                                </th>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="text-muted" style="width:100%;text-align:center;">
+                        <div class="col-md-12" style="width:100%;text-align:center">
+                            <strong>No-589/592 Bo Aung Kyaw Street, Yangon-Pathein Highway Road</strong>
+                            <br/>
+                            <strong>Tel: +959690443, +959450043173, +959250745310, +959254903695</strong>
+                        </div>
+                    </div>
+                </div>
+                <!--<t t-foreach="docs" t-as="o">-->
+                <!--<t t-call="report_form.report_quotation_header_id" t-lang="o.partner_id.lang"/>-->
+                <!--<t t-call="report_form.report_sale_quotation_unit_body" t-lang="o.partner_id.lang"/>-->
+                <!--</t>-->
+            </t>
+        </template>
+    </data>
+</odoo>

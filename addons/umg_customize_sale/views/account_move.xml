@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="account_move_broker_inherited_orm" model="ir.ui.view">
+            <field name="name">account.move.form.view.inherited</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <!-- <xpath expr="//header/field[@name='state']" position="replace">
+                    <field name="state" widget="statusbar" statusbar_visible="draft,approved_finance_pic,approved_finance_head,posted" attrs="{'invisible': [('move_type', 'not in', ['out_invoice','out_refund'])]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,approved_finance_pic,approved_finance_head,approved_gm_agm,approved_corp_ap_pic,approved_corp_ap_pic,approved_corp_ap_head,approved_corp_ap_gm_agm,posted" attrs="{'invisible': [('move_type', 'not in', ['in_invoice','in_refund'])]}"/>
+                </xpath> -->
+
+                <xpath expr="//field[@name='ref']" position="after">
+                    <!-- <field name="broker_fees_id" attrs="{'invisible': [('move_type', 'not in', ['in_invoice','in_refund'])],'readonly': [('state', '=', 'posted')]}"/> -->
+                    <field name="broker_fees_id" readonly="1"/>
+                </xpath>
+                <xpath expr="//field[@name='team_id']" position="after">
+                    <field name="service_type" readonly="1"/>
+                    <field name="broker_button" readonly="1" invisible="1"/>
+                </xpath>
+                <!-- Finance Approval -->
+                
+                <xpath expr="//button[@name='action_post']" position="before">
+                    <button name="action_approve_finance_pic" string="Approve By F &amp; A PIC" class="oe_highlight"
+                                type="object" groups="product_configure.group_finance_account_pic" data-hotkey="v"
+                                attrs="{'invisible': ['|','|', ('state', '!=', 'draft'),('move_type', 'not in', ['out_invoice']),('service_type','=',True)]}"/>
+                    <button name="action_approve_finance_head" string="Approve By F &amp; A Head" class="oe_highlight"
+                                type="object" groups="product_configure.group_finance_account_head" data-hotkey="v"
+                                attrs="{'invisible': ['|','|','|', ('state', '!=', 'approved_finance_pic'), ('unit_or_part', '!=', 'part'),('move_type', 'not in', ['in_refund']),('service_type','=',True)]}"/>
+                    <button name="action_approve_finance_head" string="Approve By F &amp; A Head" class="oe_highlight"
+                                type="object" groups="product_configure.group_finance_account_head" data-hotkey="v"
+                                attrs="{'invisible': ['|','|', '|',('service_type','=',True),('state', '!=', 'approved_finance_pic'),('unit_or_part','=','part'),('move_type', 'in', ['entry','in_invoice'])]}"/>
+
+                    <button name="action_approve_finance_head" string="Approve By F &amp; A Head" class="oe_highlight"
+                                type="object" groups="product_configure.group_finance_account_head" data-hotkey="v"
+                                attrs="{'invisible': ['|','|',('state', '!=', 'draft'),('move_type', 'not in', ['in_invoice']),('service_type','=',True)]}"/>
+                    <button name="%(action_broker_fees_wizard)d" string="Broker Fees" type="action" class="oe_stat_button" attrs="{'invisible': ['|','|',('state', 'not in', 'posted'), ('broker_button','=', True),('move_type','=','in_invoice')]}"/>
+                 </xpath>
+                   <!-- Post -->
+                
+                    <xpath expr="//button[@name='action_post'][2]" position="replace">
+                        <button name="action_post" string="Confirm" class="oe_highlight"
+                                type="object" groups="account.group_account_invoice" data-hotkey="v"
+                                attrs="{'invisible': ['|', '|', '|','|','|',('service_type','=',True), ('unit_or_part','!=','part'),('state', '!=', 'approved_finance_pic'), ('auto_post', '=', True), ('move_type', 'not in', ['out_invoice','out_refund']), ('display_inactive_currency_warning','=',True)]}"/>
+                        <button name="action_post" string="Confirm" class="oe_highlight"
+                                type="object" groups="account.group_account_invoice" data-hotkey="v"
+                                attrs="{'invisible': ['|', '|', '|','|', ('unit_or_part','!=','unit'),('state', '!=', 'approved_finance_head'), ('auto_post', '=', True), ('move_type','not in', ['out_invoice','out_refund']), ('display_inactive_currency_warning','=',True)]}"/>
+                        <button name="action_post" string="Confirm" class="oe_highlight"
+                                type="object" groups="account.group_account_invoice" data-hotkey="v"
+                                attrs="{'invisible': ['|', '|', '|','|',('state', '!=', 'approved_finance_head'),('service_type','=',False),('auto_post', '=', True), ('move_type', 'not in', ['out_invoice','out_refund']), ('display_inactive_currency_warning','=',True)]}"/>
+
+                        <button name="action_post" string="Confirm" class="oe_highlight"
+                                type="object" groups="account.group_account_invoice" data-hotkey="v"
+                                attrs="{'invisible': ['|', '|', '|',('state', '!=', 'approved_finance_head'),('auto_post', '=', True), ('move_type', 'not in', ['in_invoice','in_refund']), ('display_inactive_currency_warning','=',True)]}"/>
+                        
+                    </xpath>
+
+             
+                     
+                
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<!-- filter  -->
+    <record id="ar_reposses_line_view_search" model="ir.ui.view">
+        <field name="name">ar_reposses_line.view.search</field>
+        <field name="model">ar.repossess.line</field>
+        <field name="arch" type="xml">
+            <search string="">
+                <field name="date"/>
+                <field name="action"/>
+                <field name="contact_type"/>
+                <field name="on_target_pic"/>
+                <field name="on_target_feedback"/>
+                <field name="pic_comment"/>
+                <field name="reposess_plan_date" />
+                <field name="mc_reposess_date"/>
+                <field name="mc_location" />
+                <field name="mc_given_back_date" />
+                <group expand="0" string="Group By">                                            
+                    <filter string="Contact Type" name="contact_type" context="{'group_by': 'contact_type'}"></filter>     
+                    <filter string="Invoice Type" name="invoice_type" context="{'group_by': 'invoice_type'}"></filter>                 
+                </group>   
+            </search>
+        </field>
+    </record>
+
+<!-- from view  -->
+    <record id="ar_repossess_view_form" model="ir.ui.view">
+        <field name="name">ar_repossess.view.form</field>
+        <field name="model">ar.repossess</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="invoice_id" />
+                        <field name="partner_id" />
+                        <field name="invoice_type" />
+                        <field name="selling_br_id" />
+                        <field name="ar_action_type" />
+                        <field name="reposess_status" />
+                    </group>
+                    <group>
+                        <field name="ar_repossess_line_ids" nolabel = '1'>
+                            <tree editable="bottom">
+                                <!-- <field name="repossess_line_id" /> -->
+                                <field name="date" width="1"/>
+                                <field name="invoice_num" invisible="1"/>
+                                <field name="invoice_type" invisible="1" />
+                                <field name="ar_action_type" invisible="1"/>
+                                <field name="customer_name" invisible="1"/>
+                                <field name="action" width="1"/>
+                                <field name="contact_type" width = '1'/>
+                                <field name="on_target_pic" width = '1'/>
+                                <field name="on_target_feedback" width = '1'/>
+                                <field name="pic_comment" width = '1'/>
+                                <field name="reposess_plan_date" width = '1' attrs="{'readonly':[('on_target_feedback','!=','reposses_accept')]}"/>
+                                <field name="mc_reposess_date" width = '1' attrs="{'readonly':[('on_target_feedback','!=','machine_reposses')]}"/>
+                                <field name="mc_location" width = '1' attrs="{'readonly':[('on_target_feedback','!=','machine_reposses')]}"/>
+                                <field name="mc_given_back_date" width = '1' attrs="{'readonly':[('on_target_feedback','!=','machine_give_back')]}"/>
+                            </tree>
+                        </field>                            
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="ar_reposses_line_view_form" model="ir.ui.view">
+        <field name="name">ar_reposses_line.view.form</field>
+        <field name="model">ar.repossess.line</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="date" />
+                            <field name="invoice_num" />
+                            <field name="invoice_type" />
+                            <field name="ar_action_type" />
+                            <field name="customer_name" />
+                            <field name="action" />
+                        </group>
+                        <group>
+                            <field name="contact_type" />
+                            <field name="on_target_pic" />
+                            <field name="on_target_feedback" />
+                            <field name="pic_comment" />
+                           <field name="reposess_plan_date" attrs="{'invisible':[('on_target_feedback','!=','reposses_accept')]}"/>
+                            <field name="mc_reposess_date" attrs="{'invisible':[('on_target_feedback','!=','machine_reposses')]}"/>
+                            <field name="mc_location" attrs="{'invisible':[('on_target_feedback','!=','machine_reposses')]}"/>
+                            <field name="mc_given_back_date" attrs="{'invisible':[('on_target_feedback','!=','machine_give_back')]}"/>
+                        </group>    
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+<!-- tree  -->
+    <record id="ar_repossess_activity_view_tree" model="ir.ui.view">
+        <field name="name">ar_repossess_activity.view.tree</field>
+        <field name="model">ar.repossess</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="invoice_id" />
+                <field name="partner_id" />
+                <field name="invoice_type" />
+                <field name="selling_br_id" />
+                <field name="ar_action_type" />
+                <field name="reposess_status" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="ar_reposses_line_view_tree" model="ir.ui.view">
+        <field name="name">ar_reposses_line.view.tree</field>
+        <field name="model">ar.repossess.line</field>
+        <field name="arch" type="xml">
+            <tree string="Reposses Line">
+                <!-- <field name="repossess_line_id" optional='show'/> -->
+                <field name="date" optional='show'/>
+                <field name="action" optional='show'/>
+                <field name="contact_type" optional='show'/>
+                <field name="on_target_pic" optional='show'/>
+                <field name="on_target_feedback" optional='show'/>
+                <field name="pic_comment" optional='show'/>
+               <field name="reposess_plan_date" width = '2' attrs="{'readonly':[('on_target_feedback','!=','reposses_accept')]}"/>
+                <field name="mc_reposess_date" width = '1' attrs="{'readonly':[('on_target_feedback','!=','machine_reposses')]}"/>
+                <field name="mc_location" width = '2' attrs="{'readonly':[('on_target_feedback','!=','machine_reposses')]}"/>
+                <field name="mc_given_back_date" width = '2' attrs="{'readonly':[('on_target_feedback','!=','machine_give_back')]}"/>
+            </tree>
+        </field>
+    </record>
+
+<!-- action  -->
+    <record id="ar_repossess_action" model="ir.actions.act_window">
+        <field name="name">Repossess Plan Action</field>
+        <field name="res_model">ar.repossess</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="ar_repossess_line_action" model="ir.actions.act_window">
+        <field name="name">Repossess Plan Action</field>
+        <field name="res_model">ar.repossess.line</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        id="ar_repossess_menu"
+        name="Repossess"
+        parent="ar_assign_root_menu"
+        sequence="11"/>
+        <menuitem
+        id="ar_repossess_sub_menu"
+        name="Repossess Form"
+        action="ar_repossess_action"
+        parent="ar_repossess_menu"
+        sequence="11"/>
+        <menuitem
+        id="ar_repossess_line_sub_menu"
+        name="Repossess Line"
+        action="ar_repossess_line_action"
+        parent="ar_repossess_menu"
+        sequence="11"/>
+
+</odoo>

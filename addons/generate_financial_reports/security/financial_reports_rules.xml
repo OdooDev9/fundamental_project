@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- account.financial.html.report -->
+    <record id="manager_account_journal" model="ir.rule">
+        <field name="name">BU/BR View financial reports</field>
+        <field name="model_id" ref="account_reports.model_account_financial_html_report"/>
+        <field name="domain_force">[('bu_br_id', '=', user.current_bu_br_id.id)]</field>
+        <field name="groups" eval="[(4, ref('master_data_extension.group_bu_user')),(4, ref('master_data_extension.group_br_user'))]"/>
+        <field name="perm_read" eval="False"/>
+    </record>
+
+</odoo>

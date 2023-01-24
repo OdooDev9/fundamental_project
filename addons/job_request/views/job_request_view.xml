@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="job_request_form_view" model="ir.ui.view">
+            <field name="name">job.request.form</field>
+            <field name="model">job.request</field>
+            <field name="arch" type="xml">
+                <form string="Job Order">
+                    <header>
+                        <field name="inv_cancel" invisible="1"/>
+                        <button name="action_confirm_jo"  attrs="{'invisible':['|',('type','=','service'),('state','!=','draft')]}"
+                                string="Confirm" type="object" class="oe_highlight"/>                        
+                        <button name="%(action_job_unbuild)d"
+                                attrs="{'invisible':['|',('state','!=', 'confirm'),('type','!=','overall')]}"
+                                string="Disassemble" type="action" class="oe_highlight"/>
+                        <button name="%(action_job_build)d"
+                                attrs="{'invisible': [('state', 'in', ('draft','done','build','ready','cancel','confirm'))]}"
+                                string="Assembly" type="action" class="oe_highlight"/>
+                        <button name="%(action_job_deliver)d"
+                                attrs="{'invisible': [('state', 'in', ('draft','unbuild','done','ready','cancel', 'confirm'))]}"
+                                string="Deliver" type="action" class="oe_highlight"/>
+                        <button name="%(action_job_invoice)d" string="Create Invoice"
+                                attrs="{'invisible':['|',('invoice_count','>',0),('state','not in',['ready','done'])]}"
+                                class="oe_highlight" type="action"/>
+                        
+                        <!-- <button name="%(action_job_invoice)d" string="Create Invoice"
+                                attrs="{'invisible':['|','|',('invoice_count','>',0),('type','!=','service'),('state','not in',['confirm'])]}"
+                                class="oe_highlight" type="action"/> -->
+
+                        <button name="%(action_job_close)d" type="action" string="Close" states="ready"
+                                class="oe_highlight"/>
+                        <button name="job_close" type="object" string="Close" class="oe_highlight"
+                                attrs="{'invisible':['|',('state','!=','draft'),('type','!=','service')]}"/>
+
+                        <button name="action_cancel" type="object" string="Cancel"
+                                 attrs="{'invisible':['|',('state','in',['draft','unbuild','build', 'cancel']),('inv_cancel','=',True)]}"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button type="object" name="action_view_receipt"
+                                    class="oe_stat_button" icon="fa-truck"
+                                    attrs="{'invisible': [('receipt_count', '=', 0)]}" groups="base.group_user">
+                                <field name="receipt_count" widget="statinfo" string="Receipt"/>
+                            </button>
+                            <button name="action_view_part_order" type="object"
+                                    class="oe_stat_button" icon="fa-usd"
+                                    attrs="{'invisible': [('part_order_count', '=', 0)]}">
+                                <field name="part_order_count" widget="statinfo" string="Part Orders"/>
+                            </button>
+                            <button name="action_view_order" type="object" class="oe_stat_button"
+                                    icon="fa-pencil-square-o" attrs="{'invisible':[('sale_order_count','=',0)]}"
+                                    groups="base.group_user">
+                                <field name="sale_order_count" widget="statinfo" string="Quotation"/>
+                            </button>
+                            <button type="object" name="action_view_finish"
+                                    class="oe_stat_button" icon="fa-truck"
+                                    attrs="{'invisible': [('delivery_count', '=', 0)]}" groups="base.group_user">
+                                <field name="delivery_count" widget="statinfo" string="Delivery"/>
+                            </button>
+                            <button class="oe_stat_button" name="action_see_move_scrap" type="object" icon="fa-arrows-v"
+                                    attrs="{'invisible': [('scrap_count', '=', 0)]}">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="scrap_count"/>
+                                    </span>
+                                    <span class="o_stat_text">Scraps</span>
+                                </div>
+                            </button>
+                            <button class="oe_stat_button" name="action_see_service" type="object"
+                                    icon="fa-pencil-square-o"
+                                    attrs="{'invisible': [('invoice_count', '=', 0)]}">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="invoice_count"/>
+                                    </span>
+                                    <span class="o_stat_text">Invoice</span>
+                                </div>
+                            </button>
+                            <button name="action_move_items" type="object" class="oe_stat_button" icon="fa-bars"
+                                    string="Processing"/>
+                        </div>
+                        <field name="is_locked" invisible="1"/>
+                        <div class="oe_title mb24">
+                            <field name="type" widget="radio" options="{'horizontal': true}" required="1"/>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Job Order Reference" nolabel="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="id" invisible="1"/>
+                                <field name="sequence" invisible="1"/>
+                                <field name="partner_id" attrs="{'readonly': [('state', '!=', 'draft')]}"
+                                       domain="[('customer', '=', True)]" required='1'/>
+                                <field name="product_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="product_tmpl_id" invisible="1"/>
+                                <label for="product_qty"/>
+                                <div class="o_row no-gutters d-flex">
+                                    <div class="col">
+                                        <field name="product_qty" class="mr-1"
+                                               attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                        <field name="product_uom_id" options="{'no_open':True,'no_create':True}"
+                                               force_save="1" groups="uom.group_uom"
+                                               attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                    </div>
+                                </div>
+                                <field name="bom_id"
+                                       context="{'default_product_tmpl_id': product_tmpl_id}" required="1"
+                                       attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="service_charge" attrs="{'invisible': [('invoice_count', '=', 0)]}"/>
+                                <field name="checklist_template" widget="many2many_tags"
+                                       attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+
+                            </group>
+                            <group>
+                                <field name="date_planned_start" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="order_type" attrs="{'readonly': [('state', '!=', 'draft')]}" required="1"
+                                       options="{'no_create': True, 'no_quick_create': True, 'no_create_edit':True}"/>
+                                <field name="user_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="business_id" required="1" options="{'no_create_edit': True}"
+                                       context="{'branch_filter': True}"
+                                       attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="warehouse_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"
+                                       attrs="{'readonly': [('state', '!=', 'draft')]}" force_save="1"/>
+
+                                <field name="show_final_lots" invisible="1"/>
+                                <field name="production_location_id" invisible="1" readonly="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Components">
+                                <group>
+                                    <field nolabel="1" name="move_raw_ids" delete="false" create="false"
+                                           attrs="{'readonly':[('state','!=','draft')]}"/>
+                                </group>
+                                <group name="note_group" col="6">
+                                    <group colspan="4">
+                                        <field name="note" nolabel="1" placeholder="Remark..."
+                                               attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    </group>
+                                    <div class="oe_clear"/>
+                                </group>
+                            </page>
+
+                            <page string="Unbuild Parts">
+                                <group>
+                                    <field nolabel="1" name="unbuild_ids"/>
+                                </group>
+                                <button class="oe_highlight" name="part_order" type="object" string="Part Order"
+                                        attrs="{'invisible': [('state', 'in', ('draft', 'done', 'cancel'))]}"
+                                        groups="stock.group_stock_manager"/>
+                            </page>
+                            <page string="Part Recommendation" attrs="{'invisible':[('type', '!=', 'overall')]}">
+                                <group>
+                                    <field nolabel="1" name="partrecommendation_ids"
+                                           attrs="{'readonly':[('state','!=','draft')]}"/>
+                                </group>
+                            </page>
+                            <page string="Damage List" attrs="{'invisible':[('type', '!=', 'overall')]}">
+                                <group>
+                                    <field nolabel="1" name="damage_ids" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                </group>
+                                <field name="delivered_damage" invisible="1"/>
+
+                            </page>
+                            <page string="Replacements" attrs="{'invisible':[('type', '!=', 'overall')]}">
+                                <group>
+                                    <field nolabel="1" name="replace_ids" attrs="{'readonly':[('state','!=','draft')]}">
+                                        <tree create="false" delete="false">
+                                            <field name="product_id"/>
+                                            <field name="replaced_product_id"/>
+                                            <field name="qty"/>
+                                            <field name="uom_id"/>
+                                            <field name="desc"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page name="checklist" string="Checklist">
+                                <group>
+
+                                    <field nolabel="1" name="job_checklist_template" widget="one2many" attrs="{'readonly':[('state','!=','draft')]}">
+                                        <form>
+                                            <sheet>
+                                                <div>
+                                                    <label for="name"/>
+                                                    <h2 style='display: inline-block;'>
+                                                        <field name="name" placeholder="Template Name"/>
+                                                    </h2>
+                                                </div>
+                                                <notebook>
+                                                    <page string="Content">
+                                                        <field name="body_html"/>
+                                                    </page>
+                                                </notebook>
+                                            </sheet>
+                                        </form>
+                                        <tree create="false" delete="false">
+                                            <field name="template_id" invisible="1"/>
+                                            <field name="name" string="Template"/>
+                                            <field name="body_html"/>
+                                        </tree>
+                                    </field>
+
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+
+                </form>
+            </field>
+        </record>
+        <record id="view_job_request_line_tree" model="ir.ui.view">
+            <field name="name">job.request.line.tree</field>
+            <field name="model">job.request.line</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom" delete="false" create="false">
+                    <field name="company_id" invisible="1"/>
+                    <field name="bom_line_id" invisible="1"/>
+                    <field name="product_id"/>
+                    <field name="product_uom_qty"/>
+                    <field name="product_uom"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_job_request_unbuild_line_tree" model="ir.ui.view">
+            <field name="name">job.request.unbuild.line.tree</field>
+            <field name="model">job.request.unbuild.line</field>
+            <field name="arch" type="xml">
+                <tree create="false" editable="bottom" delete="false">
+                    <field name="company_id" invisible="1"/>
+                    <field name="state" invisible="1"/>
+                    <field name="product_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                    <field name="original_product_uom_qty" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                    <field name="product_uom_qty" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                    <field name="product_uom" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                    <field name="qty_done" attrs="{'readonly': [('state', 'in', ('done', 'cancel'))]}" force_save="1"/>
+                    <field name="is_order"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_part_recommendation_line_tree" model="ir.ui.view">
+            <field name="name">part.recommendation.line.tree</field>
+            <field name="model">part.recommendation.line</field>
+            <field name="arch" type="xml">
+                <tree create="false" editable="bottom" delete="false">
+                    <field name="company_id" invisible="1"/>
+                    <field name="product_id"/>
+                    <field name="original_product_uom_qty"/>
+                    <field name="product_uom_qty"/>
+                    <field name="product_uom"/>
+                </tree>
+            </field>
+        </record>
+        <record id="job_request_tree_view" model="ir.ui.view">
+            <field name="name">job.request.tree</field>
+            <field name="model">job.request</field>
+            <field name="arch" type="xml">
+                <tree string="Job Order">
+                    <field name="name"/>
+                    <field name="product_id"/>
+                    <field name="product_uom_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_damage_component_line_tree" model="ir.ui.view">
+            <field name="name">damage.component.line.tree</field>
+            <field name="model">damage.component.line</field>
+            <field name="arch" type="xml">
+                <tree create="false" editable="bottom" delete="false">
+                    <field name="company_id" invisible="1"/>
+                    <field name="product_id"/>
+                    <field name="product_uom_qty"/>
+                    <field name="product_uom"/>
+                    <field name="note"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_job_request_filter" model="ir.ui.view">
+            <field name="name">job.request.filter</field>
+            <field name="model">job.request</field>
+            <field name="arch" type="xml">
+                <search string="Search Job Order">
+                    <field name="name"/>
+                    <field name="product_id"/>
+                    <filter string="Draft" name="filter_draft" domain="[('state','=','draft')]"/>
+                    <filter string="Unbuild" name="filter_unbuild" domain="[('state','=','unbuild')]"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="job_request_action" model="ir.actions.act_window">
+            <field name="name">Job Order</field>
+            <field name="res_model">job.request</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_job_request_filter"/>
+            <field name="context">{'default_is_job_request':1,'search_default_job_request':1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new job order
+                    <br/>
+                </p>
+                <p>
+                    Consume components and build finished products using bills of materials
+                </p>
+            </field>
+        </record>
+        <record id="view_location_form" model="ir.ui.view">
+            <field name="name">stock.location.form</field>
+            <field name="model">stock.location</field>
+            <field name="inherit_id" ref="stock.view_location_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='scrap_location']" position="after">
+                    <field name="part_location"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_order_created_wizard" model="ir.ui.view">
+            <field name="name">order.created.wizard</field>
+            <field name="model">order.created.wizard</field>
+            <field name="arch" type="xml">
+                <form string="generation fichier">
+                    <group>
+                        <field name="message" string="Sale order created!" readonly="1"/>
+                    </group>
+                    <footer>
+                        <button string="OK" special="cancel" class="oe_highlight"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <!-- Job Order Type -->
+        <record model="ir.ui.view" id="job_order_type_form">
+            <field name="name">job.order.type.form</field>
+            <field name="model">job.order.type</field>
+            <field name="arch" type="xml">
+                <form string="Job Order Type">
+                    <sheet>
+                        <div class="oe_title mb24">
+                            <field name="type" widget="radio" options="{'horizontal': true}" required="1"/>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="code" required="1"/>
+                            </group>
+                            <group>
+                                <field name="name" required="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="job_order_type_tree">
+            <field name="name">job.order.type.tree</field>
+            <field name="model">job.order.type</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="code"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_job_order_type">
+            <field name="name">Job Order Type</field>
+            <field name="res_model">job.order.type</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</odoo>

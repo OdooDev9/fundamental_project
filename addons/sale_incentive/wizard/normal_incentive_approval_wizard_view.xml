@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_normal_incentive_approval_wizard" model="ir.actions.act_window">
+        <field name="name">Normal Incentive Approval Wizard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">normal.incentive.approval.wizard</field>
+        <field name="binding_view_types">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+<record id="view_normal_incentive_approval_wizard" model="ir.ui.view">
+    <field name="name">normal_incentive.approval.wizard</field>
+    <field name="model">normal.incentive.approval.wizard</field>
+    <field name="arch" type="xml">
+    <form string="Normal Incentive Approval">
+            <group>
+                <field name="approval_person"/>
+            </group>
+    <footer>
+         <button name="request_order" string="Request" type="object" class="oe_highlight"/>
+         <button string="Cancel" special="cancel" class="oe_link"/>
+     </footer>
+        </form>
+    </field>
+</record>
+</odoo>

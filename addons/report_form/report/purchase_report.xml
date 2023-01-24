@@ -1,0 +1,428 @@
+<odoo>
+    <data>
+        <template id="report_purchase_order_branch_header_id">
+            <div class="header" style="width:100%;height:100px;font-size:20px;">
+                <table style="width:100%;font-size:10px">
+                    <tr style="width:50%">
+                        <th style="width:30%;">
+                            <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)"
+                                 class="float-left" style="max-height: 100px;margin-left:-16px" alt="Logo"/>
+                        </th>
+                        <th style="width:40%;font-size:23px;text-align:center">
+                            <span>
+                                <strong>Construction Equipment</strong>
+                                <br/>
+                                <strong>Purchase Order</strong>
+                            </span>
+                        </th>
+                        <th style="width:30%;" class="text-center">
+                            <img src='/report_form/static/description/images.png' style="max-height: 80px;"/>
+                        </th>
+
+                    </tr>
+<!--                    <tr style="width:50%;text-align:center;font-size:15px">-->
+<!--                        <th>-->
+<!--                            <strong t-esc="o.company_id.street"/>-->
+<!--                            <strong t-esc="o.company_id.street2"/>-->
+<!--                        </th>-->
+<!--                    </tr>-->
+                </table>
+                <br/>
+                <!--                <div class="row" style="width:100%;text-align:center;">-->
+                <!--                    <table style="width:100%">-->
+                <!--                        <th style="width:10%;"/>-->
+                <!--                        <th style="width:60%;text-align:center;font-size:15px">-->
+                <!--                            <strong>Sale Order</strong>-->
+                <!--                        </th>-->
+                <!--                        <th style="width:10%;"/>-->
+                <!--                    </table>-->
+                <!--                </div>-->
+                <br/>
+            </div>
+
+            <div class="footer o_standard_footer">
+                <div class="last-page">
+                    <table style="width:100%;text-align:center">
+                        <tr style="width:100%">
+                            <th style="text-align:left;width:33%;height:48px">
+                                <span style="font-size:15px;padding-left:10px;">Prepared By</span>
+                            </th>
+
+                            <th style="text-align:left;width:33%">
+                                <span style="font-size:15px;margin-left:-50px">Checked By</span>
+                            </th>
+
+                            <th style="text-align:left;width:33%">
+                                <span style="font-size:15px;margin-left:-115px">Acknowledge By</span>
+                            </th>
+
+                            <th style="text-align:left;width:30%">
+                                <span style="font-size:15px;margin-left:-155px">Approved By</span>
+                            </th>
+
+                            <th style="text-align:left;width:33%">
+                                <span style="font-size:15px;margin-left:-30px">Approved By</span>
+                            </th>
+                        </tr>
+                        <tr style="width:100%">
+                            <th style="text-align:left;width:33%;height:48px">
+<!--                                <span style="font-size:15px;padding-left:10px;">Prepared By</span>-->
+                            </th>
+
+                            <th style="text-align:left;width:33%">
+                                <span style="font-size:15px;margin-left:-25px">DH</span>
+                            </th>
+
+                            <th style="text-align:left;width:33%">
+                                <span style="font-size:15px;margin-left:-83px">BU FNA</span>
+                            </th>
+
+                            <th style="text-align:left;width:30%">
+                                <span style="font-size:15px;margin-left:-140px">AGM/GM</span>
+                            </th>
+
+                            <th style="text-align:left;width:33%">
+                                <span style="font-size:15px;margin-left:-4px">CEO</span>
+                            </th>
+                        </tr>
+                    </table>
+                </div>
+                <div class="text-muted" style="width:100%;text-align:center;">
+                    <div class="col-md-12" style="width:100%;text-align:center">
+                        <strong>No-589/592 Bo Aung Kyaw Street, Yangon-Pathein Highway Road</strong>
+                        <br/>
+                        <strong>Tel: +959690443, +959450043173, +959250745310, +959254903695</strong>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <template id="report_purchase_order_branch_unit_body">
+            <t t-call="web.external_layout">
+                <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+                <div class="page"
+                     style="font-family: Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif, Myanmar3;">
+                    <div class="row" style="width:100%">
+                        <div class="col-md-6" style="width:50%;font-size:14px;">
+                            <div class="row" style="width:100%">
+                                <div class="col-md-5" style="width:32%">
+                                    <strong>Document No.</strong>
+                                </div>
+                                <div class="col-md-1" style="width:1%">
+                                    <strong>:</strong>
+                                </div>
+                                <div class="col-md-6" style="width:54%;text-align:left;">
+                                    <span t-esc="o.name"/>
+                                </div>
+                            </div>
+                            <div class="row" style="width:100%">
+                                <div class="col-md-5" style="width:32%">
+                                    <strong>Document Date</strong>
+                                </div>
+                                <div class="col-md-1" style="width:1%">
+                                    <strong>:</strong>
+                                </div>
+                                <div class="col-md-6" style="width:54%;text-align:left">
+                                    <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>
+                                </div>
+                            </div>
+                            <div class="row" style="width:100%">
+                                <div class="col-md-5" style="width:32%">
+                                    <strong>Ref</strong>
+                                </div>
+                                <div class="col-md-1" style="width:1%">
+                                    <strong>:</strong>
+                                </div>
+                                <div class="col-md-6" style="width:54%;text-align:left">
+                                    <span t-esc="o.partner_ref"/>
+                                </div>
+                            </div>
+                            <div class="row" style="width:100%">
+                                <div class="col-md-5" style="width:32%">
+                                    <strong>Purchase Type</strong>
+                                </div>
+                                <div class="col-md-1" style="width:1%">
+                                    <strong>:</strong>
+                                </div>
+                                <div class="col-md-6" style="width:54%;text-align:left">
+                                    <span t-esc="o.purchase_order_type"/>
+                                </div>
+                            </div>
+                            <div class="row" style="width:100%">
+                                <div class="col-md-5" style="width:32%">
+                                    <strong>Currency</strong>
+                                </div>
+                                <div class="col-md-1" style="width:1%">
+                                    <strong>:</strong>
+                                </div>
+                                <div class="col-md-6" style="width:54%;text-align:left">
+                                    <span t-esc="o.currency_id.name"/>
+                                </div>
+                            </div>
+                            <div class="row" style="width:100%">
+                                <div class="col-md-5" style="width:32%">
+                                    <strong>Freight</strong>
+                                </div>
+                                <div class="col-md-1" style="width:1%">
+                                    <strong>:</strong>
+                                </div>
+                                <div class="col-md-6" style="width:54%;text-align:left">
+                                    <span t-esc="o.shipping_method"/>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6" style="width:60%;font-size:14px;padding-left:1px">
+                            <div class="row" style="width:100%">
+                                <div class="col-md-5" style="width:40%">
+                                    <strong>Supplier</strong>
+                                </div>
+                                <div class="col-md-1" style="width:1%">
+                                    <strong>:</strong>
+                                </div>
+                                <div class="col-md-6" style="width:30%;text-align:left">
+                                    <span t-esc="o.partner_id.name"/>
+                                </div>
+                            </div>
+                            <div class="row" style="width:100%">
+                                <div class="col-md-5" style="width:40%">
+                                    <strong>Contact Person</strong>
+                                </div>
+                                <div class="col-md-1" style="width:1%">
+                                    <strong>:</strong>
+                                </div>
+                                <div class="col-md-6" style="width:30%;text-align:left">
+                                    <span t-esc="o.partner_id.name"/>
+                                </div>
+                            </div>
+                            <div class="row" style="width:100%">
+                                <div class="col-md-5" style="width:40%">
+                                    <strong>Tel No.</strong>
+                                </div>
+                                <div class="col-md-1" style="width:1%">
+                                    <strong>:</strong>
+                                </div>
+                                <div class="col-md-6" style="width:30%;text-align:left">
+                                    <span t-esc="o.partner_id.phone"/>
+                                </div>
+                            </div>
+
+                            <div class="row" style="width:100%">
+                                <div class="col-md-5" style="width:40%">
+                                    <strong>Fax No.</strong>
+                                </div>
+                                <div class="col-md-1" style="width:1%">
+                                    <strong>:</strong>
+                                </div>
+                                <div class="col-md-6" style="width:30%;text-align:left">
+
+                                </div>
+                            </div>
+
+                            <div class="row" style="width:100%">
+                                <div class="col-md-5" style="width:40%">
+                                    <strong>Email</strong>
+                                </div>
+                                <div class="col-md-1" style="width:1%">
+                                    <strong>:</strong>
+                                </div>
+                                <div class="col-md-6" style="width:30%;text-align:left">
+
+                                </div>
+                            </div>
+
+                            <div class="row" style="width:100%">
+                                <div class="col-md-5" style="width:40%">
+                                    <strong>Address</strong>
+                                </div>
+                                <div class="col-md-1" style="width:1%">
+                                    <strong>:</strong>
+                                </div>
+                                <div class="col-md-6" style="width:30%;text-align:left">
+                                    <span t-esc="o.partner_id.street"/>
+                                    <span t-esc="o.partner_id.street2"/>
+                                    <span t-esc="o.partner_id.city"/><span t-esc="o.partner_id.state_id.name"/><span t-esc="o.partner_id.zip"/>, Tel: <span t-esc="o.partner_id.phone"/>, <span t-esc="o.partner_id.mobile"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <table class="table table-sm o_main_table" style="margin-top:-48px">
+                        <thead>
+                            <tr style="width:100%;font-size:14px">
+                                <th name="th_no" style="width:2%;border:1px solid black;color:black"
+                                    class="text-center">
+                                    <strong>No</strong>
+                                </th>
+                                <th class="text-center" style="color:black;width:10%;border:1px solid black">
+                                    <strong>Product</strong>
+                                </th>
+                                <th class="text-center" style="color:black;width:10%;border:1px solid black">
+                                    <strong>Description</strong>
+                                </th>
+                                <th class="text-center" style="color:black;width:1%;border:1px solid black">
+                                    <span>UOM</span>
+                                </th>
+                                <th class="text-center" style="color:black;width:5%;border:1px solid black">
+                                    <span>Weight</span>
+                                </th>
+                                <th class="text-center" style="color:black;width:2%;border:1px solid black">
+                                    <span>QTY</span>
+                                </th>
+                                <th class="text-center" style="color:black;width:3%;border:1px solid black">
+                                    <strong>Price</strong>
+                                </th>
+                                <th class="text-center" style="color:black;width:3%;border:1px solid black">
+                                    <strong>Amount</strong>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody style="font-size:14px">
+                            <t t-set="current_subtotal" t-value="0"/>
+                            <t t-set="no" t-value="0"/>
+                            <tr t-foreach="o.order_line" t-as="line">
+                                <t t-set="no" t-value="no+1"/>
+                                <td style="text-align:center;color:black;width:2%;border:1px solid black">
+                                    <span t-esc="no"/>
+                                </td>
+                                <td class="text-center" style="width:10%;border:1px solid black">
+                                    <span t-esc="line.product_id.name"/>
+                                </td>
+                                <td class="text-center" style="width:10%;border:1px solid black">
+                                    <!--                                    <span t-esc="'%.0f' % line.product_uom_qty"/>-->
+                                    <span t-esc="line.name"/>
+                                </td>
+                                <td class="text-center" style="width:5%;border:1px solid black">
+                                    <span t-esc="line.product_uom.name"/>
+                                </td>
+                                <td class="text-center" style="width:5%;border:1px solid black">
+                                    <!--                                    <span t-esc="line.product_uom.name"/>-->
+                                </td>
+                                <td t-attf-class="text-center" style="width:2%;border:1px solid black">
+                                    <!--                                    <span t-esc="line.date.strftime('%d-%m-%Y')"/>-->
+                                    <span t-esc="line.product_uom_qty"/>
+                                </td>
+                                <td t-attf-class="text-center" style="width:3%;border:1px solid black">
+                                    <!--                                    <span t-esc="line.date.strftime('%d-%m-%Y')"/>-->
+                                    <span t-esc="line.price_unit"/>
+                                </td>
+                                <td t-attf-class="text-center" style="width:3%;border:1px solid black">
+                                    <span t-esc="line.price_subtotal"/>
+                                    <!--                                    <span t-esc="line.price_unit"/>-->
+                                </td>
+                                <!--                                <td t-attf-class="text-center {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}"-->
+                                <!--                                    style="width:20%;border:1px solid black">-->
+                                <!--                                    <span t-esc="line.remark"/>-->
+                                <!--                                </td>-->
+
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="total" style="width:100%">
+                        <tr>
+                            <th style="width:5%;"/>
+                            <th style="width:30%"/>
+                            <th style="width:10%;"/>
+                            <th style="width:15%;"/>
+                            <th style="width:15%;"/>
+                            <th style="width:10%;text-align:right;margin-right:-80px;">Subtotal :</th>
+                            <th style="width:13%;text-align:right;">
+                                <span style="padding-left:20px" t-esc="o.amount_untaxed"/>
+                                <!--                            <span t-esc="o.currency_id.symbol"/>-->
+                            </th>
+                        </tr>
+                        <tr>
+                            <th style="width:5%"/>
+                            <th style="width:30%"/>
+                            <th style="width:10%"/>
+                            <th style="width:15%"/>
+                            <th style="width:15%"/>
+                            <th style="width:12%;text-align:right">Tax :</th>
+                            <th style="width:13%;text-align:right">
+                                <span t-esc="o.amount_tax"/>
+                                <!--                            <span t-esc="o.currency_id.symbol"/>-->
+                            </th>
+                        </tr>
+                        <tr t-if="o.discount_value">
+                            <th style="width:5%"/>
+                            <th style="width:30%"/>
+                            <th style="width:10%"/>
+                            <th style="width:15%"/>
+                            <th style="width:15%"/>
+                            <th style="width:12%;text-align:right;">Discount :</th>
+                            <th style="width:13%;text-align:right">
+                                <span t-esc="'{0:,.2f}'.format(o.discount_value)"/>
+                                <!--                            <span t-esc="o.currency_id.symbol"/>-->
+                            </th>
+                        </tr>
+                        <tr>
+                            <th style="width:5%"/>
+                            <th style="width:30%"/>
+                            <th style="width:10%"/>
+                            <th style="width:15%"/>
+                            <th style="width:15%"/>
+                            <th style="width:12%;text-align:right;">
+                                Total :
+                            </th>
+                            <th style="width:13%;text-align:right;">
+                                <span t-esc="o.amount_total"/>
+                                <!--                            <span t-esc="o.currency_id.symbol"/>-->
+                            </th>
+                        </tr>
+                    </table>
+                    <!--                    <div class="oe_structure"/>-->
+                    <div class="row" style="width:100%">
+                        <div class="col-md-6" style="width:50%;font-size:14px;">
+                            <div class="row" style="width:100%">
+                                <div class="col-md-5" style="width:32%">
+                                    <strong>Delivery Date</strong>
+                                </div>
+                                <div class="col-md-1" style="width:1%">
+                                    <strong>:</strong>
+                                </div>
+                                <div class="col-md-6" style="width:54%;text-align:left;">
+                                    <!--                                    <span t-esc="o.name"/>-->
+                                </div>
+                            </div>
+                            <div class="row" style="width:100%">
+                                <div class="col-md-5" style="width:32%">
+                                    <strong>Payment Terms</strong>
+                                </div>
+                                <div class="col-md-1" style="width:1%">
+                                    <strong>:</strong>
+                                </div>
+                                <div class="col-md-6" style="width:54%;text-align:left">
+                                    <span t-esc="o.payment_term_id.name"/>
+                                </div>
+                            </div>
+                            <div class="row" style="width:100%">
+                                <div class="col-md-5" style="width:32%">
+                                    <strong>Remark</strong>
+                                </div>
+                                <div class="col-md-1" style="width:1%">
+                                    <strong>:</strong>
+                                </div>
+                                <!--                                <div class="col-md-6" style="width:54%;text-align:left">-->
+                                <!--                                    <span t-esc="o.note"/>-->
+                                <!--                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <br/>
+                    <br/>
+                </div>
+            </t>
+        </template>
+        <template id="report_purchase_order_branch_unit_document">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="report_form.report_purchase_order_branch_header_id" t-lang="o.partner_id.lang"/>
+                    <t t-call="report_form.report_purchase_order_branch_unit_body" t-lang="o.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

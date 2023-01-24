@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <report 
+            id="action_report_rental"
+            string="Part Order"
+            model="part.order"
+            report_type="qweb-pdf"
+            file="job_request.report_rentalorder"
+            name="job_request.report_rentalorder"
+        />
+        <report 
+            id="action_report_job"
+            string="Job Order"
+            model="job.request"
+            report_type="qweb-pdf"
+            file="job_request.report_joborder"
+            name="job_request.report_joborder"
+        />
+
+</odoo>

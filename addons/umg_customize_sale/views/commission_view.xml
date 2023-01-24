@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="product_template_form_view_inherited" model="ir.ui.view">
+            <field name="name">product.template.form.inherit</field>
+            <field name="model">product.template</field>
+            <field name="priority">6</field>
+            <field name="inherit_id" ref="account.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <field name="property_account_expense_id" position="after">
+                    <label for="commission" string="Commission"/>
+                    <div class="o_row" name="commission">
+                        <field name="commission"/>
+                        <span>%</span>
+                    </div>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_category_property_form_inherited" model="ir.ui.view">
+            <field name="name">product.category.property.form.inherit</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="account.view_category_property_form"/>
+            <field name="arch" type="xml">
+                <field name="property_account_expense_categ_id" position="after">
+                    <label for="commission" string="Commission"/>
+                    <div class="o_row" name="commission">
+                        <field name="commission"/>
+                        <span>%</span>
+                    </div>
+                </field>
+            </field>
+        </record>
+        <!-- SLO start-->
+        <record id="ir_actions_server_commission_paid" model="ir.actions.server">
+            <field name="name">Paid</field>
+            <field name="type">ir.actions.server</field>
+            <field name="state">code</field>
+            <field name="model_id" ref="model_sale_commission"/>
+            <field name="binding_model_id" ref="model_sale_commission"/>
+            <field name="code">
+                record.multi_commission_paid()
+            </field>
+            <field name="groups_id" eval="[(4, ref('master_data_extension.group_bu_user'))]"/>
+        </record>
+        <!-- SLO end -->
+
+        <record id="sale_commission_form" model="ir.ui.view">
+            <field name="name">sale.commission.form</field>
+            <field name="model">sale.commission</field>
+            <field name="arch" type="xml">
+                <form string="Commission" create="0">
+                    <header>
+                        <button name="action_paid" string="Paid" type="object" data-hotkey="w" class="oe_highlight"
+                                states="draft" groups="master_data_extension.group_bu_user"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft" readonly="1"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_move_items" type="object" class="oe_stat_button" icon="fa-bars"
+                                    string="Journal Items"/>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="date" readonly="1"/>
+                                <field name="business_id" readonly="1"/>
+                                <!-- <field name="order_id" readonly="1"/> -->
+                                <!-- <field name="move_ids" invisible="1" readonly="1"/> -->
+                                <field name="invoice_id" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="branch_id" readonly="1"/>
+                                <field name="amount" widget="monetary" readonly="1"/>
+                                <field name="deduct_amount" widget="monetary"  attrs="{'readonly':[('state','=','paid')]}" groups="master_data_extension.group_bu_user"/>
+                                <field name="commission_amount" widget="monetary"/>
+                            </group>
+                        </group>
+                        <field name="name" readonly="1"/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="sale_commission_tree" model="ir.ui.view">
+            <field name="name">sale.commission.tree</field>
+            <field name="model">sale.commission</field>
+            <field name="arch" type="xml">
+                <tree string="Commission" create="0">
+                    <field name="date"/>
+                    <field name="business_id"/>
+                    <field name="branch_id"/>
+                    <!-- <field name="order_id"/> -->
+                    <field name="invoice_id" string="Invoice Number"/>
+                    <field name="amount" widget="monetary"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        
+     <!-- Search View -->
+     <record id="sale_commission_search_filter" model="ir.ui.view">
+        <field name="name">Sale Commission Search</field>
+        <field name="model">sale.commission</field>
+        <field name="arch" type="xml">
+            <search string="Sale Commission">
+                <field name="invoice_id" string="Invoice Number"></field>
+                <field name="name"></field>
+                <group expand="1" string="Group By...">
+                    <filter name="business_id" string="Business Unit" domain="[]" context="{'group_by':'business_id'}"/>
+                    <filter name="branch_id" string="Branch" domain="[]" context="{'group_by':'branch_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+        <record id="sale_commission_action" model="ir.actions.act_window">
+            <field name="name">Sale Commission</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.commission</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">['|',('business_id', 'in', c_b_ids), ('branch_id', 'in', c_b_ids)]</field>
+            <field name="help" type="html">
+                <p>
+                    Sale Commission.
+                </p>
+            </field>
+        </record>
+
+        <menuitem name="Commission" id="menu_commission" parent="sale.sale_menu_root" sequence="6"/>
+        <menuitem name="Sale Commission" id="menu_sale_commission" action="sale_commission_action"
+                  parent="menu_commission" sequence="1"/>
+
+        <record id="account.view_out_invoice_tree" model="ir.ui.view">
+            <field name="name">account.out.invoice.tree</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_invoice_tree"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="banner_route">/account/account_invoice_onboarding</attribute>
+                </xpath>
+                <field name="currency_id" position="attributes">
+                    <attribute name="string">Invoice Currency</attribute>
+                </field>
+            </field>
+        </record>
+       
+
+        <record id="view_move_form_inherited" model="ir.ui.view">
+            <field name="name">account.out.invoice.form.inherited</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/div[@name='button_box']/button[@name='open_bank_statement_view']"
+                       position="after">
+                    <button name="action_view_commission"
+                            type="object" class="oe_stat_button"
+                            icon="fa-bars" string="Commission"
+                            attrs="{'invisible':['|','|',('state','!=','posted'),('move_type','!=','out_invoice'), ('service_type', '=', True)]}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

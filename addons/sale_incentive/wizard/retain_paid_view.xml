@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_retain_paid_wizard" model="ir.actions.act_window">
+        <field name="name">Retain Paid Wizard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">incentive.retain.wizard</field>
+        <field name="binding_view_types">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+<record id="view_retain_wizard" model="ir.ui.view">
+    <field name="name">normal.incentive.retain.wizard</field>
+    <field name="model">incentive.retain.wizard</field>
+    <field name="arch" type="xml">
+        <form string="Normal Approval">
+            <group>
+                <group>
+                    <field name="journal_id" required="1"/>
+                    <field name="date" required="1"/>
+                </group>
+                <group>
+                    <field name="receive_journal_id" required="1"/>
+                    <label for="amount" />
+                    <div name="amount_div" class="o_row">
+                        <field name="amount" readonly="1"/>
+                        <field name="currency_id" options="{'no_create': True, 'no_open': True}"
+                                groups="base.group_multi_currency" required="1" invisible="0"/>
+                    </div>
+                    <field name="memo" />
+                    <field name="partner_id"/>
+                </group>
+            </group>
+            <footer>
+                <button name="normal_approval" string="Approve" type="object" class="oe_highlight"/>
+                <button string="Cancel" special="cancel" class="oe_link"/>
+            </footer>
+        </form>
+    </field>
+</record>
+</odoo>

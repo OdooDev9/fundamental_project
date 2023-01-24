@@ -1,0 +1,197 @@
+<odoo>
+    <data>
+
+
+        <record id="inherit_view_order_tree" model="ir.ui.view">
+            <field name="name">sale.order.tree</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="priority">2</field>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="after">
+                    <field name="hr_bu_id"/>
+                    <field name="hr_br_id"/>
+                </field>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="view_order_add_broker_button">
+            <field name="name">view.order.form.inherit.add.broker.button</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="priority">1000</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='state']" position='replace'>
+                    <field name='state' widget='statusbar' statusbar_visible="draft,approved_sale_admin,approved_sale_head,approved_gm_agm,approved_finance_pic,approved_finance_head,approved_corporate_finance"/>
+                    <field name='bu_br_user_approve' invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='team_id']" position='after'>
+                
+                    <field name='service_type' invisible="0" attrs="{'readonly':[('state','=','sale')]}"/>
+                </xpath>
+                <field name="source_id" position="after">
+                    <field name="broker_fees_id" readonly="1" invisible="1"/>
+                </field>
+
+                <xpath expr="//button[@name='action_confirm']" position="after">
+                    <field name='is_cor' invisible='1'/>
+                    <!-- <button name="%(action_broker_fees_wizard)d" string="Broker Fees" type="action" class="oe_stat_button" attrs="{'invisible': ['|',('state', 'not in', 'sale'), ('broker_button','=', True)]}"/> -->
+                    <!-- Due Amount is equal 0 and unit/part Appproval list -->
+                    <button name="bu_approved" string="Bu Approve" type="object" class="btn-primary" attrs="{'invisible': ['|',('bu_br_user_approve','=',False),('state', 'not in', 'confirm')]}" groups="master_data_extension.group_hr_bu_manager"/>
+                    <button name="action_sale_admin_approve" string="Approve By BU Sale Admin" type="object" class="btn-primary" attrs="{'invisible': ['|','|',('bu_br_user_approve','=',False),('state', 'not in', 'draft'),('due_amount','!=',0)]}" groups="product_configure.group_sale_admin"/>
+                    <button name="action_gm_agm_approve" string="Approve By GM/AGM" type="object" class="btn-primary" attrs="{'invisible': ['|','|',('bu_br_user_approve','=',False),('state', 'not in', ['approved_sale_admin','approved_finance_pic']),('due_amount','&gt;',0)]}" groups="product_configure.group_gm_agm" invisible="0"/>
+
+
+
+
+                    <!-- <button name="action_s_m_head" string="Approve By S &amp;M Head" type="object" class="btn-primary" attrs="{'invisible': ['|',('state', 'not in', 'draft'),('due_amount','=',0)]}" groups="product_configure.group_sale_head"/> -->
+
+                </xpath>
+
+                <!-- <xpath expr="//button[@name='action_confirm']" position="replace">
+                    <button name="action_confirm" id="action_confirm" data-hotkey="v" string="Confirm" class="btn-primary" type="object" attrs="{'invisible': [('state', 'not in', ['sent'])]}"/>
+                    <button name="action_confirm" data-hotkey="v" string="Confirm" class="btn-primary" type="object" attrs="{'invisible': ['|',('due_amount','!=',0),('state', 'not in', ['approved_gm_agm'])]}"/>
+                </xpath> -->
+
+                <xpath expr="//button[@name='action_confirm'][1]" position="attributes">
+                    <attribute name="attrs"></attribute>
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_confirm'][2]" position="attributes">
+                    <attribute name="attrs"></attribute>
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_confirm']" position="replace">
+                    <button name="action_confirm" id="action_confirm" data-hotkey="v" string="Confirm" class="btn-primary" type="object" attrs="{'invisible': ['|',('service_type','=',False),('state', 'not in', ['draft'])]}"/>
+                    <!-- <button name="action_confirm" id="action_confirm" data-hotkey="v" string="Confirm" class="btn-primary" type="object" attrs="{'invisible': [('state', 'not in', ['sent'])]}"/> -->
+                    <button name="action_confirm" data-hotkey="v" string="Confirm" class="btn-primary" type="object" attrs="{'invisible': ['|','|','|',('unit_or_part','!=','unit'),('state', 'not in', 'approved_gm_agm'),('due_amount','=',0),('is_cor', '=', True)]}"/>
+
+                </xpath>
+
+                <xpath expr="//field[@name='note']" position="before">
+                    <group>
+                        <field name="discount_type" attrs="{'readonly':[('state','=','sale')]}"/>
+                        <field name="discount_view" attrs="{'readonly':[('state','=','sale')]}"/>
+                        <field name="br_discount" attrs="{'invisible':[('discount_view', 'not in', 'line_discount')],'readonly':[('state','=','sale')]}"/>
+                        <field name="discount_value" attrs="{'invisible':[('discount_view', 'not in', ['doc_discount'])],'readonly':[('state','=','sale')]}"/>
+                        <field name="broker_button" invisible="1"/>
+                    </group>
+                </xpath>
+                <xpath expr="//tree/field[@name='tax_id']" position="after">
+                    <field name="discount_type" invisible="1"/>
+                    <field name="br_dis_value" attrs="{'column_invisible': [('parent.br_discount', '=', False)]}" string="BR Discount"/>
+                    <field name="discount_value" attrs="{'column_invisible':[('parent.discount_view', 'not in', ['doc_discount','line_discount'])]}" string="Discount"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree//field[@name='product_id']" position="before">
+                    <field name="number" string="No."/>
+                </xpath>
+                <!-- SLO start -->
+                <xpath expr="//field[@name='order_line']/tree//field[@name='discount']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <!-- SLO end -->
+                <xpath expr="//field[@name='order_line']/tree//field[@name='product_uom_qty']" position="before">
+                    <!-- <field name="delivery_date" optional="show"/> -->
+                    <field name="production_delivery_date"/>
+                    <field name="estimated_delivery" optional="show"/>
+                </xpath>
+                <field name="partner_id" position="after">
+                    <field name="due_amount"/>
+                    <field name="user_type_id" invisible="1"/>
+                    <field name="hr_br_id" required="0" options="{'no_create': True}" attrs="{'readonly': [('state', 'not in', 'draft')], 'invisible': [('service_type','=',True),('user_type_id','=','bu')]}"/>
+                    <field name="hr_bu_id" required="0" options="{'no_create': True}" attrs="{'readonly': [('state', 'not in', 'draft')], 'invisible': [('service_type','=',True),('user_type_id','=','br')]}"/>
+                    <field name="br_discount_amount" invisible="1"/>
+                </field>
+                <xpath expr="//tree/field[@name='name']" position="after">
+                    <field name="hr_bu_id" invisible="1"/>
+                    <field name="hr_br_id" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="replace">
+                    <field name="name" readonly="1"/>
+                </xpath>
+
+                <xpath expr="//field[@name='payment_term_id']" position="replace">
+                    <field name="payment_term_id" options="{'no_open':True,'no_create': True}" attrs="{'readonly':[('state','not in','draft')]}"/>
+                    <field name="unit_or_part" attrs="{'readonly':[('state','not in','draft')],'invisible':[('service_type','=',True)]}"/>
+                    <field name="is_gov_tender" attrs="{'readonly':[('state','not in','draft')]}"/>
+                </xpath>
+
+
+                <xpath expr="//field[@name='order_line']/tree//field[@name='product_id']" position="replace">
+                    <field name="product_id" attrs="{
+                                            'readonly': [('product_updatable', '=', False),('state','=','sale')],
+                                            'required': [('display_type', '=', False)],
+                                        }" force_save="1" context="{
+                                            'partner_id': parent.partner_id,
+                                            'quantity': product_uom_qty,
+                                            'pricelist': parent.pricelist_id,
+                                            'uom':product_uom,
+                                            'company_id': parent.company_id,
+                                            'default_lst_price': price_unit,
+                                            'default_description_sale': name
+                                        }" domain="[('sale_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]" options="{'no_create': True}" widget="product_configurator" />
+                </xpath>
+                <!-- <xpath expr="//field[@name='order_line']" position="replace">
+                 <field name="order_line" widget="section_and_note_one2many" mode="tree,kanban" attrs="{'readonly':[('state','not in','draft')]}"/>
+                </xpath>
+                -->
+
+                <!--YZO update options for partner_id-->
+                <xpath expr="//field[@name='partner_id']" position="replace">
+                    <field name="partner_id" widget="res_partner_many2one" domain="[('customer', '=', True)]" context="{'default_supplier':0, 'default_customer':1, 'show_address':1,
+                        'display_website': True}" options="{&quot;always_reload&quot;: True,'no_create': True,'no_create_edit':True}"/>
+                </xpath>
+
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <!-- <button class="oe_stat_button" type="action" name="open_partner_ledger" groups="sales_team.group_sale_salesman" icon="fa-usd"/> -->
+                    <button name="open_partner_ledger" icon="fa-usd" class="oe_stat_button" string="Partner Ledger" type="object"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- ************HR BU ANd BR Sale Order Form************* -->
+        <record id="sale.action_orders" model="ir.actions.act_window">
+            <field name="name">Sales Orders</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_sale"/>
+            <field name="context">{}</field>
+            <field name="domain">[('service_type', '=', False)]
+            </field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new service order, the first step of a new sale!
+                </p>
+            </field>
+        </record>
+
+
+        <record id="action_service_order" model="ir.actions.act_window">
+            <field name="name">Service Orders</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_sale"/>
+            <field name="context">{'default_service_type': True,'search_default_service_type':True}</field>
+            <field name="domain">[('service_type', '=',True)]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new quotation, the first step of a new sale!
+                </p>
+                <p>
+                    Once the quotation is confirmed, it becomes a sales order.
+                    <br/>
+                    You will be able to create an invoice and collect the payment.
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_service_order" action="action_service_order" parent="sale.sale_order_menu" sequence="5" groups="sales_team.group_sale_salesman"/>
+
+
+
+
+    </data>
+</odoo>

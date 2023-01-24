@@ -1,0 +1,137 @@
+<odoo>
+    <data>
+        <record id="action_view_delivery" model="ir.actions.act_window">
+            <field name="name">Stock Picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.picking</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('borrow_request_ref_id','=',active_id)]</field>
+        </record>
+
+        <record id="view_borrow_request_tree" model="ir.ui.view">
+            <field name="name">request.tree</field>
+            <field name="model">borrow.request</field>
+            <field eval="12" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Borrow Request">
+                    <field name="name"/>
+                    <field name="hr_bu_id"/>
+                    <field name="request_date"/>
+                    <field name="create_uid" string="Request Person"/>
+                    <field name="state"/>
+
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_borrow_request_form" model="ir.ui.view">
+            <field name="name">borrow.request.form</field>
+            <field name="model">borrow.request</field>
+            <field eval="12" name="priority"/>
+            <field name="arch" type="xml">
+                <form string="Borrow Request">
+                    <header>
+                        <button name="button_approve" type="object" states='new' string="Approve" class="oe_highlight"/>
+                        <button name="button_return" type="object" states='approved' string="Return Product"
+                                class="oe_highlight" invisible="1"/>
+                        <button name="%(borrow_request.borrow_sale_order_wizard_action)d" string="Create Sale Order"
+                                state='approved' type="action" class="oe_highlight"
+                                attrs="{'invisible': ['|',('state', 'not in', 'approved'), ('orderable', '=', False)]}"/>
+                        <button name="%(borrow_request.borrow_refuse_wizard_action)d" string="Refuse" type="action"
+                                states='new'/>
+                        <field name="state" widget="statusbar" statusbar_visible="new,approve"
+                               statusbar_colors="{&quot;approved&quot;:&quot;blue&quot;}"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="%(action_view_delivery)d" class="oe_stat_button" icon="fa-truck" type="action"
+                                    attrs="{'invisible': [('delivery_count', '=', 0)]}" groups="base.group_user">
+                                <field name="delivery_count" widget="statinfo" string="Delivery"/>
+                            </button>
+                            <button type="object" name="action_view_quotation" class="oe_stat_button"
+                                    icon="fa-pencil-square-o" groups="base.group_user"
+                                    attrs="{'invisible': [('sale_order_count', '=', 0)]}">
+                                <field name="sale_order_count" widget="statinfo" string="Quotation"/>
+                            </button>
+
+                        </div>
+
+
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                        <group>
+                            <group>
+                                <field name="orderable" foce_save="1"/>
+                                <field name="request_date"/>
+                                <field name="create_uid" string="Request Person"/>
+                                <field name="user_id" options="{'no_create': True}"/>
+                                <field name='unit_or_part'/>
+                            </group>
+                            <group>
+                                <field name="hr_bu_id" attrs="{'required' :[('state','in',['new'])]}"
+                                       options="{'no_create': True}"/>
+                                <field name="hr_br_id" attrs="{'required' :[('state','in',['new'])]}"
+                                       options="{'no_create': True}"
+                                       groups='master_data_extension.group_hr_branch_user,master_data_extension.group_hr_branch_manager'/>
+                                <field name="company_id" invisible="0"/>
+                                <field name="from_location_id"/>
+                                <field name='to_location_id' invisible="0" readonly="1"/>
+                                <field name='from_date'/>
+                                <field name='to_date'/>
+                                <field name="picking_ids" invisible="1"/>
+                            </group>
+
+                        </group>
+                        <notebook>
+                            <page string="Borrow Request Lines">
+
+                                <field name="custom_order_line" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="product_id" options="{'no_create': True}"/>
+                                        <field name="product_uom_qty"/>
+                                        <field name="product_uom_category_id" invisible="1"/>
+                                        <field name="product_uom" options="{'no_create': True}"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Description">
+                                <field name="note" class="oe-bordered-editor" nolabel="1"
+                                       placeholder="Note.................."/>
+                            </page>
+                        </notebook>
+                        <group name="return_reason">
+                            <field name="return_reason" />
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+
+            </field>
+        </record>
+
+        <record id="action_borrow_request" model="ir.actions.act_window">
+            <field name="name">Borrow Request</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">borrow.request</field>
+            <field name="binding_view_types">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Create a Borrow Request.
+                </p>
+            </field>
+        </record>
+
+        <menuitem name="Borrow Request" id="menu_borrow_requests" parent="sale.sale_menu_root" sequence="5"/>
+
+        <menuitem name="Borrow Request" id="menu_borrow_request_order"
+                  parent="menu_borrow_requests" action="borrow_request.action_borrow_request" sequence="12"/>
+        <menuitem name="Borrow Request" id="menu_borrow_stock" parent="stock.menu_stock_root" sequence="4"/>
+        <menuitem name="Borrow Request" id="menu_request_order_stock" parent="menu_borrow_stock"
+                  action="borrow_request.action_borrow_request" sequence="12"/>
+    </data>
+</odoo>

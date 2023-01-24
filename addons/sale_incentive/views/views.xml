@@ -1,0 +1,610 @@
+<odoo>
+    <data>
+
+        <record id="account_move_form_inherit" model="ir.ui.view">
+            <field name="name">account.move</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+            <xpath expr="//group[@id='header_right_group']" position="inside">
+<!--                    <field name='area_sale_manager_id' attrs="{'required':[('sale_order_id','!=',False)]}"/>-->
+                    <field name='area_sale_manager_id' attrs="{'readonly': [('state', '=', 'posted')]}"/>
+                </xpath>
+
+                <field name="invoice_user_id" position="after">
+                    <field name='sale_order_id' invisible="1"/>
+                    <field name="is_gov_tender" attrs="{'readonly': [('state', '=', 'posted')]}"/>
+                    <field name="normal_incentive_id" invisible="1"/>
+                </field>
+                <xpath expr="//form/sheet/div[@name='button_box']/button[@name='open_bank_statement_view']" position="after">
+                     <button name="action_view_incentives"
+                        type="object" class="oe_stat_button"
+                             icon="fa-bars" attrs="{'invisible':['|',('state','!=','posted'),('incentive_count','>=',0)]}">
+                         <field name="incentive_count" widget="statinfo" string="N Incentives"/>
+                     </button>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="crm_team_view_form_inherit" model="ir.ui.view">
+            <field name="name">crm.team</field>
+            <field name="model">crm.team</field>
+            <field name="inherit_id" ref="sales_team.crm_team_view_form"/>
+            <field name='arch' type="xml">
+                <xpath expr="//field[@name='company_id']" position="before">
+                    <field name="branch_id"/>
+                    <field name="business_id"/>
+                    <field name="journal_id" invisible="1"/>
+                    <field name='account_id' invisible="1"/>
+                    <field name="product_id" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="sale_target_form" model="ir.ui.view">
+            <field name="name">sale.target</field>
+            <field name="model">sale.target</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <field name="bu_user_approve" invisible="1"></field>
+                        <button name="action_gm_agm" type="object" class="oe_highlight" string="Approve By GM/AGM"  attrs="{'invisible':['|',('bu_user_approve','=',False),('state','!=','draft')]}" groups="product_configure.group_gm_agm"/>
+                        <button name="action_coo" type="object" class="oe_highlight" string="Approve By COO"  attrs="{'invisible':['|',('bu_user_approve','=',False),('state','!=','gm_agm')]}" groups="product_configure.group_coo_dept"/>
+                        <!-- <button name="%(action_sale_target_approval_wizard)d" type="action" class="oe_highlight"
+                                states="draft" string="Request Related DH Approved"/>
+                        <button name="target_approved" type="object" class="oe_highlight" string="Approve"
+                                states="request_related_dh_approve,request_gm_approve,request_coo_approve,request_ceo_approve"/>
+                        <button name="%(action_sale_target_approval_wizard)d" type="action" class="oe_highlight"
+                                states="related_dh_approved" string="Request GM Approve"/>
+                        <button name="%(action_sale_target_approval_wizard)d" type="action" class="oe_highlight"
+                                states="gm_approved" string="Request COO Approve"/>
+                        <button name="%(action_sale_target_approval_wizard)d" type="action" class="oe_highlight"
+                                states="coo_approved" string="Request CEO Approve"/> -->
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="branch_ids" widget="many2many_tags"
+                                       attrs="{'readonly':[('state','!=','draft')]}" options="{'no_create': True}"/>
+                                <field name="business_unit_id" attrs="{'readonly':[('state','!=','draft')]}" options="{'no_create': True}"/>
+                                <field name="b2b_b2c" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="define_branch_id" attrs="{'readonly':[('state','!=','draft')]}"
+                                       invisible="1"/>
+                            </group>
+                            <group>
+                                <field name="payment_rule" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="start_date" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="end_date" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="active" invisible="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Sale Team Targets" name="personal_sale_target">
+                                <field name="sale_team_target_ids" attrs="{'readonly':[('state','!=','draft')]}">
+                                    <form string="Sale Team Targets">
+                                        <group>
+                                            <group>
+                                                <field name="sale_target_id" invisible="1"/>
+                                                <field name="branch_ids" invisible="1"/>
+                                                <field name="branch_id"/>
+                                                <field name="b2b_b2c"/>
+                                                <field name="define_branch_id" invisible="1"/>
+                                                <field name="incentive_rule_id" options="{'no_create': True}" domain="[('state','=','coo')]"/>
+                                            </group>
+                                            <group>
+                                                <field name="start_date"/>
+                                                <field name="end_date"/>
+
+                                            </group>
+                                        </group>
+
+                                    </form>
+                                    <tree string="Sale Team Targets" editable="bottom">
+                                        <field name="sale_target_id" invisible="1"/>
+                                        <field name="user_id" invisible="1"/>
+                                        <field name="branch_ids" invisible="1"/>
+                                        <field name="sale_team_id" options="{'no_create': True}"/>
+                                        <field name="branch_id" invisible="1"/>
+                                        <field name="incentive_rule_id" options="{'no_create': True}" domain="[('state','=','coo')]"/>
+                                        <field name="start_date" optional="hide"/>
+                                        <field name="end_date" optional="hide"/>
+                                        <field name="target" widget="monetary"/>
+                                        <field name="currency_id" invisible="1"/>
+                                    </tree>
+
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="sale_target_tree_view" model="ir.ui.view">
+            <field name="name">sale.target</field>
+            <field name="model">sale.target</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="business_id"/>
+                    <field name="b2b_b2c"/>
+                    <field name="branch_ids" widget="many2many_tags"/>
+                    <field name="business_unit_id"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="sale_target_filter" model="ir.ui.view">
+            <field name="name">sale.target</field>
+            <field name="model">sale.target</field>
+            <field name="priority" eval="15"/>
+            <field name="arch" type="xml">
+                <search string="Search Sale Target">
+                    <field name="name" string="Sale Target" filter_domain="[('name','ilike',self)]"/>
+                    <field name="user_id"/>
+                    <field name="define_branch_id"/>
+                    <field name="branch_ids"/>
+                    <field name="business_unit_id"/>
+                    <field name="start_date" string="Start Date"/>
+                    <filter string="My Sale Target" domain="[('user_id','=',uid)]" name="my_sale_target"/>
+                    <group expand="0" string="Group By">
+                        <filter string="User" name="user" domain="[]" context="{'group_by':'user_id'}"/>
+                        <filter name="define_branch" string="Defined Branch" domain="[]"
+                                context="{'group_by':'define_branch_id'}"/>
+                        <filter name="branch" string="Branches" domain="[]" context="{'group_by':'branch_ids'}"/>
+                        <filter name="start_date" string="Start Date" domain="[]" context="{'group_by':'start_date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+        <record id="sale_team_target_form" model="ir.ui.view">
+            <field name="name">sale.team.target</field>
+            <field name="model">sale.team.target</field>
+            <field name="arch" type="xml">
+                <form create="0">
+                    <header>
+                        <field name="bu_user_approve" invisible="1"></field>
+                        <button name="action_finance" type="object" class="oe_highlight" attrs="{'invisible':['|',('bu_user_approve','=',False),('state','!=','draft')]}"
+                        string="Approve By F &amp;A PIC" groups="product_configure.group_finance_account_pic"/>
+                        <button name="action_gm_agm" type="object" class="oe_highlight" attrs="{'invisible':['|',('bu_user_approve','=',False),('state','!=','finance_pic')]}"
+                        string="Approve By GM/AGM" groups="product_configure.group_gm_agm"/>
+
+                        <button name="action_confirm" type="object" class="oe_highlight" states="gm_agm"
+                                string="Confirm"/>
+                        <button name="action_cancel" type="object" states="confirm" string="Cancel"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,finance_pic,gm_agm,confirm"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_sale_order"
+                                    type="object" class="oe_stat_button"
+                                    icon="fa-usd">
+                                <field name="sale_order_count" widget="statinfo" string="Sale Orders"/>
+                            </button>
+                            <button name="action_view_invoice"
+                                    type="object" class="oe_stat_button"
+                                    icon="fa-pencil-square-o">
+                                <field name="invoice_count" widget="statinfo" string="Invoices"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="branch_ids" invisible="1"/>
+                                <field name="branch_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="sale_team_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="b2b_b2c" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="define_branch_id" attrs="{'readonly':[('state','!=','draft')]}" invisible="1"/>
+                                <field name="incentive_rule_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            </group>
+                            <group>
+                                <field name="payment_rule" />
+                                <field name="currency_id" invisible="1"/>
+                                <field name="start_date" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="end_date" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="target" attrs="{'readonly':[('state','!=','draft')]}" widget='monetary'/>
+                                <field name="sale_order_ids" invisible="1"/>
+
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Personal Sale Targets" name="personal_sale_target">
+                                <field name="personal_sale_target_ids" attrs="{'readonly':[('state','!=','draft')]}">
+                                    <form string="Personal Sale Targets">
+                                        <group>
+                                            <group>
+                                                <field name="sale_team_target_id" invisible="1"/>
+                                                <field name="user_team_ids" widget="many2many_tags" readonly="1"/>
+                                                <field name='user_id' invisible="1"/>
+                                                <field name="sale_person_id"/>
+                                                <field name='sale_team_id'/>
+                                                <field name="branch_id" invisible="1"/>
+                                                <field name="start_date"/>
+                                                <field name="end_date"/>
+                                            </group>
+                                            <group>
+
+                                                <field name="target"/>
+                                                <field name="sale_total"/>
+                                                <field name="incentive_amount"/>
+                                                <field name="target_reached"/>
+                                                <field name="state"/>
+                                            </group>
+                                        </group>
+
+                                    </form>
+                                    <tree string="Personal Sale Targets" editable="bottom">
+                                        <field name="sale_team_target_id" invisible="1"/>
+                                        <field name="user_team_ids" optional="hide" widget="many2many_tags"/>
+                                        <field name="user_id" invisible="1"/>
+                                        <field name="sale_person_id"/>
+                                        <field name="sale_team_id"/>
+                                        <field name="branch_id" invisible="1"/>
+                                        <field name="target" widget="monetary"/>
+                                        <field name="sale_total" optional="hide"/>
+                                        <field name="incentive_amount" optional="hide"/>
+                                        <field name="target_reached" optional="hide"/>
+                                        <field name="start_date" optional="show"/>
+                                        <field name="end_date" optional="show"/>
+                                        <field name="state" optional="hide"/>
+                                        <field name="currency_id" invisible="1"/>
+                                    </tree>
+
+                                </field>
+                            </page>
+                            <page string="Invoicing Information">
+                                <group>
+                                    <group string="Sale Incentive">
+                                         <field name="journal_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                        <field name="account_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    </group>
+                                    <group string="Pooling">
+                                        <field name="pooling_account_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="sale_team_target_tree" model="ir.ui.view">
+            <field name="name">sale.team.target</field>
+            <field name="model">sale.team.target</field>
+            <field name="arch" type="xml">
+                <tree create="0">
+                    <field name="name"/>
+                    <field name="branch_id"/>
+                    <field name="business_id"/>
+                    <field name="b2b_b2c"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="target" widget="monetary"/>
+                    <field name="currency_id" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="sale_team_target_filter" model="ir.ui.view">
+            <field name="name">sale.team.target</field>
+            <field name="model">sale.team.target</field>
+            <field name="priority" eval="15"/>
+            <field name="arch" type="xml">
+                <search string="Search Sale Team Target Filter">
+                    <field name="name" string="Sale Team Target" filter_domain="[('name','ilike',self)]"/>
+                    <field name="user_id"/>
+                    <field name="define_branch_id"/>
+                    <field name="branch_id"/>
+                    <field name="sale_team_id" string="Sales Team"/>
+                    <field name="start_date" string="Start Date"/>
+                    <filter string="My Sale Team Target" domain="[('user_id','=',uid)]" name="my_sale_team_target"/>
+                    <group expand="0" string="Group By">
+                        <filter string="User" name="user" domain="[]" context="{'group_by':'user_id'}"/>
+                        <filter name="sale_team_id" string="Sales Team" domain="[]"
+                                context="{'group_by':'sale_team_id'}"/>
+                        <filter name="define_branch" string="Defined Branch" domain="[]"
+                                context="{'group_by':'define_branch_id'}"/>
+                        <filter name="branch" string="Branch" domain="[]" context="{'group_by':'branch_id'}"/>
+                        <filter name="start_date" string="Start Date" domain="[]" context="{'group_by':'start_date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="sale_team_target_action" model="ir.actions.act_window">
+            <field name="name">Sale Team Target</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.team.target</field>
+            <field name="view_mode">tree,form,pivot,graph</field>
+            <field name="help" type="html">
+                <p>
+                    Create sale team targets.
+                </p>
+            </field>
+        </record>
+
+
+        <record id="sale_target_action" model="ir.actions.act_window">
+            <field name="name">Sale Target</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.target</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p>
+                    Create sale targets.
+                </p>
+            </field>
+        </record>
+
+
+        <record id="personal_sale_target_form" model="ir.ui.view">
+            <field name="name">personal.sale.target</field>
+            <field name="model">personal.sale.target</field>
+            <field name="arch" type="xml">
+                <form string="Personal Sale Target" create="0">
+                    <header>
+                        <field name="bu_br_user_approve" invisible="1"></field>
+                        <button name="action_boh" type="object" string="Approve By BOH"
+                        states="draft" class="oe_highlight" groups="product_configure.group_boh" attrs="{'invisible':['|',('state','not in','draft'),('bu_br_user_approve','=','False')]}"/>
+                        <!-- <button name="%(action_personal_sale_target_approval_wizard)d" type="action"
+                                class="oe_highlight" states="draft" string="Request Incentive Approve"/> -->
+                        <!-- <button name="incentive_approved" type="object" string="Approve"
+                                states="request_incentive_approved" class="oe_highlight"/> -->
+                        <button name="%(action_target_incentive_wizard)d" type="action" class="oe_highlight"  attrs="{'invisible':['|',('state','not in',['boh','incentive_partially_withdraw']),('bu_br_user_approve','=','False')]}" 
+                                string="Incentive paid"/>
+                        <button name="%(action_target_pooling_paid_wizard)d" type="action" class="oe_highlight" attrs="{'invisible':['|',('state','not in',['incentive_withdraw']),('bu_br_user_approve','=','False')]}"
+                                string="Pooling paid"/>
+                        <button name="target_close" type="object" string="Close" states="pooling_withdraw" class="oe_highlight"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,incentive_approved"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_sale_order"
+                                    type="object" class="oe_stat_button"
+                                    icon="fa-usd">
+                                <field name="sale_order_count" widget="statinfo" string="Sale Orders"/>
+                            </button>
+                            <button name="action_view_invoice"
+                                    type="object" class="oe_stat_button"
+                                    icon="fa-pencil-square-o">
+                                <field name="invoice_count" widget="statinfo" string="Invoices"/>
+                            </button>
+
+                            <button name="action_move_items" type="object" class="oe_stat_button" icon="fa-bars" string="Journal Items"/>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                 <field name="business_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name='sale_team_target_id' invisible="1"/>
+                                <field name="user_id" invisible="1"/>
+
+                                <field name='user_team_ids' invisible="1"/>
+                                <field name="incentive_rule_id" invisible="1"/>
+                                <field name='sale_person_id' readonly="1"/>
+                                <field name="branch_id" invisible="1"/>
+                                <field name="sale_team_target_id" readonly="1"/>
+                                <field name="sale_team_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            </group>
+                            <group>
+                                 <field name="branch_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="payment_rule" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="start_date"/>
+                                <field name='end_date'/>
+                                <field name='target' readonly="1" widget="monetary"/>
+                                <field name="currency_id" invisible="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Sale KPI">
+                                <group>
+                                    <group string="Sales">
+                                        <field name="sale_total" widget="monetary"/>
+                                        <label for="target_reached" string="Sale Performance"/>
+                                        <div class="o_row" name="target_reached">
+                                            <field name="target_reached"/>
+                                            <span>%</span>
+                                        </div>
+
+                                        <field name="incentive_amount" readonly="1" widget="monetary"/>
+                                        <field name="due_amount" invisible="1"/>
+                                        <field name="paid_amount" invisible="1"/>
+                                    </group>
+                                    <group string="Pooling BU/BR">
+                                        <field name="branch_id" invisible="1"/>
+                                        <field name="bu_br_incentive_amount" string="Pooling Amount"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Invoicing Information">
+                                <group>
+                                    <group string="Sale Incentive">
+                                         <field name="journal_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                        <field name="account_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    </group>
+                                    <group string="Pooling">
+                                        <field name="pooling_account_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="personal_sale_target_tree" model="ir.ui.view">
+            <field name='name'>personal.sale.target</field>
+            <field name="model">personal.sale.target</field>
+            <field name="arch" type="xml">
+                <tree string="Personal Sale Target" create="0">
+                    <field name="name"/>
+                    <field name="sale_team_target_id" optional="hide"/>
+                    <field name="user_id" invisible="1"/>
+                    <field name="sale_person_id"/>
+                    <field name="branch_id" optional="hide"/>
+                    <field name="business_id" optional="hide"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="sale_team_id"/>
+                    <field name="target" widget="monetary"/>
+                    <field name="sale_total" widget="monetary"/>
+                    <field name='target_reached'/>
+                    <field name="incentive_amount" widget="monetary"/>
+                    <field name="state"/>
+                    <field name="currency_id" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="personal_sale_target_filter" model="ir.ui.view">
+            <field name="name">personal.sale.target</field>
+            <field name="model">personal.sale.target</field>
+            <field name="priority" eval="15"/>
+            <field name="arch" type="xml">
+                <search string="Personal Sale Target Search">
+                    <field name="sale_team_target_id"/>
+                    <field name="branch_id"/>
+                    <field name="sale_team_id" string="Sales Team"/>
+                    <field name="user_id"/>
+                    <field name="sale_person_id"/>
+                    <filter string="My Personal Sale Target" domain="[('user_id','=',uid)]"
+                            name="my_personal_sale_target"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Sale Persons" name="salesperson" domain="[]"
+                                context="{'group_by':'sale_person_id'}"/>
+                        <filter name="sale_team_id" string="Sales Team" domain="[]"
+                                context="{'group_by':'sale_team_id'}"/>
+                        <filter name="branch" string="Branch" domain="[]" context="{'group_by':'branch_id'}"/>
+                        <filter name="sale_team_target" string="Sale Team Target" domain="[]"
+                                context="{'group_by':'sale_team_target_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="personal_sale_target_action" model="ir.actions.act_window">
+            <field name="name">Personal Sale Target</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">personal.sale.target</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p>
+                    Create personal sale target.
+                </p>
+            </field>
+        </record>
+
+        <record id="action_accout_payment_incentive" model="ir.actions.act_window">
+            <field name="name">Payments</field>
+            <field name="res_model">account.payment</field>
+            <field name="view_mode">tree,kanban,form,graph</field>
+            <field name="domain">[('is_incentive_payment','=',True)]</field>
+            <field name="view_id" ref="account.view_account_payment_tree"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Register a payment
+                </p>
+                <p>
+                    Payments are used to register liquidity movements. You can process those payments by your own means
+                    or by using installed facilities.
+                </p>
+            </field>
+        </record>
+
+        <record id="action_personal_sale_invoice_menu" model="ir.actions.act_window">
+            <field name="name">Personal Sale Target Invoices</field>
+            <field name="res_model">account.move</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="view_id" ref="account.view_invoice_tree"/>
+            <field name="domain">[('personal_sale_target_id','!=',False)]</field>
+            <field name="help" type="html">
+                <p>
+                    Personal Sale Target Invoices
+                </p>
+            </field>
+        </record>
+
+        <record id="action_normal_incentive_invoice" model="ir.actions.act_window">
+            <field name="name">Noraml Incentive Invoices</field>
+            <field name="res_model">account.move</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="view_id" ref="account.view_invoice_tree"/>
+            <field name="domain">[('normal_incentive_id','!=',False)]</field>
+            <field name="help" type="html">
+                <p>
+                    Normal Incentive Invoices
+                </p>
+            </field>
+        </record>
+
+
+        <menuitem id="sale_team_target_root" name="Sales Incentive"
+                  web_icon="sale_incentive,static/description/incentive.png"
+                  sequence="8"/>
+
+        <menuitem id="account_payment_menu" name="Incentive Payment" parent="sale_team_target_root" sequence="100"/>
+        
+        <menuitem id="sale_team_menu_incentive" name="Sale Team" parent="sale_team_target_root"
+                  action="sales_team.crm_team_action_config"
+                  groups="product_configure.group_sale_admin"
+                  sequence="101"/>
+
+<!--        <menuitem id="personal_sale_target_invoice_menu" name="Personal Sale Target Invoices"-->
+<!--                  parent="account_payment_menu" sequence="1" action="action_personal_sale_invoice_menu"/>-->
+
+<!--        <menuitem id="normal_incentive_invoice_menu" name="Normal Incentive Invoices" parent="account_payment_menu"-->
+<!--                  sequence="2" action="action_normal_incentive_invoice"/>-->
+
+        <menuitem id="sale_team_target_menu" name="Sale Targets" parent="sale_team_target_root"
+                  sequence="2" groups="sale_incentive.group_sale_target_incentive"/>
+
+        <menuitem id="sale_target_action_menu" name="Sale Targets" parent="sale_team_target_menu"
+                  action="sale_target_action" sequence="1" groups="master_data_extension.group_hr_bu_manager"/>
+
+        <menuitem id="sale_team_target_action_menu" name="Sale Team Targets" parent="sale_team_target_menu"
+                  action="sale_team_target_action" sequence="2"/>
+
+        <menuitem id="personal_sale_target_menu" name="Personal Sale Targets" parent="sale_team_target_menu"
+                  sequence="3" action="personal_sale_target_action"/>
+
+    </data>
+</odoo>

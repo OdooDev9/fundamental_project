@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="sub_part_payment_confirm_form_knk">
+            <field name="name">knk Sub Part Payment Confirm</field>
+            <field name="model">sub.part.payment</field>
+            <field name="arch" type="xml">
+                <form string="create Part Payment">
+                    <group>
+                        <field name="part_amt"/>
+                    </group>
+                    <footer>
+                        <button string="Confirm" name="part_payment_confirm" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>            
+            </field>
+        </record>
+        <record id="action_sub_part_payment_confirm" model="ir.actions.act_window">
+            <field name="name">Create Part Payment</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sub.part.payment</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="sub_part_payment_confirm_form_knk"/>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>

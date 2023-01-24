@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="view_part_order_multi_invoice" model="ir.ui.view">
+		<field name="name">Invoice Orders</field>
+		<field name="model">part.order.multi.invoice</field>
+		<field name="arch" type="xml">
+			<form string="Invoice part order">
+				<p class="oe_grey">
+					Invoices will be created in draft so that you can review them before validation.
+				</p>
+				<footer>
+                	<button name="create_invoices" string="Create Invoice" type="object" class="btn-primary"/>
+                	<button string="Cancel" class="btn-secondary" special="cancel"/>
+				</footer>
+			</form>
+			
+		</field>
+	</record>
+
+	<!-- <record id="action_view_part_order_multi_invoice" model="ir.actions.act_window">
+		<field name="name">Create Invoices</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">part.order.multi.invoice</field>
+		<field name="view_mode">form</field>
+		<field name="target">new</field>
+		<field name="groups_id" eval="[(4,ref('sales_team.group_sale_salesman'))]"/>
+		<field name="binding_model_id" ref="job_request.model_part_order" />
+		<field name="binding_view_types">list</field>
+	</record> -->
+</odoo>

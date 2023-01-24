@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="installment_plan_line_cron" model="ir.cron">
+        <field name="name">Get Invoice Data</field>
+        <field name="model_id" ref="payment_installment_kanak.model_account_move"/>
+        <field name="type">ir.actions.server</field>
+        <field name="state">code</field>
+        <field name="code">model.get_invoice_data()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+    </record>
+
+    <record id="ar_assign_view_search" model="ir.ui.view">
+        <field name="name">ar_assign.view.search</field>
+        <field name="model">ar.assign</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="pic_id" />
+            </search>
+        </field>
+    </record>
+    
+    <record id="ar_assign_view_tree" model="ir.ui.view">
+        <field name="name">ar_assign.view.tree</field>
+        <field name="model">ar.assign</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="report" optional="show"/>
+                <field name="date_from" optional="hide"/>
+                <field name="date_to" optional="hide"/>
+                <field name="pic_id" optional="show"/>
+                <!-- <field name="assign_type" optional="show"/>
+                <field name="invoice_type" optional="show"/>
+                <field name="due_type" optional="show"/> -->
+            </tree>
+        </field>
+    </record>
+    <record id="ar_assign_view_form" model="ir.ui.view">
+        <field name="name">ar_assign.view.form</field>
+        <field name="model">ar.assign</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <header>
+                    <button name="continue_btn" string="Continue" type="object" class="oe_highlight"/>
+                    <button name="assign_btn" string="Assign" type="object"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <label for="date_from" string="Date Range" id="label_dates"/>
+                            <div class="o_row o_row_readonly">
+                                <span class="oe_inline">
+                                        From
+                                </span>
+                                <field name="date_from" widget="daterange" nolabel="1" class="oe_inline" options="{'related_end_date': 'date_to'}"/>
+                                <span class="oe_inline">
+                                        To
+                                </span>
+                                <field name="date_to" widget="daterange" nolabel="1" class="oe_inline" options="{'related_start_date': 'date_from'}"/>
+                            </div>
+                            <field name="report" />
+                            
+                            <!-- <label for="assign_bu" string="Assign Type" id="label_assign_type"/> --> 
+                        </group> 
+                        <group>
+                            <field name="pic_id" widget="many2many_tags" />
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="Assign Type">
+                            <div >
+                                <span class="d-inline-block">
+                                    <field name="assign_bu"/>
+                                    <label for="assign_bu"/>
+                                </span>
+                                <span class="d-inline-block">
+                                    <field name="assign_br"/>
+                                    <label for="assign_br"/>
+                                </span>
+                                <span class="d-inline-block">
+                                    <field name="assign_due_type"/>
+                                    <label for="assign_due_type"/>
+                                </span>
+                            </div>
+                        </group>
+                        <group string="Invoice Type">
+                            <div >
+                                <span class="d-inline-block">
+                                    <field name="invoice_unit_ar"/>
+                                    <label for="invoice_unit_ar"/>
+                                </span>
+                                <span class="d-inline-block">
+                                    <field name="invoice_service_ar"/>
+                                    <label for="invoice_service_ar"/>
+                                </span>
+                                <span class="d-inline-block">
+                                    <field name="invoice_sparepart_ar"/>
+                                    <label for="invoice_sparepart_ar"/>
+                                </span>
+                                <span class="d-inline-block">
+                                    <field name="invoice_rental_ar"/>
+                                    <label for="invoice_rental_ar"/>
+                                </span>
+                                <span class="d-inline-block">
+                                    <field name="invoice_lubricant"/>
+                                    <label for="invoice_lubricant"/>
+                                </span>
+                            </div>
+                        </group>
+                        <group string="BU/BR">
+                            <field name="bu_ids" widget="many2many_tags" />
+                            <field name="br_ids" widget="many2many_tags" />
+                        </group>
+                        <group string="Due Type">
+                            <div >
+                                <span class="d-inline-block">
+                                    <field name="over_due"/>
+                                    <label for="over_due"/>
+                                </span>
+                                <span class="d-inline-block">
+                                    <field name="future_due"/>
+                                    <label for="future_due"/>
+                                </span>
+                                <span class="d-inline-block">
+                                    <field name="current_due"/>
+                                    <label for="current_due"/>
+                                </span>
+                            </div>
+                        </group>
+                    </group>
+                    <notebook>
+                       
+                        <page name="ar_assign" string="List of current information">
+                            <field name="ar_assing_line_ids">
+                                <tree editable="bottom">
+                                    <field name="invoice_id" width="50%%" />
+                                    <field name="partner_id" width="50%%" />
+                                    <field name="business_id" width="50%%" />
+                                    <field name="currency_id" invisible="0" width="50%%" />
+                                    <field name="due_type" width="50%%" />
+                                    <field name="due_amount" width="50%%" />
+                                    <field name="collected_amount" width="50%%" />
+                                    <field name="total_ar_amount" width="50%%" />
+                                    <field name="fine_amount" optional="hide" />
+                                    <field name="remaining_ar_balance" optional="hide" />
+                                    <field name="due_date" optional="hide" />
+                                    <field name="invoice_type" optional="hide" />
+                                    <field name="selling_br_id" optional="hide" />
+
+                                </tree>
+                            </field>
+                            
+                            <group>
+                                <group class="oe_right">
+                                    <field name="currency_id" invisible="1" />
+                                    <field name="overdue_amount" widget="monetary" string="Overdue Amount" class="oe_inline"/>
+                                    <field name="currentdue_amount" widget="monetary" string="Currentdue Amount" class="oe_inline"/>
+                                    <field name="collected_amount" widget="monetary" string="Collected Amount" class="oe_inline"/>
+                                    <field name="total_ar_amount" widget="monetary" string="Total AR Amount" class="oe_inline"/>
+                                </group>  
+                            </group> 
+                        </page>
+                    </notebook> 
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="ar_assign_action" model="ir.actions.act_window">
+        <field name="name">Assign</field>
+        <field name="res_model">ar.assign</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <!-- <field name="help" type="html">
+            
+        </field> -->
+    </record>
+    <menuitem
+        id="ar_assign_root_menu"
+        name="HI5 AR"
+        web_icon="hi5_fa,static/description/hi5.png"
+        sequence="10"/>
+
+    <!-- AR assign line -->
+
+    <record model="ir.ui.view" id="assign_line_filter_search">
+        <field name="name">ar.assign.line.tree.filter_search</field>
+        <field name="model">ar.assign.line</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="invoice_id" />
+                <field name="partner_id" />
+                <field name="business_id" />
+                <field name="currency_id" invisible="0" />
+                <field name="installment_id" />
+                <field name="due_type" />
+                <field name="due_amount" />
+                <field name="collected_amount" />
+                <field name="total_ar_amount" />
+                <field name="fine_amount" optional="hide" />
+                <field name="remaining_ar_balance" optional="hide" />
+                <field name="due_date" optional="hide" />
+                <field name="invoice_type" />
+                <field name="selling_br_id" />
+                <group expand="0" string="Group By">                                            
+                    <filter string="Due Type" name="due_type" context="{'group_by': 'due_type'}"></filter>                                            
+                </group>                                    
+            </search>
+        </field>
+    </record>
+    <record id="ar_assign_line_view_tree" model="ir.ui.view">
+        <field name="name">ar_assign.information.view.tree</field>
+        <field name="model">ar.assign.line</field>
+        <field name="arch" type="xml">
+            <tree string="AR Assign Information">
+                <field name="invoice_id" />
+                <field name="partner_id" />
+                <field name="business_id" />
+                <field name="currency_id" invisible="0" />
+                <field name="installment_id" />
+                <field name="invoice_type"/>
+                <field name="due_type" />
+                <field name="due_amount" />
+                <field name="collected_amount" />
+                <field name="total_ar_amount" />
+                <field name="fine_amount" optional="hide" />
+                <field name="remaining_ar_balance" optional="hide" />
+                <field name="due_date" optional="hide" />
+                <field name="selling_br_id" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="ar_assign_view_form" model="ir.ui.view">
+        <field name="name">ar_assign.information.view.form</field>
+        <field name="model">ar.assign.line</field>
+        <field name="arch" type="xml">
+            <form string="AR Assign Information">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="invoice_id" />
+                            <field name="partner_id" />
+                            <field name="business_id" />
+                            <field name="currency_id" invisible="0" />
+                            <field name="due_type" />
+                            <field name="due_amount" />
+                            <field name="collected_amount" />
+                            <field name="total_ar_amount" />
+                            <field name="ar_action_type" required="True"/>
+                        </group>
+                        <group>
+                            <field name="employee_id" />
+                            <field name="installment_id" />
+                            <field name="fine_amount" />
+                            <field name="remaining_ar_balance" />
+                            <field name="due_date" />
+                            <field name="invoice_type" />
+                            <field name="selling_br_id" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="AR Followup" attrs="{'invisible':['|', ('ar_action_type','=','ar_confirm'), ('ar_action_type','=','ar_remind')]}" context="{'default_partner_id':partner_id}" >
+                            <field name="ar_follow_up_line_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="date" optional="show"/>
+                                    <field name="action" string="Action" width="%15%"/>
+                                    <field name="contact_type" width="13" optional="show"/>
+                                    <field name="partner_id" optional="hide" />
+                                    <field name="customer_phone" width="12" optional="show"/>
+                                    <field name="contact_action" optional="show" width="15"/>
+                                    <field name="fullowup_reason_id"  width="15"/>
+                                    <field name="comment"  width="15"/>
+                                    <field name="promised_payment_date" />
+                                    <field name="promised_payment_amt" />
+                                    <field name="contact_feedback_type" width="30" optional="show"/>
+                                    <field name="on_target_pic" width="15" attrs="{'readonly':[('contact_type','!=','on_terget')]}" optional="show"/>
+                                    <field name="followup_ontarget_fb" width="1" attrs="{'readonly':[('contact_type','!=','on_terget')]}" optional="show"/>
+                                    <field name="notic_time" width="1" attrs="{'readonly':['|','|', ('contact_type','!=','on_terget'),('followup_ontarget_fb','!=','legal_notice'),('followup_ontarget_fb','=','repossess')]}" optional="show"/>
+                                    <field name="notic_date" attrs="{'readonly':['|','|', ('contact_type','!=','on_terget'),('followup_ontarget_fb','!=','legal_notice'),('followup_ontarget_fb','=','repossess')]}" optional="show"/>
+                                    <field name="attachment" width="1" attrs="{'readonly':['|', ('contact_type','!=','on_terget'),('followup_ontarget_fb','in',('legal_notice','repossess'))]}" optional="show"/>
+                                    <field name="br_pic_id" width="1" attrs="{'readonly':[('contact_type','!=','related_br')]}" optional="show"/>
+                                    <field name="br_feedback" width="1" attrs="{'readonly':[('contact_type','!=','related_br')]}" optional="show"/>
+                                    <field name="pic_comment" width="1" attrs="{'readonly':['|', ('contact_type','=','customer'),('br_feedback','=','negotiation'),('followup_ontarget_fb','in',('legal_notice','repossess'))]}" optional="show"/>
+                                    <field name="nego_payment_date" attrs="{'readonly':['|', ('contact_type','!=','related_br'),('br_feedback','!=','negotiation')]}" optional="show"/>
+                                    <field name="nego_payment_amount" attrs="{'readonly':['|', ('contact_type','!=','related_br'),('br_feedback','!=','negotiation')]}" optional="show"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="AR Confirmation" attrs="{'invisible':['|', ('ar_action_type','=','ar_followup'), ('ar_action_type','=','ar_remind')]}">
+                            <field name="ar_confirm_line_ids" nolabel="1" >
+                                <tree editable="bottom">
+                                    <field name="date" width="1"/>
+                                    <field name="action" width="1"/>
+                                    <field name="contact_type" width="1"/>
+                                    <field name="confirmation_type" width="1"/>
+                                    <field name="contact_action" width="1"/>
+                                    <field name="customer_feedback" width="1" attrs="{'invisible':[('contact_action','=','not_available')]}"/>
+                                    <field name="customer_reason" width="1" attrs="{'invisible':['|', ('contact_action','=','not_available'),('customer_feedback','=','customer_confirmed')]}"/>
+                                    <field name="attachment" width="1" attrs="{'invisible':['|', ('contact_action','=','not_available'),('customer_feedback','=','customer_confirmed')]}"/>
+                                    <field name="payment_collected_person" width="1" attrs="{'invisible':['|', ('contact_action','=','not_available'),('customer_feedback','=','customer_confirmed')]}"/>
+                                    <field name="comment" width="1" attrs="{'invisible':[('contact_action','=','not_available')]}"/>
+                                    <field name="contact_feedback_type" width="1" attrs="{'invisible':[('contact_action','=','available')]}"/>
+                                    <field name="future_due_payment_term" width="1" attrs="{'invisible':['|', ('contact_action','=','not_available'),'|', ('customer_feedback','!=','no_confirmed'),('customer_reason','=','fine_amt_issue')]}"/>
+                                    <field name="boh_comment" width="1" attrs="{'invisible':['|', ('contact_action','=','not_available'),'|', ('customer_feedback','!=','no_confirmed'),('customer_reason','=','fine_amt_issue')]}"/>
+                                    <field name="bu_fa_comment" width="1" attrs="{'invisible':['|', ('contact_action','=','not_available'),'|', ('customer_feedback','!=','no_confirmed'),('customer_reason','=','fine_amt_issue')]}"/>
+                                    <field name="bu_gm_comment" width="1" attrs="{'invisible':['|', ('contact_action','=','not_available'),'|', ('customer_feedback','!=','no_confirmed'),('customer_reason','=','fine_amt_issue')]}"/>
+                                    <field name="coo_comment" width="1" attrs="{'invisible':['|', ('contact_action','=','not_available'),'|', ('customer_feedback','!=','no_confirmed'),('customer_reason','=','fine_amt_issue')]}"/>
+                                    <field name="coo_feedback" width="1" attrs="{'invisible':['|', ('contact_action','=','not_available'),'|', ('customer_feedback','!=','no_confirmed'),('customer_reason','=','fine_amt_issue')]}"/>
+                                    <field name="state"/> 
+                                    <button string="Approve By BOH" icon="fa-check" name="action_boh_approve" type="object" class="oe_highlight"/>
+                                    <button string="Approve By BU FA DH" icon="fa-check" name="action_bu_fa_approve" type="object" class="oe_highlight"/>
+                                    <button string="Approve By BU GM" icon="fa-check" name="action_bu_gm_approve" type="object" class="oe_highlight"/>
+                                    <button string="Approve By COO" icon="fa-check" name="action_coo_approve" type="object" class="oe_highlight"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="AR Remind" attrs="{'invisible':['|', ('ar_action_type','=','ar_followup'), ('ar_action_type','=','ar_confirm')]}">
+                            <field name="ar_remind_line_ids" nolabel="1" >
+                                <tree editable="bottom">
+                                    <field name="date" width="1"/>
+                                    <field name="action"/>
+                                    <field name="contact_type"/>
+                                    <field name="customer_phone"/>
+                                    <field name="remind_type"/>
+                                    <field name="contact_action"/>
+                                    <field name="remind_customer_fb_id" attrs="{'invisible':[('contact_action','=','not_available')]}"/>
+                                    <field name="comment" attrs="{'invisible':[('contact_action','=','not_available')]}"/>
+                                    <field name="promised_payment_date" attrs="{'invisible':[('contact_action','=','not_available')]}"/>
+                                    <field name="promised_payment_amt" attrs="{'invisible':[('contact_action','=','not_available')]}"/>
+                                    <field name="contact_feedback_type" attrs="{'invisible':[('contact_action','!=','not_available')]}"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+<!-- tree view start -->
+    <record id="ar_follow_up_view_tree" model="ir.ui.view">
+        <field name="name">ar_follow_up.view.tree</field>
+        <field name="model">ar.follow.up</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="date" optional="show" width="1"/>
+                <field name="action" string="Action" width="1"/>
+                <!-- <field name="contact_type" width="13" optional="show"/> -->
+                <!-- <field name="partner_id" optional="hide" /> -->
+                <field name="customer_phone" width="1" optional="show"/>
+                <!-- <field name="contact_action" optional="show" width="15"/> -->
+                <!-- <field name="fullowup_reason_id" attrs="{'readonly':['|', ('contact_type','!=','customer'),('contact_action','!=','available')]}" width="15"/> -->
+                <field name="comment"  width="1"/>
+                <field name="promised_payment_date" width="1"/>
+                <field name="promised_payment_amt" width="1"/>
+                <field name="contact_feedback_type" width="1" optional="show"/>
+                <field name="on_target_pic" width="1" optional="show"/>
+                <field name="followup_ontarget_fb" width="1" optional="show"/>
+                <field name="notic_date" optional="show"/>
+                <field name="notic_time" width="1" optional="show"/>
+                <field name="attachment" width="1" optional="show"/>
+                <!-- <field name="br_pic_id" width="1" attrs="{'readonly':[('contact_type','!=','related_br')]}" optional="show"/>
+                <field name="br_feedback" width="1" attrs="{'readonly':[('contact_type','!=','related_br')]}" optional="show"/>
+                <field name="pic_comment" width="1" attrs="{'readonly':['|', ('contact_type','=','customer'),('br_feedback','=','negotiation'),('followup_ontarget_fb','in',('legal_notice','repossess'))]}" optional="show"/>
+                <field name="nego_payment_date" attrs="{'readonly':['|', ('contact_type','!=','related_br'),('br_feedback','!=','negotiation')]}" optional="show"/>
+                <field name="nego_payment_amount" attrs="{'readonly':['|', ('contact_type','!=','related_br'),('br_feedback','!=','negotiation')]}" optional="show"/> -->
+            </tree>
+        </field>
+    </record>
+
+    <record id="ar_confirm_view_tree" model="ir.ui.view">
+        <field name="name">ar_confirm.view.tree</field>
+        <field name="model">ar.confirm</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <!-- <field name="date" width="1"/> -->
+                <field name="customer_reason" />
+                <field name="action" />
+                <field name="contact_type" />
+                <!-- <field name="confirmation_type" /> -->
+                <!-- <field name="contact_action" /> -->
+                <field name="customer_feedback"  />
+                <!-- <field name="attachment" /> -->
+                <!-- <field name="payment_collected_person" /> -->
+                <!-- <field name="comment"  attrs="{'invisible':[('contact_action','=','not_available')]}"/> -->
+                <!-- <field name="contact_feedback_type"  attrs="{'invisible':[('contact_action','=','available')]}"/> -->
+                <!-- <field name="future_due_payment_term"  attrs="{'invisible':['|', ('contact_action','=','not_available'),'|', ('customer_feedback','!=','no_confirmed'),('customer_reason','=','fine_amt_issue')]}"/> -->
+                <!-- <field name="boh_comment"  attrs="{'invisible':['|', ('contact_action','=','not_available'),'|', ('customer_feedback','!=','no_confirmed'),('customer_reason','=','fine_amt_issue')]}"/> -->
+                <!-- <field name="bu_fa_comment"  attrs="{'invisible':['|', ('contact_action','=','not_available'),'|', ('customer_feedback','!=','no_confirmed'),('customer_reason','=','fine_amt_issue')]}"/> -->
+                <!-- <field name="bu_gm_comment"  attrs="{'invisible':['|', ('contact_action','=','not_available'),'|', ('customer_feedback','!=','no_confirmed'),('customer_reason','=','fine_amt_issue')]}"/> -->
+                <!-- <field name="coo_comment"  attrs="{'invisible':['|', ('contact_action','=','not_available'),'|', ('customer_feedback','!=','no_confirmed'),('customer_reason','=','fine_amt_issue')]}"/> -->
+                <!-- <field name="coo_feedback"  attrs="{'invisible':['|', ('contact_action','=','not_available'),'|', ('customer_feedback','!=','no_confirmed'),('customer_reason','=','fine_amt_issue')]}"/> -->
+                <field name="state"/> 
+            </tree>
+        </field>
+    </record>
+
+    <record id="ar_remind_view_tree" model="ir.ui.view">
+        <field name="name">ar_remind.view.tree</field>
+        <field name="model">ar.remind</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="date"/>
+                <field name="customer_phone"/>
+                <field name="action"/>
+                <!-- <field name="contact_type"/> -->
+                <field name="remind_type"/>
+                <!-- <field name="contact_action"/> -->
+                <!-- <field name="remind_customer_fb_id" attrs="{'invisible':[('contact_action','=','not_available')]}"/> -->
+                <!-- <field name="comment" attrs="{'invisible':[('contact_action','=','not_available')]}"/> -->
+                <field name="promised_payment_date" width="1"/>
+                <field name="promised_payment_amt" width="1"/>
+                <field name="contact_feedback_type" width="1"/>
+            </tree>
+        </field>
+    </record>
+<!-- tree view end -->
+
+<!-- Action -->
+    <!-- AR assign line action -->
+    <record id="ar_assign_line_action" model="ir.actions.act_window">
+        <field name="name">AR Assign Information</field>
+        <field name="res_model">ar.assign.line</field>
+        <field name="view_mode">tree</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <record id="ar_assign_sub_action" model="ir.actions.act_window">
+        <field name="name">AR Assign</field>
+        <field name="res_model">ar.assign</field>
+        <field name="view_mode">tree</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <record id="ar_assign_line_sub_action" model="ir.actions.act_window">
+        <field name="name">AR Assgin Line</field>
+        <field name="res_model">ar.assign.line</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+
+     <record id="ar_follow_up_action" model="ir.actions.act_window">
+        <field name="name">AR Follow Up</field>
+        <field name="res_model">ar.follow.up</field>
+        <field name="view_mode">tree</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+    <record id="ar_confirm_action" model="ir.actions.act_window">
+        <field name="name">AR Confirm</field>
+        <field name="res_model">ar.confirm</field>
+        <field name="view_mode">tree</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        
+    </record>
+    <record id="ar_remind_action" model="ir.actions.act_window">
+        <field name="name">AR Remind</field>
+        <field name="res_model">ar.remind</field>
+        <field name="view_mode">tree</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+
+<!-- menu -->
+<menuitem
+        id="ar_assign_info_menu"
+        name="AR Assign Information"
+        parent="ar_assign_root_menu"
+        sequence="11"/>
+    <menuitem
+        id="ar_assing_sub_menu"
+        name="AR Assign"
+        action="ar_assign_sub_action"
+        parent="ar_assign_info_menu"
+        sequence="11"/>
+
+    <menuitem
+        id="ar_assign_line_sub_menu"
+        name="AR Assign Line"
+        action="ar_assign_line_action"
+        parent="ar_assign_info_menu"
+        sequence="11"/>
+
+    <menuitem
+        id="ar_follow_up_menu"
+        name="AR Follow Up"
+        action="ar_follow_up_action"
+        parent="ar_assign_info_menu"
+        sequence="12"/>
+    <menuitem
+        id="ar_confirm_menu"
+        name="AR Confirmation"
+        action="ar_confirm_action"
+        parent="ar_assign_info_menu"
+        sequence="12"/>
+    <menuitem
+        id="ar_remind_menu"
+        name="AR Remind"
+        action="ar_remind_action"
+        parent="ar_assign_info_menu"
+        sequence="12"/>   
+</odoo>

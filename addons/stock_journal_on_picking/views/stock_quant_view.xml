@@ -1,0 +1,23 @@
+<odoo>
+    <record model="ir.ui.view" id="add_state_view_stock_quant_tree">
+		<field name="name">add.state.stock.quant.inventory.tree.editable</field>
+		<field name="model">stock.quant</field>
+		<field name="inherit_id" ref="stock.view_stock_quant_tree_inventory_editable" />
+		<field eval="10" name="priority" />
+		<field name="arch" type="xml">
+            <xpath expr="//button[@name='action_inventory_history']" position="before">
+            <field name="state"></field>
+                
+                <button name="action_approve_inv_head" groups="product_configure.group_inventory_head" type="object" string="Approve By Inventory Head" icon="fa-save" attrs="{'invisible': ['|',('inventory_quantity_set', '=', False),('state','!=','draft')]}"/>
+                <button name="action_approve_finance_head" type="object" groups='product_configure.group_finance_account_head' string="Approve By F &amp; A Head" icon="fa-save" attrs="{'invisible': ['|',('inventory_quantity_set', '=', False),('state','!=','approved_inv_head')]}"/>
+                <!-- <button name="action_approve_gm_agm" groups="product_configure.group_gm_agm" type="object" string="Approve By GM/AGM" icon="fa-save" attrs="{'invisible': ['|',('inventory_quantity_set', '=', False),('state','!=','approved_finance_head')]}"/> -->
+               
+                
+            </xpath>
+            <xpath expr="//button[@name='action_apply_inventory']" position="replace">
+                <button name="action_apply_inventory" groups="stock.group_stock_manager" type="object" string="Apply" class="btn btn-link" icon="fa-save" attrs="{'invisible': ['|',('state','!=','approved_finance_head'),('inventory_quantity_set', '=', False)]}"/>
+                </xpath>
+            
+		</field>
+	</record>
+</odoo>

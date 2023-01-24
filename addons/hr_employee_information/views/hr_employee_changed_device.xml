@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="hr_employee_changed_device_view_tree" model="ir.ui.view">
+        <field name="name">hr.employee.changed.device.view.tree</field>
+        <field name="model">hr.employee.changed.device</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="employee_id"/>
+                <field name="employee_number"/>
+                <field name="create_date"/>
+                <field name="write_date"/>
+                <field name='old_device_id'/>
+                <field name='new_device_id'/>
+                <field name='count'/>
+            </tree>
+        </field>
+    </record>
+    <record id="hr_employee_changed_device_view_form" model="ir.ui.view">
+        <field name="name">Hr Employee Changed Device View Form</field>
+        <field name="model">hr.employee.changed.device</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>                        
+                        <group>
+                            <field name="employee_id"/>
+                            <field name='old_device_id'/>
+                            <field name="create_date"/>
+                            <field name='old_img' widget='image'/>
+                        </group>
+                        <group>
+                            <field name="employee_number"/>
+                            <field name='new_device_id'/>
+                            <field name="write_date"/>
+                            <field name='new_img' widget='image'/>
+                        </group>
+                    </group>
+                        <h1>
+                            <label for="count">Count </label>
+                            <field class="mx-5" name='count'/>
+                        </h1>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="hr_employee_changed_device_action" model="ir.actions.act_window">
+        <field name="name">Employee Changed Device</field>
+        <field name="res_model">hr.employee.changed.device</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <!-- <menuitem name="Changed Device" id="changed_device" parent="master_data_extension.master_data_menu" -->
+    <!-- action="hr_employee_changed_device_action"/> -->
+
+    <menuitem id="hr_employee_changed_device" name="Changed Device" parent="hr.menu_hr_root" action='hr_employee_changed_device_action' sequence="53"/>
+</odoo>

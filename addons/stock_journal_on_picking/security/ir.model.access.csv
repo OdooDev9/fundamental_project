@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_lot_serial_transfer,lot.serial.transfer,model_lot_serial_transfer_wizard,,1,1,1,0
+access_product_product_bu_manager,product.product bu_manger,product.model_product_product,master_data_extension.group_hr_bu_manager,1,1,1,0
+access_product_tmp_bu_manager,product.template bu_manger,product.model_product_template,master_data_extension.group_hr_bu_manager,1,1,1,0
+access_product_product_bu_user,product.product bu_user,product.model_product_product,master_data_extension.group_hr_bu_user,1,1,1,0
+access_product_tmp_bu_user,product.template bu_user,product.model_product_template,master_data_extension.group_hr_bu_user,1,1,1,0
+stock.access_product_template_stock_manager,product.template stock_manager,product.model_product_template,stock.group_stock_manager,1,0,0,0
+access_product_temp_br_manager,product.product.temp.br.manager,product.model_product_template,master_data_extension.group_hr_branch_manager,1,0,0,0
+access_product_temp_br_user,product.product.temp.br.user,product.model_product_template,master_data_extension.group_hr_branch_user,1,0,0,0
+access_product_product_br_manager,product.product.br.manager,product.model_product_product,master_data_extension.group_hr_branch_manager,1,0,0,0
+access_product_product_br_user,product.product.br.user,product.model_product_product,master_data_extension.group_hr_branch_user,1,0,0,0
+

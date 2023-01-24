@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="account_account_type_menu" name="Account Type" parent="account.account_account_menu" action="account.action_account_type_form" sequence="10"/>
+
+</odoo>

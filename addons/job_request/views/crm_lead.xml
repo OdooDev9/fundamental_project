@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="crm_lead_job_request_view" model="ir.ui.view">
+		<field name="name">crm.lead.job.request</field>
+		<field name="model">crm.lead</field>
+		<field name="inherit_id" ref="sale_crm.crm_case_form_view_oppor"/>
+		<field name="arch" type="xml">
+			<xpath expr="//button[@name='action_sale_quotations_new']" position="after">
+				<button string="New Job Request" name="action_job_request_new" type="object" class="oe_highlight" attrs="{'invisible':['|',('type','=','lead'),'&amp;',('probability','=',0),('active','=',False)]}"/>
+			</xpath>
+			<button name="action_view_sale_quotation" position="after">
+				<button class="oe_stat_button" type="object" name="action_view_job_request" icon="fa-pencil-square-o" attrs="{'invisible':[('type','=','lead')]}">
+					<field name="job_request_count" widget="statinfo" string="Job Request"/>
+				</button>
+			</button>
+		</field>
+	</record>
+</odoo>

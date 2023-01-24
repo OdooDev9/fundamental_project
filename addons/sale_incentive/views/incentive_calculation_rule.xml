@@ -1,0 +1,148 @@
+<odoo>
+    <data>
+        <record id="incentive_calculation_rule_form_view" model="ir.ui.view">
+            <field name="name">Incentive Calculation Rule</field>
+            <field name="model">incentive.calculation.rule</field>
+            <field name="arch" type="xml">
+                <form string="incentive Calculation Rule Form">
+                    <header>
+                        <field name="bu_user_approve" invisible="1"></field>
+                        <button name="action_gm_agm" type="object" class="oe_highlight" string="Approve By GM/AGM"  attrs="{'invisible':['|',('bu_user_approve','=',False),('state','!=','draft')]}" groups="product_configure.group_gm_agm"/>
+                        <button name="action_coo" type="object" class="oe_highlight" string="Approve By COO"  attrs="{'invisible':['|',('bu_user_approve','=',False),('state','!=','gm_agm')]}" groups="product_configure.group_coo_dept"/>
+                        <field name="state" widget="statusbar"/>  
+
+
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"  attrs="{'readonly':[('state','not in','draft')]}"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <!-- <field name="sp_fixed_or_percent"/> -->
+                                <field name="branch_id" invisible="1"/>
+                                <field name="define_branch_id" invisible="1"/>
+                                <field name="is_active"/>
+                                <field name="business_id" required="1" options="{'no_create': True}"  attrs="{'readonly':[('state','not in','draft')]}"/>
+                                <field name='b2b_b2c' attrs="{'readonly':[('state','not in','draft')]}"/>
+                                <field name="currency_id" options="{'no_create': True}"  attrs="{'readonly':[('state','not in','draft')]}"/>
+                            </group>
+                            <group>
+                                <field name="different_with_sale_target" invisible="1"  attrs="{'readonly':[('state','not in','draft')]}"/>
+                                <field name="sale_target_amount"
+                                       attrs="{'invisible':[('different_with_sale_target','=',False)],'readonly':[('state','not in','draft')]}" />
+                                <field name="incentive_calculation" attrs="{'readonly':[('state','not in','draft')]}"/>
+                                <field name="payment_rule" invisible="1"  attrs="{'readonly':[('state','not in','draft')]}"/>
+                                <field name="journal_id" string="Incentive Journal" required="1"  attrs="{'readonly':[('state','not in','draft')]}"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Incentive Calculation">
+                                <group>
+                                    <group string="Salesperson">
+                                        <field name="sale_person_settlement_period"  attrs="{'readonly':[('state','not in','draft')]}"/>
+                                        <field name="sale_person_used"  attrs="{'readonly':[('state','not in','draft')]}"/>
+                                        <field name="account_id" attrs="{'invisible':[('sale_person_used','!=',True)],'required':[('sale_person_used','=',True)],'readonly':[('state','not in','draft')]}"/>
+                                        <field name="sale_person_incentive_percentage" attrs="{'readonly':[('state','not in','draft')]}"/>
+
+                                        <field name="sale_person_monthly_start_day"
+                                               attrs="{'invisible':[('sale_person_settlement_period','!=','monthly')],'required':[('sale_person_settlement_period','=','monthly')],'readonly':[('state','not in','draft')]}"/>
+                                        <field name="sale_person_monthly_end_day"
+                                               attrs="{'invisible':[('sale_person_settlement_period','!=','monthly')],'required':[('sale_person_settlement_period','=','monthly')],'readonly':[('state','not in','draft')]}"/>
+                                        <field name="sale_person_quaterly_time"
+                                               attrs="{'invisible':[('sale_person_settlement_period','!=','quaterly')],'required':[('sale_person_settlement_period','=','quaterly')],'readonly':[('state','not in','draft')]}"/>
+                                        <field name="sale_person_quaterly_start_date"
+                                               attrs="{'invisible':[('sale_person_settlement_period','!=','quaterly')],'required':[('sale_person_settlement_period','=','quaterly')],'readonly':[('state','not in','draft')]}"/>
+                                        <field name="sale_person_quaterly_end_date"
+                                               attrs="{'invisible':[('sale_person_settlement_period','!=','quaterly')],'required':[('sale_person_settlement_period','=','quaterly')],'readonly':[('state','not in','draft')]}"/>
+
+                                        <field name="sale_person_annually_date"
+                                               attrs="{'invisible':[('sale_person_settlement_period','!=','annually')],'required':[('sale_person_settlement_period','=','annually')],'readonly':[('state','not in','draft')]}"/>
+                                        <field name="sale_person_user_defined_date"
+                                               attrs="{'invisible':[('sale_person_settlement_period','!=','user_defined')],'required':[('sale_person_settlement_period','=','user_defined')],'readonly':[('state','not in','draft')]}"/>
+                                    </group>
+                                    <group string="Pooling BU/BR">
+                                        <field name="pooling_settlement_period" attrs="{'readonly':[('state','not in','draft')]}"/>
+                                        <field name="pooling_used"/>
+                                        <field name="pooling_account_id" attrs="{'invisible':[('pooling_used','!=',True)],'required':[('pooling_used','=',True)],'readonly':[('state','not in','draft')]}"/>
+                                        <field name="pooling_incentive_percentage" attrs="{'readonly':[('state','not in','draft')]}"/>
+                                        <field name="pooling_monthly_start_day"
+                                               attrs="{'invisible':[('pooling_settlement_period','!=','monthly')],'required':[('pooling_settlement_period','=','monthly')],'readonly':[('state','not in','draft')]}"/>
+                                        <field name="pooling_monthly_end_day"
+                                               attrs="{'invisible':[('pooling_settlement_period','!=','monthly')],'required':[('pooling_settlement_period','=','monthly')],'readonly':[('state','not in','draft')]}"/>
+                                        <field name="pooling_quaterly_time"
+                                               attrs="{'invisible':[('pooling_settlement_period','!=','quaterly')],'required':[('pooling_settlement_period','=','quaterly')],'readonly':[('state','not in','draft')]}"/>
+                                        <field name="pooling_quaterly_start_date"
+                                               attrs="{'invisible':[('pooling_settlement_period','!=','quaterly')],'required':[('pooling_settlement_period','=','quaterly')],'readonly':[('state','not in','draft')]}"/>
+                                        <field name="pooling_quaterly_end_date"
+                                               attrs="{'invisible':[('pooling_settlement_period','!=','quaterly')],'required':[('pooling_settlement_period','=','quaterly')],'readonly':[('state','not in','draft')]}"/>
+                                        <field name="pooling_annually_date"
+                                               attrs="{'invisible':[('pooling_settlement_period','!=','annually')],'required':[('pooling_settlement_period','=','annually')],'readonly':[('state','not in','draft')]}"/>
+                                        <field name="pooling_user_defined_date"
+                                               attrs="{'invisible':[('pooling_settlement_period','!=','user_defined')],'required':[('pooling_settlement_period','=','user_defined')],'readonly':[('state','not in','draft')]}"/>
+
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Performance Range">
+                                <field name="incentive_performance_range_ids"  attrs="{'readonly':[('state','not in','draft')]}">
+                                    <tree string="Performance Range" editable="bottom">
+                                        <field name="incentive_calculation_rule_id" invisible="1" />
+                                        <field name="sale_target_operator"
+                                               attrs="{'column_invisible':[('parent.different_with_sale_target','=',False)]}"/>
+                                        <field name="sale_target_amount"
+                                               attrs="{'column_invisible':[('parent.different_with_sale_target','=',False)]}"/>
+                                        <field name="lower_range"/>
+                                        <field name="conditional_operator"/>
+                                        <field name="higher_range"/>
+                                        <field name="incentive_amount"
+                                               attrs="{'column_invisible':[('parent.incentive_calculation','=','percentage')]}"/>
+                                        <field name="incentive_percentage"
+                                               attrs="{'column_invisible':[('parent.incentive_calculation','=','agent')]}"/>
+                                        <field name="outstanding"
+                                               attrs="{'column_invisible':[('parent.incentive_calculation','=','agent')]}"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="incentive_calculation_rule_tree_view" model="ir.ui.view">
+            <field name="name">Incentive Calculation Rule</field>
+            <field name="model">incentive.calculation.rule</field>
+            <field name="arch" type="xml">
+                <tree string="Incentive Calculation Rules">
+                    <field name="name"/>
+                    <field name="branch_id"/>
+                    <field name='is_active' optional="hide"/>
+                    <field name="b2b_b2c" optional="show"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="incentive_calculation_rule_action" model="ir.actions.act_window">
+            <field name="name">Incentive Calculation Rule Action</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">incentive.calculation.rule</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p>
+                    Create Incentive Calculation Rule
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="incentive_calculation_rule_menu" name="Incentive Calculation Rules"
+                  parent="sale_incentive.sale_team_target_menu" sequence="10" groups="master_data_extension.group_hr_bu_manager"
+                  action="sale_incentive.incentive_calculation_rule_action"/>
+
+
+    </data>
+</odoo>

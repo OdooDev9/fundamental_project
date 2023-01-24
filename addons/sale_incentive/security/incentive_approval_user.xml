@@ -1,0 +1,13 @@
+<odoo>
+    <data>
+        <record id="group_cca_dh" model="res.groups">
+            <field name="name">
+               CCA DH
+            </field>
+        </record>
+        <record id="group_cca_gm" model="res.groups">
+            <field name="name">CCA GM</field>
+        </record>
+
+    </data>
+</odoo>

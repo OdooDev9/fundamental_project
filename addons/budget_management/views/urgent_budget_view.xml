@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_urgent_budget_form" model="ir.ui.view">
+        <field name="name">urgent.budget.request.form</field>
+        <field name="model">urgent.budget.request</field>
+        <field name="arch" type="xml">
+            <form string="Claim Form">
+                <header>
+                    <field name="bu_br_user_approve" invisible="1"></field>
+                    <field name="cfd_user_approve" invisible="1"></field>
+                    <field name="br_user_approve" invisible="1"></field>
+                    <button name="action_submit" string="Approve By F&amp;A M Check" type="object" class="oe_highlight" attrs="{'invisible':[('state','not in','draft')]}" groups="product_configure.group_finance_account_head"/>
+                    <button name="action_boh" string="Approve By BOH" type="object" class="oe_highlight" attrs="{'invisible':['|',('state','not in','submit'),('br_user_approve','=',False)]}" groups="product_configure.group_boh,product_configure.group_inventory_head"/>
+                    <button name="gm_approved" string="Approve By GM/AGM" type="object" class="oe_highlight" attrs="{'invisible':['|',('state','not in','submit'),('bu_br_user_approve','=',False)]}" groups="product_configure.group_gm_agm,product_configure.group_cfo,product_configure.group_ceo"/>
+                    <button name="coo_approved" string="Approve By COO" type="object" class="oe_highlight" attrs="{'invisible':['|',('state','not in','gm_agm'),('bu_br_user_approve','=',False)]}" groups="product_configure.group_coo_dept,product_configure.group_po_management_dept"/>
+                    <button name="budget_pic_checked" string="Approve By CFD Budget PIC" type="object" class="oe_highlight" attrs="{'invisible':['|',('state','not in',['coo','boh']),('cfd_user_approve','=',False)]}" groups="budget_management.group_budget_pic"/>
+                    <button name="action_confirm" string="Approve By CFD GM/AGM Approve" type="object" class="oe_highlight" attrs="{'invisible':['|',('state','not in','budget_pic'),('cfd_user_approve','=',False)]}" groups="product_configure.group_gm_agm,product_configure.group_cfo,product_configure.group_ceo" />
+                    <button name="%(action_urgent_approval_wizard)d" string="Paid" type="action" states="confirm" class="oe_highlight" />
+                    <field name="state" widget="statusbar" />
+
+                    <!-- For Dev Testing -->
+                    <!-- <field name="bu_br_user_approve" invisible="1"></field>
+                    <field name="cfd_user_approve" invisible="1"></field>
+                    <field name="br_user_approve" invisible="1"></field>
+                    <button name="action_submit" string="Approve By F&amp;A M Check" type="object" class="oe_highlight" groups="product_configure.group_finance_account_head"/>
+                    <button name="action_boh" string="Approve By BOH" type="object" class="oe_highlight" groups="product_configure.group_boh,product_configure.group_inventory_head"/>
+                    <button name="gm_approved" string="Approve By GM/AGM" type="object" class="oe_highlight" groups="product_configure.group_gm_agm,product_configure.group_cfo,product_configure.group_ceo"/>
+                    <button name="coo_approved" string="Approve By COO" type="object" class="oe_highlight" groups="product_configure.group_coo_dept,product_configure.group_po_management_dept"/>
+                    <button name="budget_pic_checked" string="Approve By CFD Budget PIC" type="object" class="oe_highlight" groups="budget_management.group_budget_pic"/>
+                    <button name="action_confirm" string="Approve By CFD GM/AGM Approve" type="object" class="oe_highlight" groups="product_configure.group_gm_agm,product_configure.group_cfo,product_configure.group_ceo" />
+                    <button name="%(action_urgent_approval_wizard)d" string="Paid" type="action" states="confirm" class="oe_highlight" />
+                    <field name="state" widget="statusbar" /> -->
+                    <!-- For Dev Testing -->
+                </header>
+                <sheet>              
+                    <div class="oe_button_box" name="button_box">
+                        <!-- Expenses -->
+                        <button name="action_view_expense" type="object" class="oe_stat_button" icon="fa-bars"><field name="available_amount" widget="statinfo" string="Available"/></button>
+                        <!-- <button name="action_view_expense" type="object" class="oe_stat_button" icon="fa-bars"><field name="expense_amount" nolabel="1" widget="statinfo" string=""/></button> -->
+                        <button name="action_view_expense" type="object" class="oe_stat_button" icon="fa-bars"><field name="expense_amount_confirmed" widget="statinfo" string="Confirmed"/></button>   
+                        <button name="action_view_expense" type="object" class="oe_stat_button" icon="fa-usd" attrs="{'invisible':[('expense_count','=',0)]}"><field name="expense_count" widget="statinfo" string="Expenses"/></button>
+
+                        <button name="action_move_items" type="object" class="oe_stat_button" icon="fa-bars" string="Journal Items"/>
+                        <button name="action_advances_items" type="object" class="oe_stat_button" icon="fa-bars">
+                            <div class="o_field_widget o_stat_info">
+                                <!-- <span class="o_stat_value">
+                                    <field name="weekly_count"/>
+                                </span> -->
+                                <span class="o_stat_text">Items</span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="oe_title mb24">
+                        <h2>
+                            <field name="name" nolabel="1" readonly="1"/>
+                        </h2>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="business_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="user_id"/>
+                            <field name="date" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <!-- <field name="ref" required="1" attrs="{'readonly':[('state','!=','draft')]}"/> -->
+                            <label for="date_start" string="Budget Date (Urgent)" />
+                            <div>
+                                <field name="date_start" nolabel="1" class="oe_inline" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <label for="date_start" string=" - "/>
+                                <field name="date_end" nolabel="1" class="oe_inline" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            </div>
+                            <field name="currency_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Budget Items">
+                            <field name="line_ids" attrs="{'readonly':[('state','!=','draft')]}">
+                                <tree editable="bottom">
+                                    <field name="account_id" required="1"/>
+                                    <field name="name" required="1"/>
+                                    <field name="analytic_account_id" />
+                                    <field name="amount" widget="monetary"/>
+                                    <field name="currency_id" invisible="1" />
+                                    <field name="remark" />
+                                </tree>
+                            </field>
+                            <group name="note_group" col="6" class="mt-2 mt-md-0">
+                                <group colspan="4">
+                                    <field name="note" class="oe-bordered-editor" nolabel="1" placeholder="Terms and conditions..." attrs="{'readonly':[('state','!=','draft')]}"/>
+                                </group>
+                                <group class="oe_subtotal_footer oe_right" colspan="2" name="urgent_total">
+                                    <field name="total" string="Total" colspan="2" widget="monetary"/>
+                                </group>
+                                <div class="oe_clear"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="view_urgent_budget_tree" model="ir.ui.view">
+        <field name="name">urgent.budget.request.tree</field>
+        <field name="model">urgent.budget.request</field>
+        <field name="arch" type="xml">
+            <tree string="Urgent Budget Tree">
+                <field name="name" />
+                <field name="business_id" />
+                <field name="date" />
+                <!-- <field name="ref" /> -->
+                <field name="state" />
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="action_urgent_budget">
+        <field name="name">Urgent Budget Request</field>
+        <field name="res_model">urgent.budget.request</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

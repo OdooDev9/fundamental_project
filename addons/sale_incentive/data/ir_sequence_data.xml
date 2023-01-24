@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="seq_sale_team_target" model="ir.sequence">
+			<field name="name">Sale Team Target</field>
+			<field name="code">sale.team.target</field>
+			<field name="prefix">STT</field>
+			<field name="padding">5</field>
+			<field name="company_id" eval="False"/>
+		</record>
+
+		<record id="seq_personal_sale_target" model="ir.sequence">
+			<field name="name">Personal Sale Target</field>
+			<field name="code">personal.sale.target</field>
+			<field name="prefix">PST</field>
+			<field name="padding">5</field>
+			<field name="company_id" eval="False"/>
+		</record>
+
+		<!-- <record id="seq_branch_incentive_settlement" model="ir.sequence">
+			<field name="name">Branch Incentive Settlement</field>
+			<field name="code">branch.incentive.settlement</field>
+			<field name="prefix">BIS</field>
+			<field name="padding">5</field>
+			<field name="company_id" eval="False"/>
+		</record>
+ -->
+		<record id="seq_normal_incentive" model="ir.sequence">
+			<field name="name">Normal Incentive Items</field>
+			<field name="code">normal.incentive</field>
+			<field name="prefix">NII</field>
+			<field name="padding">5</field>
+			<field name="company_id" eval="False"/>
+		</record>
+		<record id="seq_main_incentive" model="ir.sequence">
+			<field name="name">Normal Incentive</field>
+			<field name="code">normal.incentive.main</field>
+			<field name="prefix">NI</field>
+			<field name="padding">5</field>
+			<field name="company_id" eval="False"/>
+		</record>
+
+		<!-- Incentive Request Sequence -->
+
+		<record id="seq_incentive_request" model="ir.sequence">
+			<field name="name">Incentive Request</field>
+			<field name="code">incentive.request</field>
+			<field name="prefix">IR</field>
+			<field name="padding">5</field>
+			<field name="company_id" eval="False"/>
+		</record>
+
+	</data>
+</odoo>

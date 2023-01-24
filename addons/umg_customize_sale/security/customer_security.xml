@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="customer_access_right_rule" model="ir.rule">
+        <field name="name">Customer Access Right</field>
+        <field name="model_id" ref="model_res_partner"/>
+        <field name="groups"
+               eval="[(4, ref('master_data_extension.group_br_user')),(4, ref('master_data_extension.group_bu_user'))]"/>
+        <field name="domain_force">[
+            '|','|','|',
+            ('hr_bu_ids','in',user.hr_bu_ids.ids),
+            ('hr_br_ids','in',user.hr_br_ids.ids),
+            ('edit_hr_br_ids','in',user.hr_br_ids.ids),
+            ('edit_hr_bu_ids','in',user.hr_bu_ids.ids),
+            ]
+        </field>
+    </record>
+
+    <record id="customer_access_right_edit_rule" model="ir.rule">
+        <field name="name">Customer Access Right Edit</field>
+        <field name="model_id" ref="model_res_partner"/>
+        <field name="groups"
+               eval="[(4, ref('master_data_extension.group_br_user')),(4, ref('master_data_extension.group_bu_user'))]"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="domain_force">[
+            '|',
+            ('edit_hr_br_ids','in',user.hr_br_ids.ids),
+            ('edit_hr_bu_ids','in',user.hr_bu_ids.ids),
+            ]
+        </field>
+    </record>
+</odoo>

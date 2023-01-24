@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_installments_document">
+            <t t-call="web.external_layout">
+                <t t-set="o" t-value="o.with_context(lang=lang)" />
+                <t t-set="address">
+                    <address t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
+                </t>
+                <div class="page">
+                    <h2 class="mt16">
+                        <span t-field="o.name"/>: Installments
+                    </h2>
+
+                    <div id="informations1" class="row mt32 mb32">
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Tenure Amount:</strong>
+                            <p class="m-0" t-field="o.tenure_amt"/>
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Down Payment:</strong>
+                            <p class="m-0" t-field="o.down_payment_amt"/>
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Payable Amount:</strong>
+                            <p class="m-0" t-field="o.payable_amt"/>
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Installment Amount:</strong>
+                            <p class="m-0" t-field="o.installment_amt"/>
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Tenure (months):</strong>
+                            <p class="m-0" t-field="o.tenure"/>
+                        </div>
+                    </div>
+                    <table class="table table-sm o_main_table">
+                        <thead>
+                            <tr>
+                                <th>#No</th>
+                                <th>Interest Rate</th>
+                                <th>Remaining AR Balance</th>
+                                <th>Amount(Without Interest)</th>
+                                <th>Interest Amount</th>
+                                <th>Due Amount</th>
+                                <th>Each Period AR Amount</th>
+                                <th>Amount</th>
+                                <th>Paid Amount</th>
+                                <th>Fine Amount</th>
+                                <th>Payment Date</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="total" t-value="0.0"/>
+                            <t t-foreach="o.installment_ids" t-as="line">
+                                <tr>
+                                    <td><t t-esc="line.index"/></td>
+                                    <td><t t-esc="line.interest_rate"/></td>
+                                    <td><t t-esc="'%.0f'%(line.total_remaining_amount)"/></td>
+                                    <td><t t-esc="'%.0f'%(line.without_interest_amount)"/></td>
+                                    <td><t t-esc="'%.0f'%(line.interest_amount)"/></td>
+                                    <td><t t-esc="'%.0f'%(line.due_amount)"/></td>
+                                    <td><t t-esc="'%.0f'%(line.each_period_ar_amount)"/></td>
+                                    <td><t t-esc="'%.0f'%(line.amount)"/></td>
+                                    <td><t t-esc="line.paid_amount" t-options='{"widget": "monetary", "display_currency": o.pricelist_id.currency_id}'/></td>
+                                    <td><t t-esc="'%.0f'%(line.fine_amount)"/></td>
+                                    <td><t t-esc="line.payment_date"/></td>
+                                    <td><t t-esc="line.description"/></td>
+                                    <td><t t-esc="line.state"/></td>
+                                </tr>
+                                <t t-set="total" t-value="total + line.amount"/>
+                            </t>
+                            <tr>
+                                <td><b>Total</b></td>
+                                <td></td>
+                                <td><b><t t-esc="total" t-options='{"widget": "monetary", "display_currency": o.pricelist_id.currency_id}'/></b></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </template>
+
+        <template id="report_saleorder_installments">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="payment_installment_kanak.report_installments_document" t-lang="o.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+
+       <!--  <report
+            id="action_report_installments"
+            string="Installments"
+            model="sale.order"
+            report_type="qweb-pdf"
+            groups="payment_installment_kanak.group_enable_installments"
+            file="payment_installment_kanak.report_saleorder_installments"
+            name="payment_installment_kanak.report_saleorder_installments"
+            print_report_name="'Installments - %s' % (object.name)"
+        /> -->
+    </data>
+</odoo>

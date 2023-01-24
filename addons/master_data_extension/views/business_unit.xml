@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<!-- Related Account Opening Action -->
+		<record id="action_business_unit_coa" model="ir.actions.act_window">
+			<field name="name">COA</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">account.account</field>
+			<field name="view_mode">tree,form</field>
+			<field name="domain">[('bu_br_id','=', active_id)]</field>
+			<field name="context">{'group_by': 'user_type_id'}</field>
+		</record>
+
+	<!-- Business Unit -->
+		<record model="ir.ui.view" id="business_unit_tree">
+			<field name="name">Business Unit</field>
+			<field name="model">business.unit</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="name" />
+                    <field name="code" />
+                    <field name="business_type" />
+                    <field name="active" />
+				</tree>
+			</field>
+		</record>
+		<record model="ir.ui.view" id="business_unit_form">
+			<field name="name">Business Unit</field>
+			<field name="model">business.unit</field>
+			<field name="arch" type="xml">
+				<form>
+					<header>
+						<button string="Create COA" name="create_account_action" type="object" class="oe_highlight oe_edit_only"/>
+						<button string="Create Journal" name="create_journal_action" type="object" class="oe_highlight oe_edit_only"/>
+					</header>
+					<sheet>
+					 	<div class="oe_button_box" name="button_box">
+                            <button type="action"
+								name="%(action_business_unit_warehouse)d"
+								class="oe-stat-button"
+								icon="fa-truck"
+								string="Warehouse"/>
+							<button type="action"
+								name="%(action_business_unit_coa)d"
+								class="oe-stat-button"
+								icon="fa-file-text"
+								string="COA"/>
+							<button type="action"
+								name="%(action_account_journal_warehouse)d"
+								class="oe-stat-button"
+								icon="fa-file-text-o"
+								string="Journals"/>								
+                        </div>
+						<!-- <field name="logo" widget="image" class="oe_avatar" options="{'preview_image': 'image_128'}"/> -->
+						<field name="logo" widget='image' class="oe_right oe_avatar" nolabel="1"/>
+						<div class="oe_title">
+                        	<h1>
+                        	    <field name="name"/>
+                        	</h1>
+                    	</div>
+						<group>
+							<group>
+								<field name="partner_id" /> <!--class="oe_read_only"/> -->
+								<field name="code" />
+								<field name="establish_date" />
+								<field name="business_type" />
+								<field name="company" />
+								<field name="number" />
+								<field name="sector_type_id" string="Sector Type"/>
+								<field name="parent_business_id" />
+
+							</group>
+							<group>
+								<field name="building_floor_id" />
+								<field name="building" />
+								<field name="street" />
+								<field name="zone" />
+								<field name="road" />
+								<field name="quarter" />
+								<field name="township_id" />
+								<field name="city_id" />
+								<field name="region_id" />
+								<field name="country_id" />
+							</group>
+						</group>
+						<!-- START: Phone/Mobile Read Only Mode -->
+						<group  class="oe_read_only">
+							<label for="phone" string="Phone" class="oe_inline"/>
+							<div>
+								<div>
+									<field name="country_code" attrs="{'invisible': [('mobile', '=', False)]}" nolabel="1" class="oe_inline" />
+									<field name="phone" nolabel="1" class="oe_inline" />
+								</div>
+							</div>
+						</group>													
+						<group  class="oe_read_only">
+							<label for="mobile" string="Mobile" class="oe_inline"/>
+							<div>
+								<div>
+									<field name="country_code" attrs="{'invisible': [('mobile', '=', False)]}" nolabel="1" class="oe_inline" />
+									<field name="mobile" nolabel="1" class="oe_inline" />
+								</div>
+							</div>
+						</group>
+						<!-- END: Phone/Mobile Read Only Mode -->
+
+						<!-- START: Phone/Mobile Edit Only Mode -->
+						<group  class="oe_edit_only">
+							<label for="phone" string="Phone" class="oe_inline"/>
+							<div>
+								<div>
+									<field name="country_code" attrs="{'invisible': [('country_id', '=', False)]}" nolabel="1" class="oe_inline" />
+									<field name="phone" nolabel="1" class="oe_inline" />
+								</div>
+							</div>
+						</group>							
+						<group class="oe_edit_only">
+							<label for="mobile" string="Mobile" class="oe_inline"/>
+							<div>
+								<div>
+									<field name="country_code" attrs="{'invisible': [('country_id', '=', False)]}" nolabel="1" class="oe_inline" />
+									<field name="mobile" nolabel="1" class="oe_inline" />
+								</div>
+							</div>
+						</group>
+						<!-- END: Phone/Mobile Edit Only Mode -->						
+						<notebook>
+							<!-- Account Page -->
+							<page string="Chart Of Accounts" name='account_structure'>
+								<group name="account_req" string="">
+									<group>
+										<field name="account_code"/>
+									</group>
+								</group>
+								<group>
+									<group string="Receivable">
+										<field name="property_account_receivable_id" options="{'no_create': True}"/>
+										<field name="aff_account_receivable_id" options="{'no_create': True}"/>
+									</group>
+									<group string="Payable">
+										<field name="property_account_payable_id" options="{'no_create': True}"/>
+										<field name="po_property_account_payable_id" string="Account Payable(Oversea)"/>
+										<field name="aff_account_payable_id" options="{'no_create': True}"/>
+									</group>
+									<group string="Accrued">
+										<field name="incentive_account_id" required="0" options="{'no_create': True}"/>
+										<field name="pooling_account_id" required="0" options="{'no_create': True}"/>
+										<field name="asm_account_id" required="0" options="{'no_create': True}"/>
+									</group>
+									<group string="Commission">
+										<field name="commission_account_id" context="{'bu_br_id':active_id}" required="0"/>
+									</group>
+									<group string="Broker">
+										<field name="broker_account_id" context="{'bu_br_id':active_id}" required="0"/>
+									</group>
+									<group string="Job Order">
+										<field name="inventory_machine_account_id" context="{'bu_br_id':active_id}" required="0"/>
+										<field name="processing_account_id" context="{'bu_br_id':active_id}" required="0"/>
+									</group>
+									<group string="Exchange Gain/Loss">
+										<field name="currency_exchange_gain_account_id" context="{'bu_br_id':active_id}" required="0" options="{'no_create': True}"/>
+										<field name="currency_exchange_loss_account_id" context="{'bu_br_id':active_id}" required="0" options="{'no_create': True}"/>
+									</group>
+									<group string="Budget">
+										<field name="budget_control_percent" required="0"/>
+										<field name="advance_account_id" required="0" context="{'bu_br_id':active_id}" options="{'no_create': True}"/>
+									</group>
+									<group string="Landed Cost Journal Setting">
+										<field name="landed_cost_journal_id" context="{'bu_br_id':active_id}" required="0" options="{'no_create': True}"/>
+										
+									</group>
+									<group name="others" string="Others">
+										<field name="suspense_account_id" />
+									</group>
+								</group>
+							</page>
+							<page string="Journals" name='journals'>
+								<group name="oversea_jr" string="">
+									<group>
+										<field name="oversea_po_journal_id" />
+									</group>
+								</group>
+							</page>
+						</notebook>												
+					</sheet>
+					<div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+						<field name="activity_ids" widget="mail_activity"/>
+						<field name="message_ids" widget="mail_thread"/>
+					</div>
+				</form>
+			</field>
+		</record>
+		<record model="ir.actions.act_window" id="business_unit_action_window">
+			<field name="name">Business Unit</field>
+			<field name="res_model">business.unit</field>
+			<field name="view_mode">tree,form</field>
+			<field name="domain">[('id','=',c_b_id)]</field>
+		</record>
+		<record model="ir.actions.act_window" id="business_unit_action_window_head">
+			<field name="name">Business Unit</field>
+			<field name="res_model">business.unit</field>
+			<field name="view_mode">tree,form</field>
+			<field name="domain">[]</field>
+		</record>
+
+		<!-- <record model="ir.actions.act_window" id="business_unit_action_window_master">
+			<field name="name">Business Unit</field>
+			<field name="res_model">business.unit</field>
+			<field name="view_mode">tree,form</field>
+		</record> -->
+		<!-- End -->
+		<menuitem name="Business Unit" id="business_unit_menu" groups="group_br_user,group_bu_user" parent="master_data_extension.master_data_menu" action="business_unit_action_window" sequence="10"/>
+		<menuitem name="Business Unit" id="business_unit_menu_head" groups="group_cfd_user,base.group_erp_manager" parent="master_data_extension.master_data_menu" action="business_unit_action_window_head" sequence="11"/>
+		<!-- <menuitem name="Business Units" id="business_unit_menu_master" parent="master_data_extension.master_data_menu" action="business_unit_action_window_master" sequence="10" groups="base.group_erp_manager"/> -->
+
+		<record id="view_account_journal_form_inherited" model="ir.ui.view">
+        <field name="name">account.journal.form.inherit</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='suspense_account_id']" position="after">
+                <field name="bank_pooling_account" attrs="{'invisible': [('type', 'not in', ('bank', 'cash'))]}" groups="account.group_account_readonly"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

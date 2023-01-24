@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_weekly_approval_wizard" model="ir.actions.act_window">
+        <field name="name">Weekly Budget</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">weekly.approval.wizard</field>
+        <field name="binding_view_types">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="view_weekly_approval" model="ir.ui.view">
+        <field name="name">weekly.approval.wizard</field>
+        <field name="model">weekly.approval.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Weekly Budget Approval">
+                <group>
+                    <group>
+                        <field name="journal_id" attrs="{'invisible':[('business_type','not in',('bu','br'))],'required':[('business_type','in',('bu','br'))]}"  options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"/>
+                        <field name="div_journal_id" attrs="{'invisible':[('business_type','in',('bu','br'))],'required':[('business_type','not in',('bu','br'))]}" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}" domain="[('bu_br_id', '=', business_id),('type','in',('cash','bank'))]"/>
+                        <field name="date" required="1"/>
+                        <field name="business_id" invisible="1" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"/>
+                        <field name="business_type" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="receive_journal_id" domain="[('bu_br_id', '=', business_id),('type','in',('cash','bank'))]" attrs="{'invisible':[('business_type','not in',('bu','br'))],'required':[('business_type','in',('bu','br'))]}" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"/>
+                        <label for="amount" />
+                        <div name="amount_div" class="o_row">
+                            <field name="amount" readonly="1"/>
+                            <field name="currency_id" options="{'no_create': True, 'no_open': True}" groups="base.group_multi_currency" required="1" readonly="1"/>
+                        </div>
+                        <field name="memo" />
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_approval" string="Approve" type="object" class="oe_highlight"/>
+                    <button string="Cancel" special="cancel" class="oe_link"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

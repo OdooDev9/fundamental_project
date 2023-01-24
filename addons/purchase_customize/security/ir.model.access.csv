@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_po_reject,purchase_reject,model_po_reject_wizard,,1,1,1,1
+access_po_hold,purchase_hold,model_po_holding_wizard,,1,1,1,1
+access_replace_order_line,replace_order_line,model_replace_order_line,,1,1,1,1
+purchase.access_product_product_purchase_manager,product.product purchase_manager,product.model_product_product,purchase.group_purchase_manager,1,0,0,0
+purchase.access_product_template_purchase_manager,product.template purchase_manager,product.model_product_template,purchase.group_purchase_manager,1,0,0,0

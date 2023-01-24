@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<!-- search view start -->
+    <record id="legal_line_filter_search" model="ir.ui.view">
+        <field name="name">legal_line.filter.search</field>
+        <field name="model">ar.legal.activity.line</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="date" />
+                <field name="invoice_num" />
+                <field name="invoice_type" />
+                <field name="action_date"/>
+                <field name="action"/>
+                <field name="contact_type"/>
+                <field name="ar_action_type" />
+                <field name="on_target_pic"/>
+                <field name="legal_team_pic" />
+                <field name="on_target_feedback"/>
+                <field name="notice_times"/>
+                <!-- <field name="pic_comment"/> -->
+                <!-- <field name="attachment_ids"/> -->
+                <group expand="0" string="Group By">                                            
+                    <filter string="Contact Type" name="contact_type" context="{'group_by': 'contact_type'}"></filter>     
+                    <filter string="Invoice Type" name="invoice_type" context="{'group_by': 'invoice_type'}"></filter>                 
+                </group>                                    
+            </search>
+        </field>
+    </record>
+<!-- search view end -->
+
+<!-- form view -->
+    <record id="legal_activity_view_form" model="ir.ui.view">
+        <field name="name">legal.activity.view.form</field>
+        <field name="model">ar.legal.activity</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="invoice_id" />
+                            <field name="partner_id" />
+                            <field name="invoice_type" />
+                        </group>
+                        <group>
+                            <field name="selling_br_id" />
+                            <field name="ar_action_type" />
+                            <field name="legal_status" />
+                        </group> 
+                    </group>
+                    <group>
+                        <field name="legal_activity_line_ids" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="date" />
+                                <field name="invoice_num" invisible="1"/>
+                                <field name="invoice_type" invisible="1"/>
+                                <field name="partner_id" invisible="1"/>
+                                <field name="ar_action_type" invisible="1"/>
+                                <field name="action" required="True"/>
+                                <field name="contact_type" required="True"/>
+                                <field name="on_target_pic" attrs="{'readonly':[('contact_type','=','legal_team')]}" />
+                                <field name="legal_team_pic" attrs="{'readonly':[('contact_type','=','on_terget')]}" />
+                                <field name="on_target_feedback" required="True"/>
+                                <field name="notice_times"/>
+                                <field name="pic_comment"/>
+                                <field name="attachment_ids" widget="many2many_binary" mutiple="true"/>
+                                <field name="action_date"/>
+                                
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="legal_activity_line_view_form" model="ir.ui.view">
+        <field name="name">legal_activity_line.view.form</field>
+        <field name="model">ar.legal.activity.line</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="date" />
+                            <field name="invoice_num" />
+                            <field name="invoice_type" />
+                            <field name="partner_id" />
+                            <field name="action_date"/>
+                            <field name="action"/>
+                            <field name="contact_type"/>
+                        </group>
+                        <group >
+                            <field name="ar_action_type" />
+                            <field name="on_target_pic" attrs="{'invisible':[('contact_type','=','legal_team')]}" />
+                            <field name="legal_team_pic" attrs="{'invisible':[('contact_type','=','on_terget')]}"/>
+                            <field name="on_target_feedback"/>
+                            <field name="notice_times"/>
+                            <field name="pic_comment"/>
+                            <field name="attachment_ids" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+<!-- form view end -->
+
+<!-- tree view -->
+    <record id="legal_activity_view_tree" model="ir.ui.view">
+        <field name="name">legal_activity.view.tree</field>
+        <field name="model">ar.legal.activity</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="partner_id" />
+                <field name="invoice_type" />
+                <field name="invoice_id" />
+                <field name="selling_br_id" />
+                <field name="ar_action_type" />
+                <field name="legal_status" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="legal_activity_line_view_tree" model="ir.ui.view">
+        <field name="name">legal_activity_line.view.tree</field>
+        <field name="model">ar.legal.activity.line</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="date" />
+                <field name="action_date"/>
+                <field name="action"/>
+                <field name="contact_type"/>
+                <field name="on_target_pic"/>
+                <field name="legal_team_pic"/>
+                <!-- <field name="on_target_feedback"/> -->
+                <!-- <field name="notice_times"/> -->
+                <!-- <field name="pic_comment"/> -->
+                <field name="attachment_ids" />
+            </tree>
+        </field>
+    </record>
+
+<!-- tree view end -->
+
+
+<!-- mneu action start -->
+    <record id="legal_activity_action" model="ir.actions.act_window">
+        <field name="name">Legal Action</field>
+        <field name="res_model">ar.legal.activity</field>
+        <field name="view_mode">tree,form</field>
+        <!-- <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            
+        </field> -->
+    </record>
+    <record id="legal_activity_line_action" model="ir.actions.act_window">
+        <field name="name">Legal Activity Action</field>
+        <field name="res_model">ar.legal.activity.line</field>
+        <field name="view_mode">tree,form</field>
+        <!-- <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            
+        </field> -->
+    </record>   
+<!-- menu action end -->
+
+    <menuitem
+        id="activity_menu"
+        name="Legal Activity"
+        parent="ar_assign_root_menu"
+        sequence="11"/>
+    <menuitem
+        id="legal_activity_menu"
+        name="Legal Activity"
+        action="legal_activity_action"
+        parent="activity_menu"
+        sequence="11"/>
+    <menuitem
+        id="legal_activity_line_menu"
+        name="Legal Activity Action"
+        action="legal_activity_line_action"
+        parent="activity_menu"
+        sequence="11"/>
+
+</odoo>

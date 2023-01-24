@@ -1,0 +1,48 @@
+<odoo>
+    <data>
+
+        <record id="wizard_request_quotation_view" model="ir.ui.view">
+            <field name="name">wizard.borrow.request</field>
+            <field name="model">borrow.quotation.tmp</field>
+            <field name="arch" type="xml">
+                <form string="Borrow Request">
+                    <group>
+                        <group>
+                            <field name="borrow_request_id" readonly="1"/>
+                            <field name="partner_id" string="Customer"/>
+                            <field name="hr_bu_id" readonly='1'/>
+                            <field name="hr_br_id" readonly='1'/>
+                            <field name="unit_or_part" readonly='1'/>
+                        </group>
+
+                        <group>
+
+                        </group>
+                    </group>
+                    <group>
+
+                    </group>
+
+                    <field name="borrow_quot_line" nolabel="1">
+                        <tree create="false" editable="bottom">
+                            <field name="product_id"/>
+                            <field name="product_uom_qty"/>
+                            <field name="product_uom"/>
+                        </tree>
+                    </field>
+                    <footer>
+                        <button type="object" name="create_quotation" string="Create SaleOrder" class="oe_highlight"/>
+                        Or
+                        <button string="Cancel" special="cancel" class="oe_link"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="borrow_sale_order_wizard_action" model="ir.actions.act_window">
+            <field name="name">Borrow Request Quotation</field>
+            <field name="res_model">borrow.quotation.tmp</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>

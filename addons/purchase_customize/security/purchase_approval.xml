@@ -1,0 +1,36 @@
+<odoo>
+	<data>
+		<!-- <record id="management_approve" model="res.groups">
+			<field name="name">
+				Management Approval
+			</field>
+			
+		</record> -->
+		<!-- <record id="po_dept_mgt_approve" model="res.groups">
+			<field name="name">
+				Purchase Management Dept Approval
+			</field>
+		
+		</record> -->
+		<record id="after_sale_approve" model="res.groups">
+			<field name="name">
+				Purchase After Sale Approval
+			</field>
+		</record>
+		<record id="group_ap_pic" model="res.groups">
+			<field name="name">
+				Corp. AP PIC
+			</field>
+		</record>
+		<record id="group_ap_head" model="res.groups">
+			<field name="name">
+				Corp. AP  Head
+			</field>
+		</record>
+		<record id="group_ap_gm_agm" model="res.groups">
+			<field name="name">
+				Corp. AP  GM/AGM
+			</field>
+		</record>
+	</data>
+</odoo>

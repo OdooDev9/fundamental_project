@@ -1,0 +1,18 @@
+<odoo>
+    <data>
+        <record id="view_order_borrow_quot_form" model="ir.ui.view">
+            <field name="name">sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+             
+                 <xpath expr="//field[@name='team_id']" position='before'>
+                     <field name ='is_borrow' invisible="1"/>
+                     <field name="borrow_request_id" readonly="1"/>
+                 </xpath>
+
+            </field>
+    </record>
+
+    </data>
+</odoo>

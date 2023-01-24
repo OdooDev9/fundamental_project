@@ -1,0 +1,12 @@
+<odoo>
+    <record id="view_stock_location_form_trade" model="ir.ui.view">
+        <field name="name">Trade In Stock Location Form</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_form" />
+        <field name="arch" type="xml">
+            <field name="usage" position="before">
+                <field name="is_trade_in" groups="base.group_no_one" />
+            </field>
+        </field>
+    </record>
+</odoo>

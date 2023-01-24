@@ -1,0 +1,20 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_budget_advance,budget_advance,model_budget_advance,base.group_user,1,1,1,1
+access_budget_expense,budget_expense,model_budget_expense,base.group_user,1,1,1,1
+access_budget_expense_line,budget_expense_line,model_budget_expense_line,base.group_user,1,1,1,1
+access_advance_wizard,advance_wizard,model_advance_wizard,,1,1,1,1
+access_expense_wizard,expense_wizard,model_expense_wizard,,1,1,1,1
+access_monthly_budget_request,monthly.budget.request,model_monthly_budget_request,base.group_user,1,1,1,1
+access_monthly_budget_request_line,monthly.budget.request.line,model_monthly_budget_request_line,base.group_user,1,1,1,1
+access_weekly_budget_request,weekly.budget.request,model_weekly_budget_request,base.group_user,1,1,1,1
+access_weekly_budget_request_line,weekly.budget.request.line,model_weekly_budget_request_line,base.group_user,1,1,1,1
+access_weekly_approval_wizard,weekly.approval.wizard,model_weekly_approval_wizard,base.group_user,1,1,1,1
+access_budget_advance_line,budget.advance.line,model_budget_advance_line,base.group_user,1,1,1,1
+access_budget_approval_line,budget.approval.line,model_budget_approval_line,base.group_user,1,1,1,1
+access_budget_approval,budget.approval,model_budget_approval,base.group_user,1,1,1,1
+access_budget_request_approval, budget.request.approval,model_budget_request_approval,base.group_user,1,1,1,1
+
+access_urgent_budget_request,urgent.budget.request,model_urgent_budget_request,base.group_user,1,1,1,1
+access_urgent_budget_request_line,urgent.budget.request.line,model_urgent_budget_request_line,base.group_user,1,1,1,1
+access_urgent_approval_wizard,urgent.approval.wizard,model_urgent_approval_wizard,base.group_user,1,1,1,1
+access_budget_reject,budget.reject,model_budget_reject,base.group_user,1,1,1,1

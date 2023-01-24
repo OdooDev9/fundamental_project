@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Contact Views: Login User will see only allowed contacts -->
+    <record id="contacts.action_contacts" model="ir.actions.act_window">
+        <field name="domain">[('hr_bu_ids','in', all_bu_ids)]</field>
+    </record>
+    
+
+</odoo>

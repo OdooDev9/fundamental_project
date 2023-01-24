@@ -1,0 +1,14 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sale_installment_line,access_sale_installment_line,model_sale_installment_line,base.group_user,1,1,1,1
+access_invoice_installment_line,access_invoice_installment_line,model_invoice_installment_line,base.group_user,1,1,1,1
+access_sub_part_payment,access_sub_part_payment,model_sub_part_payment,base.group_user,1,1,1,1
+
+access_installment_plan_user,installment.plan,model_installment_plan,base.group_user,1,1,0,0
+access_installment_plan,installment.plan,model_installment_plan,master_data_extension.group_hr_bu_manager,1,1,1,1
+access_modify_installment,modify_installment,model_modify_installment,base.group_user,1,1,1,1
+access_re_installment_plan,re.installment.plan,model_re_installment_plan,base.group_user,1,1,1,1
+acess_installment_invoice,installment.invoice.wizard,model_installment_invoice_wizard,,1,1,1,0
+access_re_contract_wizard,re.contract.wizard,model_re_contract_wizard,,1,1,1,0
+
+access_request_quotation_installment_line,request.quotation.installment.line,model_request_quotation_installment_line,,1,1,1,1
+access_request_quotation_modify_installment,request.quotation.modify.installment,model_request_quotation_modify_installment,,1,1,1,1

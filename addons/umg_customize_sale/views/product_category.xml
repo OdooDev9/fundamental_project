@@ -1,0 +1,26 @@
+<odoo>
+    <data>
+        <!-- <record id="product_category_inherit_form_view" model="ir.ui.view">
+            <field name="name">product.category.form</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="product.product_category_form_view"/>
+            <field name="arch" type="xml">
+                <field name="parent_id" position="after">
+                    <field name="business_id"/>
+                </field>
+
+            </field>
+        </record> -->
+        <record id="inherit_product_category_search_view" model="ir.ui.view">
+            <field name="name">product.category.search</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="product.product_category_search_view"/>
+            <field name="arch" type="xml">
+                <search string="Product Categories">
+                    <field name="business_id" string="Business Unit"/>
+                    <filter string="Business Unit" context="{'group_by':'hr_bu_id'}" name="hr_bu_id"/>
+                </search>
+            </field>
+        </record>
+    </data>
+</odoo>

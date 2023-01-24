@@ -1,0 +1,28 @@
+<odoo>
+	<data>
+		<record id="view_account_fine_payment_register_form" model="ir.ui.view">
+			<field name="name">account.payment.register.form</field>
+			<field name="model">account.payment.register</field>
+			<field name="inherit_id" ref="account.view_account_payment_register_form" />
+			<field name="arch" type="xml">
+				<xpath expr="//group[@name='group3']" position="after">
+					<group><field name="installment_origin_amount" invisible="1"/></group>
+					<group name="group4" attrs="{'invisible':[('interest_discount_amount','=',0.00)]}">
+						<field name="interest_discount_amount" invisible="0"/>
+						 <field name="interest_disc_account_id" invisible="0"/></group>
+					
+						<group name="group5" attrs="{'invisible':[('fine_amount','=',0.00)]}"> 
+							<field name="fine_amount" readonly="0"></field>
+							<label for="fine_account_id" string="Fine Account for Fine Amount" class="oe_edit_only"  />
+							<field name="fine_account_id" string="Fine Account" options="{'no_create': True}" />
+							<label for="fine_writeoff_label" class="oe_edit_only" string="Label" />
+							<field name="fine_writeoff_label"  /></group>
+					
+                       
+               
+				</xpath>
+			</field>
+		</record>
+		
+	</data>
+</odoo>

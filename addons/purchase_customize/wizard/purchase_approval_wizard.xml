@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_purchase_approval_wizard" model="ir.actions.act_window">
+        <field name="name">Request Purchase Approval Wizard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">purchase.approval.wizard</field>
+        <field name="binding_view_types">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+<record id="view_purchase_approval_wizard" model="ir.ui.view">
+    <field name="name">purchase.approval.wizard</field>
+    <field name="model">purchase.approval.wizard</field>
+    <field name="arch" type="xml">
+    <form string="Request Purchase Order Approve">
+            <group>
+                <field name="order_approve_person"/>
+            </group>
+    <footer>
+         <button name="request_order" string="Request" type="object" class="oe_highlight"/>
+         <button string="Cancel" special="cancel" class="oe_link"/>
+     </footer>
+        </form>
+    </field>
+</record>
+
+    <record id="action_purchase_portal_approval_wizard" model="ir.actions.act_window">
+        <field name="name">Purchase Approval Wizard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">purchase.portal.approval</field>
+        <field name="binding_view_types">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+<record id="view_purchase_portal_approval_wizard" model="ir.ui.view">
+    <field name="name">purchase.portal.approval</field>
+    <field name="model">purchase.portal.approval</field>
+    <field name="arch" type="xml">
+    <form string="Request Purchase Order Approve">
+            <group>
+                <field name="approve_person"/>
+            </group>
+    <footer>
+         <button name="request_purchase" string="Request" type="object" class="oe_highlight"/>
+         <button string="Cancel" special="cancel" class="oe_link"/>
+     </footer>
+        </form>
+    </field>
+</record>
+
+
+
+</odoo>

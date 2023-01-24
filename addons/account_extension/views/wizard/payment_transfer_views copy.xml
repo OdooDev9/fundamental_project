@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        
+    <!-- Form view for "account.payment.transfer" -->
+    <record id="view_account_payment_transfer_form" model="ir.ui.view">
+        <field name="name">view.account_payment_transfer.form</field>
+        <field name="model">account.payment.transfer</field>
+        <field name="type">form</field>
+        <field name="mode">primary</field>
+        <field name="priority" eval="16" />
+        <field name="active" eval="True" />
+        <field name="arch" type="xml">
+            <form string="model_form" create="true" delete="true" edit="true">
+                <header>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="is_oversea_purchase" invisible='1'/>
+                        <field name="cfd_id" invisible='1'/>
+                        <group name="journal_group" string="Journals" attrs="{'invisible': [('is_oversea_purchase','=',True)]}">
+                            <field name="payment_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="bu_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="br_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}" attrs="{'invisible':[('br_id','=', False)]}"/>
+                            <field name="br_journal_id" attrs="{'required':[('br_id','!=', False)], 'invisible':[('br_id','=', False)]}" class="oe_inline"/>
+                            <field name="bu_journal_id" attrs="{'required':[('bu_id','!=', False)]}" class="oe_inline"/>
+                            <field name="cfd_journal_id" required="1" class="oe_inline"/>
+                        </group>
+                        <group name="journal_group" string="Journals" attrs="{'invisible': [('is_oversea_purchase','=',False)]}">
+                            <field name="payment_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="bu_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                            <!-- <field name="br_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}" attrs="{'invisible':[('br_id','=', False)]}"/> -->
+                            <!-- <field name="br_journal_id" attrs="{'required':[('br_id','!=', False)], 'invisible':[('br_id','=', False)]}" class="oe_inline"/> -->
+                            <field name="bu_journal_id" attrs="{'required':[('bu_id','!=', False)]}" class="oe_inline"
+                                domain="[('type', '=', 'general'),('bu_br_id','=',bu_id)]"
+                            />
+                            <field name="cfd_journal_id" required="1" class="oe_inline"
+                                domain="[('type', '=', ('bank','cash')),('bu_br_id','=',cfd_id)]"
+                            />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="description" string="Description">
+                            <field name="name" widget="text"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <button name="create_transfer_transactions" string="Run" type="object"
+                        class="btn-primary" data-hotkey="q" attrs="{'invisible':[('is_oversea_purchase','=',True)]}"
+                    />
+                    <button name="create_transfer_transactions_for_oversea_po" string="Run" type="object"
+                        class="btn btn-success" data-hotkey="p" attrs="{'invisible':[('is_oversea_purchase','=',False)]}"
+                    />
+                    <button special="cancel" data-hotkey="z" string="Cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>  
+
+</odoo>

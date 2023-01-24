@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="view_installment_advance_payment_inv" model="ir.ui.view">
+            <field name="name">Invoice Orders</field>
+            <field name="model">installment.invoice.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Invoice Sales Order">
+                    <p class="oe_grey">
+                        Invoices will be created in draft so that you can review
+                        them before validation.
+                    </p>
+                    <field name="down" invisible="1" />
+                    <group attrs="{'invisible':[('down','=',True)]}">
+                        <field name="advance_payment_method" class="oe_inline" widget="radio"/>
+                        <field name="recontract_id" invisible="1"/>
+                    </group>
+                    <footer>
+                        <button name="create_invoice" string="Create Invoice" type="object" data-hotkey="w"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="z"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_view_installment_advance_payment_inv" model="ir.actions.act_window">
+            <field name="name">Create invoices</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">installment.invoice.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <!-- TODO: check if we need this -->
+            <field name="binding_model_id" ref="sale.model_sale_order" />
+            <field name="binding_view_types">list</field>
+        </record>
+
+</odoo>

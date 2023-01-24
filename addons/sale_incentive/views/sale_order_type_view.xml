@@ -1,0 +1,41 @@
+<odoo>
+    <data>
+
+        <!-- <record id="sale_order_form_inherit" model="ir.ui.view">
+            <field name="name">sale.order.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="area_sale_manager_id" attrs="{'readonly':[('state','=','sale')]}"/>
+                </xpath>
+            </field>
+        </record> -->
+
+
+        <!--  <record id="sale_order_type_inherit" model="ir.ui.view">
+           <field name="name">sale.order.type</field>
+           <field name="model">sale.order.type</field>
+           <field name="inherit_id" ref="sale_order_type.sot_sale_order_type_form_view"/>
+           <field name='arch' type='xml'>
+             <xpath expr="//field[@name='incoterm_id']" position="after"> -->
+        <!--  <field name="use_sale_team_target"/>
+         <field name="sale_team_target_id" attrs="{'invisible':[('use_sale_team_target','=',False)],'required':[('use_sale_team_target','=',True)]}"/> -->
+
+        <!-- <field name="use_normal_incentive"/>
+        <field name="normal_incentive_definition_id" attrs="{'invisible':[('use_normal_incentive','=',False)],'required':[('use_normal_incentive','=',True)]}"/>
+      </xpath>
+    </field>
+  </record> -->
+
+
+        <record id="sale_target_sale_order" model="ir.actions.act_window">
+            <field name="name">Sale Orders</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+            <field name="domain">[]</field>
+        </record>
+
+    </data>
+</odoo>

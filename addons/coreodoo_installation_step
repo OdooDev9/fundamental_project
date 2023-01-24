@@ -1,0 +1,20 @@
+Coreodoo Installation Step
+==========================
+1.Business Unit Structure Master Data  [master_data_extension]
+2.Product Configure  [product_configure]
+3.Accounting (BU/BR)  [account_extension]
+4.Borrow Request  [borrow_request]
+5.UMG Customization  [umg_customize_sale]
+6.Request for Quotations  [request_quotation]
+7.Goods Request[goods_request]
+8.Stock Journal On GI & GR  [stock_journal_on_picking]
+9.Incentive  [sale_incentive]
+10.Purchase Order Extend  [purchase_quotation]
+11.UMG Purchase Customization  [purchase_customize]
+12.Payment Installment[payment_installment_kanak]
+13.landed_costs  [landed_costs]
+14.Job Request  [job_request]
+15.Trade In  [trade_in]
+16.Group Expand Buttons  [web_group_expand]
+17.Budget Management  [account_budget]
+

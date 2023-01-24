@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="action_advance_wizard" model="ir.actions.act_window">
+            <field name="name">Advance</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">advance.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        <record id="wizard_employee_advance_view" model="ir.ui.view">
+            <field name="name">Advance</field>
+            <field name="model">advance.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Borrow Request">
+                    <group>
+                        <group>
+                            <field name="date" />
+                            <field name="account_id" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}" readonly="1"/>
+                            <field name="business_id" invisible="1"/>
+                            <field name="auto_journal_entry" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="journal_id" required="1" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"/>
+                            <label for="amount" />
+                            <div name="amount_div" class="o_row">
+                                <field name="amount" readonly="1"/>
+                                <field name="currency_id" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"
+                                       groups="base.group_multi_currency" readonly="1"/>
+                            </div>
+                            <field name="memo" />
+                        </group>
+                    </group>
+                    <group string="For Weekly Budget" attrs="{'invisible':[('auto_journal_entry','=',False)]}">
+                        <group>
+                            <field name="weekly_journal_id" attrs="{'invisible':[('business_type','not in',('bu','br'))],'required':[('business_type','in',('bu','br')),('auto_journal_entry','=',True)]}"  options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"/>
+                            <field name="div_journal_id" attrs="{'invisible':[('business_type','in',('bu','br'))],'required':[('business_type','not in',('bu','br')),('auto_journal_entry','=',True)]}" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}" domain="[('bu_br_id', '=', business_id),('type','in',('cash','bank'))]"/>
+                            <field name="business_type" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="receive_journal_id" domain="[('bu_br_id', '=', business_id),('type','in',('cash','bank'))]" attrs="{'invisible':[('business_type','not in',('bu','br'))],'required':[('business_type','in',('bu','br')),('auto_journal_entry','=',True)]}" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button type="object" name="action_paid" string="Paid" class="oe_highlight"/>
+                        Or
+                        <button string="Cancel" special="cancel" class="oe_link"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

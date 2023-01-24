@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<record model="ir.ui.view" id="html_checklist_template_form">
+			<field name="name">job.html.checklist.template.form</field>
+			<field name="model">job.html.checklist.template</field>
+			<field name="arch" type="xml">
+				<form string="Templates">
+					<sheet>
+						<div>
+							<label for="name"/>
+							<h2 style='display: inline-block;'><field name="name" placeholder="Template Name"/></h2>
+						</div>
+						<notebook>
+							<page string="Content">
+								<field name="body_html"/>
+							</page>
+						</notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="html_checklist_template_form">
+			<field name="name">html.checklist.template.form</field>
+			<field name="model">html.checklist.template</field>
+			<field name="arch" type="xml">
+				<form string="Templates">
+					<sheet>
+						<div>
+							<label for="name"/>
+							<h2 style='display: inline-block;'><field name="name" placeholder="Template Name"/></h2>
+						</div>
+						<notebook>
+							<page string="Content">
+								<field name="body_html"/>
+							</page>
+						</notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="html_checklist_template_tree">
+			<field name="name">html.checklist.template.tree</field>
+			<field name="model">html.checklist.template</field>
+			<field name="arch" type="xml">
+				<tree string="Templates">
+					<field name="name"/>
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.actions.act_window" id="action_html_checklist_template">
+			<field name="name">Checklist Template</field>
+			<field name="res_model">html.checklist.template</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+               	 	Create new Checklist Template <br/>
+              	</p>
+			</field>
+		</record>
+	</data>
+</odoo>
+

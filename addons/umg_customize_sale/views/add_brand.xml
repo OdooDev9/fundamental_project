@@ -1,0 +1,122 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="brand_tree_view">
+            <field name="name">Brand Tree</field>
+            <field name="model">product.brand</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="group_tree_view">
+            <field name="name">Group List</field>
+            <field name="model">group.model</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="brand_form_view" model="ir.ui.view">
+            <field name="name">Brand</field>
+            <field name="model">product.brand</field>
+            <field name="arch" type="xml">
+                <form string="brand name">
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Models Lines" name="model">
+                            <field name="model_line_ids">
+                                <tree editable="bottom">
+                                    <field name="name"/>
+                                    <field name="brand_id" readonly="1"/>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <group>
+                                            <field name="name"/>
+                                        </group>
+                                        <group>
+                                            <field name="brand_id" readonly="1"/>
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+
+        <record id="group_form_view" model="ir.ui.view">
+            <field name="name">Group</field>
+            <field name="model">group.model</field>
+            <field name="arch" type="xml">
+                <form string="Group name">
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="brand_action">
+            <field name="name">Brand</field>
+            <field name="res_model">product.brand</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="group_action">
+            <field name="name">Groups</field>
+            <field name="res_model">group.model</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="Brand"
+                  id="product_brand"
+                  parent="stock.menu_stock_config_settings"
+                  action='brand_action'
+                  sequence="20"/>
+
+        <menuitem name="Group"
+                  id="group_model_menu"
+                  parent="stock.menu_stock_config_settings"
+                  action='group_action'
+                  sequence="22"/>
+
+        <record model="ir.ui.view" id="add_brand_field">
+            <field name="name">add brand list</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='barcode']" position="after">
+                    <field name="brand"/>
+                    <field name="brand_model_id" options="{'no_create_edit':True}"/>
+                    <field name="group_id" options="{'no_create_edit':True}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="add_machine_info_field">
+            <field name="name">add brand list</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='group_standard_price']" position="after">
+                    <group>
+                        <field name="machine_info"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

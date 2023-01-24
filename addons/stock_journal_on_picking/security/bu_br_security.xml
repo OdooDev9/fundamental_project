@@ -1,0 +1,123 @@
+<odoo>
+
+
+    <record id="manage_br_location" model="ir.rule">
+        <field name="name">Manage BR Location</field>
+        <field name="model_id" ref="stock.model_stock_location"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4,ref('master_data_extension.group_hr_branch_manager'))]"/>
+    </record>
+    <!--     Branch Manager Record rule for Stock Picking -->
+    <!-- <record id="rule_banch_user_picking" model="ir.rule">
+        <field name="name">Branch User Picking</field>
+        <field name="model_id" ref="stock.model_stock_picking"/>
+        <field name="domain_force">['|',('hr_bu_id', 'in', [g.id for g in user.hr_bu_ids] or [br.id for br in user.hr_br_ids]),('hr_bu_id','=',False)]</field>
+    </record> -->
+
+
+    <record id="manage_bu_warehouse" model="ir.rule">
+        <field name="name">Manage BU Warehouse</field>
+        <field name="model_id" ref="stock.model_stock_warehouse"/>
+        <field name="domain_force">['|','|',('hr_bu_id', 'in', [g.id for g in user.hr_bu_ids] ), ('hr_bu_id', 'in',
+            [br.id for br in user.hr_br_ids] ),('hr_bu_id','=',False)]
+        </field>
+    </record>
+
+    <!-- <record id="manage_bu_operation_type" model="ir.rule">
+        <field name="name">Manage BU Operation Type</field>
+        <field name="model_id" ref="stock.model_stock_picking_type"/>
+        <field name="domain_force">['|','|',('hr_bu_id', 'in', [g.id for g in user.hr_bu_ids]), ('hr_bu_id', 'in',
+            [br.id for br in user.hr_br_ids] ),('hr_bu_id','=',False)]
+        </field>
+    </record> -->
+    <record id="manage_bu_location" model="ir.rule">
+        <field name="name">Manage BU Location</field>
+        <field name="model_id" ref="stock.model_stock_location"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <!--        <field name="groups" eval="[(4,ref('master_data_extension.group_hr_bu_manager'))]"/>-->
+    </record>
+
+
+    <!-- <record id="manage_bu_picking" model="ir.rule">
+        <field name="name">Manage BU Picking</field>
+        <field name="model_id" ref="stock.model_stock_picking"/>
+        <field name="domain_force">['|',('hr_bu_id', 'in', [g.id for g in user.hr_bu_ids]),('hr_bu_id','=',False)]
+        </field>
+    </record>
+    <record id="manage_br_picking" model="ir.rule">
+        <field name="name">Manage BR Picking</field>
+        <field name="model_id" ref="stock.model_stock_picking"/>
+        <field name="domain_force">['|',('hr_br_id', 'in', [g.id for g in user.hr_br_ids]),('hr_br_id','=',False)]
+        </field>
+    </record> -->
+
+    <!-- <record id="manage_bu_br_picking_read_access" model="ir.rule">
+        <field name="name">Manage BU Picking Read Access</field>
+        <field name="model_id" ref="stock.model_stock_picking"/>
+        <field name="domain_force">[('picking_type_id.hr_bu_id.id', '=', user.current_bu_br_id.id )]
+        </field>
+        <field eval="1" name="perm_read"></field>   
+        <field eval="1" name="perm_write"></field> 
+        <field eval="1" name="perm_unlink"></field>
+        <field eval="1" name="perm_create"></field>
+    </record>
+
+     -->
+
+    <record id="manage_br_stock_picking" model="ir.rule">
+        <field name="name">Manage BR Stock Picking</field>
+         <field name="model_id" ref="stock.model_stock_picking"/>
+        <field name="domain_force">[('picking_type_id.hr_bu_id.id', '=', user.current_bu_br_id.id )]</field>
+        <field name="groups" eval="[(4, ref('master_data_extension.group_br_user'))]"/>
+       
+     </record>
+
+     <record id="manage_bu_stock_picking" model="ir.rule">
+        <field name="name">Manage BU Stock Picking</field>
+         <field name="model_id" ref="stock.model_stock_picking"/>
+        <field name="domain_force">[('picking_type_id.hr_bu_id.id', '=', user.current_bu_br_id.id )]</field>
+        <field name="groups" eval="[(4, ref('master_data_extension.group_bu_user'))]"/>
+     </record>
+
+     <record id="manage_br_stock_picking_readonly" model="ir.rule">
+        <field name="name">Manage BR Picking Readonly</field>
+        <field name="model_id" ref="stock.model_stock_picking"/>
+        <field name="domain_force">[('picking_type_id.hr_bu_id.id', '!=', user.current_bu_br_id.id )]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>         
+        <field name="groups" eval="[(4, ref('master_data_extension.group_br_user'))]"/>
+     </record>
+
+     <record id="manage_bu_stock_picking_readonly" model="ir.rule">
+        <field name="name">Manage BU  Readonly</field>
+        <field name="model_id" ref="stock.model_stock_picking"/>
+        <field name="domain_force">[('picking_type_id.hr_bu_id.id', '!=', user.current_bu_br_id.id )]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>         
+        <field name="groups" eval="[(4, ref('master_data_extension.group_bu_user'))]"/>
+     </record>
+
+    
+
+    <!-- <record id="manage_bu_quant" model="ir.rule">
+        <field name="name">Manage BU Adjustment</field>
+        <field name="model_id" ref="stock.model_stock_quant"/>
+        <field name="domain_force">['|',('location_id.hr_bu_id', 'in', [g.id for g in
+            user.hr_bu_ids]),('location_id.hr_bu_id','=',False)]
+        </field>
+    </record> -->
+
+    <!-- <record id="manage_br_quant" model="ir.rule">
+        <field name="name">Manage BR Adjustment</field>
+        <field name="model_id" ref="stock.model_stock_quant"/>
+        <field name="domain_force">['|',('location_id.hr_bu_id', 'in', [g.id for g in
+            user.hr_br_ids]),('location_id.hr_bu_id','=',False)]
+        </field>
+    </record> -->
+
+
+</odoo>

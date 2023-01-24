@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Business Sector Type -->
+    <record model="ir.ui.view" id="business_sector_type_tree">
+        <field name="name">Business Sector Type</field>
+        <field name="model">business.sector.type</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="business_sector_type_form">
+        <field name="name">Business Sector Type</field>
+        <field name="model">business.sector.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" />
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="business_sector_type_action_window">
+        <field name="name">Business Sector Type</field>
+        <field name="res_model">business.sector.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <!-- End -->
+</odoo>

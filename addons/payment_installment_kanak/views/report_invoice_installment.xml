@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_invoice_installments_document">
+            <t t-call="web.external_layout">
+                <t t-set="o" t-value="o.with_context(lang=lang)"/>
+                <t t-if="'company_id' in o">
+                    <t t-set="company" t-value="o.company_id"/>
+                </t>
+                <!--<t t-set="address">-->
+                <!--    <address t-field="o.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>-->
+                <!--</t>-->
+                <div class="header col-12">
+                    <div class="col-7 float-left" style="padding-left:0px">
+                        <span t-if="company.logo">
+                            <span itemprop="image" t-field="company.logo" t-options="{&quot;widget&quot;: &quot;image&quot;}"/>
+                        </span>
+                        <div class="col-5 mb8 float-right" style="padding-bottom:2px;padding-right:0px;">
+                        <div class="float-right" style="width:auto;padding-left:15px;">
+                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="page">
+                    
+                    <!--<h2 class="mt16">-->
+                    <!--    <span t-field="o.name"/>: Installments-->
+                    <!--</h2>-->
+
+                    <!--<div id="informations1" class="row mt32 mb32">-->
+                    <!--    <div class="col-auto mw-100 mb-2">-->
+                    <!--        <strong>Tenure Amount:</strong>-->
+                    <!--        <p class="m-0" t-field="o.tenure_amt"/>-->
+                    <!--    </div>-->
+                    <!--    <div class="col-auto mw-100 mb-2">-->
+                    <!--        <strong>Down Payment:</strong>-->
+                    <!--        <p class="m-0" t-field="o.down_payment_amt"/>-->
+                    <!--    </div>-->
+                    <!--    <div class="col-auto mw-100 mb-2">-->
+                    <!--        <strong>Payable Amount:</strong>-->
+                    <!--        <p class="m-0" t-field="o.payable_amt"/>-->
+                    <!--    </div>-->
+                    <!--    <div class="col-auto mw-100 mb-2">-->
+                    <!--        <strong>Installment Amount:</strong>-->
+                    <!--        <p class="m-0" t-field="o.installment_amt"/>-->
+                    <!--    </div>-->
+                    <!--    <div class="col-auto mw-100 mb-2">-->
+                    <!--        <strong>Tenure (months):</strong>-->
+                    <!--        <p class="m-0" t-field="o.tenure"/>-->
+                    <!--    </div>-->
+                    <!--</div>-->
+                    <div class="row">
+                      
+                    
+                   <div class="col-12">
+                    <div class="col-3 float-left" style="padding-left:0px">
+                       
+                    
+                     </div>
+                    <div class="col-9 float-right">
+                      <div class="float-right" style="width:auto;padding-left:15px;">
+                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>
+                        </div>
+                    </div>
+                    
+                </div>
+                </div>
+                <div class="col-12">
+                  <div class="col-6 float-left" style="padding-left:0px">
+                    <table class="table" border="0">
+                      <thead>
+                        <tr>
+                          <th>Customer Statement</th>
+                          <th/>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr/>
+                        <tr>
+                          <td>
+                            Customer
+                          </td>
+                          <td>
+                            <t t-esc="o.partner_id.name"/>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            Contact Person
+                          </td>
+                          <td>
+                            <t t-esc="o.partner_id.name"/>
+                          </td>
+                        </tr>
+                        <tr>
+                         
+                        </tr>
+                        <tr>
+                          <td>
+                            Saleman
+                          </td>
+                          <td>
+                            <t t-esc="o.invoice_user_id.name"/>
+                          </td>
+                        </tr>
+                        <tr/>
+                        <tr>
+                          <td>
+                            No. Contract
+                          </td>
+                          <td>
+                            <t t-esc="o.invoice_origin"/>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            Sale Amount
+                          </td>
+                          <td>
+                            <t t-esc="o.amount_total"/>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            Downpayment Amount
+                          </td>
+                          <td>
+                            <t t-esc="o.down_payment_amt"/>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            Principal Amount
+                          </td>
+                          <td>
+                            <t t-esc="o.payable_amt"/>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            Interest Rate
+                          </td>
+                          <td>
+                            <t t-esc="o.interest_rate"/>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            Fine Rate
+                          </td>
+                          <td>
+                            <t t-esc="o.fine_rate"/>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            Invoice No
+                          </td>
+                          <td>
+                            <t t-esc="o.name"/>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="col-6 float-right" style="padding-left:0px">
+                    <table class="table" border="0">
+                      <thead>
+                        <tr>
+                          <th/>
+                          <th>Summary</th>
+                          <th>USD</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            စာချုပ်ပါအရောင်းတန်ဖိုး
+                          </td>
+                          <td>
+                            Contracted Amount
+                          </td>
+                          <td>
+                            <t t-esc="o.amount_total"/>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            စုစုပေါင်းရက်လွန်ဒဏ်ကြေး
+                          </td>
+                          <td>
+                            Fine to Date
+                          </td>
+                          <td>
+                            <t t-esc="o.fine_to_date"/>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>စုစုပေါင်းရရန်ရှိ</td>
+                          <td>
+                            Total AR
+                          </td>
+                          <td>
+                            <t t-esc="o.fine_to_date + o.amount_total"/>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            ကနဦးပေးချေငွေ
+                          </td>
+                          <td>
+                            Downpayment Amount
+                          </td>
+                          <td>
+                            <t t-esc="o.down_payment_amt"/>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            လက်ရှိပေးသွင်းပြီးငွေ
+                          </td>
+                          <td>
+                            Payment to Date
+                          </td>
+                          <td>
+                            <t t-esc="o.payment_to_date"/>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            လျော့ပေးငွေ
+                          </td>
+                          <td>
+                            Discount
+                          </td>
+                          <td>
+                            <t t-esc="o.discount_to_date"/>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            စုစုပေါင်းပေးရန်ရှိငွေ
+                          </td>
+                          <td>
+                            Total Payable
+                          </td>
+                          <td>
+                            <t t-esc="(o.fine_to_date + o.amount_total) - (o.down_payment_amt + o.payment_to_date + o.discount_to_date)"/>
+                          </td>
+                        </tr>
+                        <tr><td/><td/><td/></tr>
+                        <tr>
+                          <td>
+                            လက်ရှိပေးဆောင်ရမည့်ငွေ
+                          </td>
+                          <td>
+                            Current Due
+                          </td>
+                          <td>
+                            <t t-esc="o.current_amount"/>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            အမြန်ဆုံးပေးသွင်းရန်ကျန်ငွေ
+                          </td>
+                          <td>
+                            Overdue
+                          </td>
+                          <td>
+                            <t t-esc="o.current_overdue"/>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            ဒဏ်ကြေးငွေ
+                          </td>
+                          <td>
+                            Fine
+                          </td>
+                          <td>
+                            <t t-esc="o.current_fine"/>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            လက်ရှိပေးသွင်းရမည့်ငွေ
+                          </td>
+                          <td>
+                            Period Amount
+                          </td>
+                          <td>
+                            <t t-esc="o.period_amount"/>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            ထပ်မံပေးသွင်းရမည့်ငွေ့ငွေ
+                          </td>
+                          <td>
+                            Future Due
+                          </td>
+                          <td>
+                            <t t-esc="o.future_due_amount"/>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <t t-if="o.ref">
+                  <div class="col-12">
+                    <div class="col-6 float-left">
+                      <h3>
+                        Remark: <span t-field="o.ref"/>
+                      </h3>
+                    </div>
+                  </div>
+                </t>
+    
+                <br/>
+                <br/>
+                    <table class="table table-sm o_main_table" style="font-size:10px">
+                        <thead>
+                            <tr>
+                                <th>Due Date</th>
+                                <th>Particular</th>
+                                <th>Principal Amount</th>
+                                <th>Interest Amount</th>
+                                <th>Principal Balance</th>
+                                <th>Overdue Amount</th>
+                                <th>Total Fine</th>
+                                <th>Period Amount</th>
+                                <th>Paid</th>
+                                <th>RV Date</th>
+                                <th>RV No.</th>
+                                <th>Fine Paid(Auto depend on Paid)</th>
+                                <th>Principal Paid(Auto depend on Paid)</th>
+                                <th>AR Balance</th>
+                              
+                                <!--<th>#No</th>-->
+                                <!--<th>Interest Rate</th>-->
+                                <!--<th>Remaining AR Balance</th>-->
+                                <!--<th>Amount(Without Interest)</th>-->
+                                <!--<th>Interest Amount</th>-->
+                                <!--<th>Due Amount</th>-->
+                                <!--<th>Each Period AR Amount</th>-->
+                                <!--<th>Amount</th>-->
+                                <!--<th>Paid Amount</th>-->
+                                <!--<th>Fine Amount</th>-->
+                                <!--<th>Payment Date</th>-->
+                                <!--<th>Description</th>-->
+                                <!--<th>Status</th>-->
+                            </tr>
+                        </thead>
+                         <tbody>
+                            <t t-set="total" t-value="0.0"/>
+                            <t t-set="principal_amount_total" t-value="0.0"/>
+                            <t t-set="interest_amount_total" t-value="0.0"/>
+                            <t t-set="principal_balance_total" t-value="0.0"/>
+                            <t t-set="overdue_total" t-value="0.0"/>
+                            <t t-set="total_fine" t-value="0.0"/>
+                            <t t-set="total_paid" t-value="0.0"/>
+                            <t t-set="total_fine_paid" t-value="0.0"/>
+                            <t t-set="total_principal_paid" t-value="0.0"/>
+                            
+                            <t t-set="ar_balance" t-value="0.0"/>
+                            
+                            <t t-foreach="o.installment_ids" t-as="line">
+                                <tr>
+                                    <td><t t-esc="line.payment_date"/></td>
+                                    <td><t t-esc="line.description"/></td>
+                                    <td><t t-esc="'%.0f'%(line.without_interest_amount)"/></td>
+                                    <td><t t-esc="'%.0f'%(line.interest_amount)"/></td>
+                                    <td><t t-esc="'%.0f'%(line.each_period_ar_amount)"/></td>
+                                    <td><t t-esc="'%.0f'%(line.due_amount)"/></td>
+                                    <td><t t-esc="'%.0f'%(line.fine_amount)"/></td>
+                                    <td><t t-esc="'%.0f'%(line.amount)"/></td>
+                                    <td><t t-esc="'%.0f'%(line.paid_amount)"/></td>
+                                    <td><t t-esc="line.rv_date"/></td>
+                                    <td>
+                                      <t t-if="line.rv_no>0">
+                                        <t t-esc="line.rv_no"/>
+                                      </t>
+                                      </td>
+                                    <td><t t-esc="'%.0f'%(line.fine_paid)"/></td>
+                                    <td><t t-esc="'%.0f'%(line.principal_paid)"/></td>
+                                    <td><t t-esc="'%.0f'%(line.ar_balance)"/></td>
+                                    <!--<td><t t-esc="line.index"/></td>-->
+                                    <!--<td><t t-esc="line.interest_rate"/></td>-->
+                                    <!--<td><t t-esc="'%.0f'%(line.total_remaining_amount)"/></td>-->
+                                    <!--<td><t t-esc="'%.0f'%(line.without_interest_amount)"/></td>-->
+                                    <!--<td><t t-esc="'%.0f'%(line.interest_amount)"/></td>-->
+                                    <!--<td><t t-esc="'%.0f'%(line.due_amount)"/></td>-->
+                                    <!--<td><t t-esc="'%.0f'%(line.each_period_ar_amount)"/></td>-->
+                                    <!--<td><t t-esc="'%.0f'%(line.amount)"/></td>-->
+                                    <!--<td><t t-esc="line.paid_amount" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>-->
+                                    <!--<td><t t-esc="'%.0f'%(line.fine_amount)"/></td>-->
+                                    <!--<td><t t-esc="line.payment_date"/></td>-->
+                                    <!--<td><t t-esc="line.description"/></td>-->
+                                    <!--<td><t t-esc="line.state"/></td>-->
+                                    
+                                </tr>
+                                <t t-set="total" t-value="total + line.amount"/>
+                                <t t-set="principal_amount_total" t-value="principal_amount_total + line.without_interest_amount"/>
+                                <t t-set="interest_amount_total" t-value="interest_amount_total + line.interest_amount"/>
+                                <t t-set="principal_balance_total" t-value="principal_balance_total + line.each_period_ar_amount"/>
+                                <t t-set="overdue_total" t-value="overdue_total + line.due_amount"/>
+                                <t t-set="total_fine" t-value="total_fine + line.fine_amount"/>
+                                <t t-set="total_paid" t-value="total_paid + line.paid_amount"/>
+                                <t t-set="total_fine_paid" t-value="total_fine_paid + line.fine_paid"/>
+                                <t t-set="total_principal_paid" t-value="total_principal_paid + line.principal_paid"/>
+                                <t t-set="ar_balance" t-value="line.ar_balance"/>
+                            </t>
+                            <tr>
+                                <!--<td><b>Total</b></td>-->
+                                <!--<td/>-->
+                                <!--<td><b><t t-esc="total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></b></td>-->
+                                <!--<td/>-->
+                                <!--<td/>-->
+                                <td></td>
+                                <td></td>
+                                <td>
+                                  <t t-esc="'%.0f'%(principal_amount_total)"/>
+                                </td>
+                                <td>
+                                  <t t-esc="'%.0f'%(interest_amount_total)"/>
+                                </td>
+                                <td>
+                                  <t t-esc="'%.0f'%(principal_balance_total)"/>
+                                </td>
+                                <td>
+                                  <t t-esc="'%.0f'%(overdue_total)"/>
+                                </td>
+                                <td>
+                                  <t t-esc="'%.0f'%(total_fine)"/>
+                                </td>
+                                <td>
+                                  <t t-esc="'%.0f'%(total)"/>
+                                </td>
+                                <td>
+                                  <t t-esc="'%.0f'%(total_paid)"/>
+                                </td>
+                                <td>
+                                  -
+                                </td>
+                                <td>
+                                  -
+                                </td>
+                                <td>
+                                  <t t-esc="'%.0f'%(total_fine_paid)"/>
+                                </td>
+                                <td>
+                                  <t t-esc="'%.0f'%(total_principal_paid)"/>
+                                </td>
+                                
+                                <td>
+                                  <t t-esc="'%.0f'%(ar_balance)"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </template>
+
+        <template id="report_invoice_installments">
+            <t t-call="web.report_layout">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="payment_installment_kanak.report_invoice_installments_document" t-lang="o.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+
+        <report
+            id="action_report_invoice_installments"
+            string="Installments"
+            model="account.move"
+            report_type="qweb-pdf"
+            groups="payment_installment_kanak.group_enable_installments"
+            file="payment_installment_kanak.report_invoice_installments"
+            name="payment_installment_kanak.report_invoice_installments"
+            print_report_name="'Installments - %s' % (object.name)"
+        />
+    </data>
+</odoo>

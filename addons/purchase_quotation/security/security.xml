@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <!-- <record id="manage_bu_quotation" model="ir.rule">
+            <field name="name">Manage Purchase Quotation</field>
+            <field name="model_id" ref="model_purchase_quotation"/>
+            <field name="domain_force">[('hr_bu_id', 'in', [g.id for g in user.hr_bu_ids])]</field>
+        </record> -->
+        <!-- BU Record -->
+        <record id="manage_bu_quotation" model="ir.rule">
+            <field name="name">Manage BU Purchase Quotation</field>
+            <field name="model_id" ref="model_purchase_quotation"/>
+            <field name="domain_force">[('hr_bu_id', '=', user.current_bu_br_id.id)]</field>
+            <field name="groups" eval="[(4, ref('master_data_extension.group_bu_user'))]"/>
+        </record>
+        <!-- CFD Record -->
+        <record id="manage_cfd_quotation" model="ir.rule">
+            <field name="name">Manage CFD Purchase Quotation</field>
+            <field name="model_id" ref="model_purchase_quotation"/>
+            <field name="domain_force">[]</field>
+            <field name="groups" eval="[(4, ref('master_data_extension.group_cfd_user'))]"/>
+        </record>
+    </data>
+</odoo>

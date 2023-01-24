@@ -1,0 +1,848 @@
+<odoo>
+    <data>
+        <template id="sale_target_approve" name="Portal layout : purchase menu entries"
+                  inherit_id="portal.portal_breadcrumbs" priority="30">
+            <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+                <li t-if="page_name == 'sale_target_approve' or sale_target"
+                    t-attf-class="breadcrumb-item #{'active ' if not sale_target else ''}">
+                    <a t-if="sale_target" t-attf-href="/my/sale/target/approval?{{ keep_query() }}">Sale Target
+                        Approvals
+                    </a>
+                    <t t-else="">Sale Target Approvals</t>
+                </li>
+                <li t-if="sale_target" class="breadcrumb-item active">
+                    <t t-esc="sale_target.name"/>
+                </li>
+
+                <li t-if="page_name == 'personal_sale_target_approve' or personal_sale_target"
+                    t-attf-class="breadcrumb-item #{'active ' if not personal_sale_target else ''}">
+                    <a t-if="personal_sale_target" t-attf-href="/my/personal/sale/target/approval?{{ keep_query() }}">
+                        Personal Sale Target Incentive Approvals
+                    </a>
+                    <t t-else="">Personal Sale Target Incentive Approvals</t>
+                </li>
+                <li t-if="personal_sale_target" class="breadcrumb-item active">
+                    <t t-esc="personal_sale_target.name"/>
+                </li>
+
+                <li t-if="page_name == 'normal_incentive_approve' or normal_incentive"
+                    t-attf-class="breadcrumb-item #{'active ' if not normal_incentive else ''}">
+                    <a t-if="normal_incentive" t-attf-href="/my/normal/incentive/approval?{{ keep_query() }}">Normal
+                        Incentive Approvals
+                    </a>
+                    <t t-else="">Normal Incentive Approvals</t>
+                </li>
+                <li t-if="normal_incentive" class="breadcrumb-item active">
+                    <t t-esc="normal_incentive.name"/>
+                </li>
+
+            </xpath>
+        </template>
+
+
+        <template id="portal_my_home_sale_target_approve" name="Sale Target Approve" inherit_id="portal.portal_my_home"
+                  priority="60">
+            <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="title">Sale Target Approval</t>
+                    <t t-set="url" t-value="'/my/sale/target/approval'"/>
+                    <t t-set="count" t-value="sale_target_approval_count"/>
+                </t>
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="title">Personal Sale Target Incentive Approvals</t>
+                    <t t-set="url" t-value="'/my/personal/sale/target/approval'"/>
+                    <t t-set="count" t-value="personal_sale_target_approval_count"/>
+                </t>
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="title">Normal Incentive Approvals</t>
+                    <t t-set="url" t-value="'/my/normal/incentive/approval'"/>
+                    <t t-set="count" t-value='normal_incentive_approval_count'/>
+                </t>
+            </xpath>
+        </template>
+
+        <template id="portal_my_normal_incentive_approval" name="Normal Incentive">
+
+            <t t-call="portal.portal_layout">
+                <t t-set="breadcrumbs-searchbar" t-value="True"/>
+
+                <t t-call="portal.portal_searchbar">
+                    <t t-set="title">Normal Incentive</t>
+                </t>
+                <t t-if="not incentives">
+                    <p>There are currently no normal incentive.</p>
+                </t>
+
+                <t t-if="incentives" t-call="portal.portal_table">
+                    <thread>
+                        <tr class="active">
+                            <th>Incentive Name#</th>
+                            <th>Salesperson</th>
+                            <th>Sale Order</th>
+                            <th>Incentive Date</th>
+                            <th>Type</th>
+                            <th>Branch Name</th>
+                            <th>Incentive Amount</th>
+                        </tr>
+                    </thread>
+                    <tbody>
+                        <t t-foreach="incentives" t-as="incentive">
+                            <tr>
+                                <td>
+                                    <a t-attf-href="/my/normal/incentive/approval/#{incentive.id}?#{keep_query()}"
+                                       t-att-title="incentive.name">
+                                        <t t-esc="incentive.name"/>
+                                    </a>
+                                </td>
+                                <td>
+                                    <span t-field="incentive.partner_id"/>
+                                </td>
+                                <td>
+                                    <span t-field="incentive.sale_order_id"/>
+                                </td>
+                                <td>
+                                    <span t-field="incentive.date"/>
+                                </td>
+                                <td>
+                                    <span t-field="incentive.sale_person_type"/>
+                                </td>
+                                <td>
+                                    <span t-field="incentive.branch_id"/>
+                                </td>
+                                <td>
+                                    <span t-field="incentive.incentive_amount"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </t>
+            </t>
+
+        </template>
+
+
+        <template id="portal_my_personal_sale_target_approval" name="Personal Sale Target">
+            <t t-call="portal.portal_layout">
+                <t t-set="breadcrumbs-searchbar" t-value="True"/>
+
+                <t t-call="portal.portal_searchbar">
+                    <t t-set="title">Personal Sale Targets</t>
+                </t>
+                <t t-if="not targets">
+                    <p>There are currently no personal sale targets.</p>
+                </t>
+
+                <t t-if="targets" t-call="portal.portal_table">
+                    <thread>
+                        <tr class="active">
+                            <th>Sale Person#</th>
+                            <th>Sales Team</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Target</th>
+                            <th>Sales Total</th>
+                            <th>Target Reached</th>
+                            <th>Incentive Amount</th>
+                        </tr>
+                    </thread>
+                    <tbody>
+                        <t t-foreach="targets" t-as="target">
+                            <tr>
+                                <td>
+                                    <a t-attf-href="/my/personal/sale/target/approval/#{target.id}?#{keep_query()}"
+                                       t-att-title="target.sale_person_id.name">
+                                        <t t-esc="target.sale_person_id.name"/>
+                                    </a>
+                                </td>
+                                <td>
+                                    <span t-field="target.sale_team_id"/>
+                                </td>
+                                <td>
+                                    <span t-field="target.start_date"/>
+                                </td>
+                                <td>
+                                    <span t-field="target.end_date"/>
+                                </td>
+                                <td>
+                                    <span t-field="target.target"/>
+                                </td>
+                                <td>
+                                    <span t-field="target.sale_total"/>
+                                </td>
+                                <td>
+                                    <span t-field="target.target_reached"/>
+                                </td>
+                                <td>
+                                    <span t-field="target.incentive_amount"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </t>
+            </t>
+
+        </template>
+
+        <template id="portal_normal_incentive" name="Portal Normal Incentive">
+            <t t-call="portal.portal_layout">
+                <t t-set="normal_incentive" t-value="order"/>
+                <div id="optional_placeholder"></div>
+                <t t-if="order.state in ['request_incentive_approved']">
+                    <div class="modal" tabindex="-1" role="dialog" id="helpdesk_cash_close_modal_personal">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Approve Normal Incentive</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">&amp;times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Are you sure you wish to proceed?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <a role="button" class="btn btn-primary"
+                                       t-att-href="'/normal/incentive/approve/%s' % (order.id)">Approve Incentive
+                                    </a>
+                                    <button type="button" class="btn btn-light" data-dismiss="modal">Discard</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div role="dialog" class="modal fade" id="reject_sale_modal_personal">
+                        <div class="modal-dialog">
+                            <form id="reject_sale_target" t-attf-action="/normal/incentive/reject" method="POST"
+                                  class="modal-content">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Reject Incentive</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            &amp;times;
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Are you sure you wish to proceed?</p>
+                                        <br/>
+                                        <input type="hidden" name="incentive_id" t-att-value="order.id"/>
+                                        Reason:
+                                        <textarea name="reason" rows="3" class="form-control" required=""/>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-danger"><i class="fa fa-times"></i>Reject
+                                        </button>
+                                        <button type="button" class="btn btn-light" data-dismiss="modal">Discard
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="text-center mt-5">
+                        <button class="btn btn-primary mb-1 pt-1" data-target="#helpdesk_cash_close_modal_personal"
+                                data-toggle="modal">
+                            <small>
+                                <b>Approve</b>
+                            </small>
+                        </button>
+                        <button class="btn btn-primary mb-1 pt-1" data-target="#reject_sale_modal_personal"
+                                data-toggle="modal">
+                            <small>
+                                <b>
+                                    Reject
+                                </b>
+                            </small>
+                        </button>
+                    </div>
+                </t>
+                <div class="container">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <h4>
+                                        <t>
+                                            Incentive :
+                                        </t>
+                                        <span t-esc="order.name"/>
+                                    </h4>
+                                </div>
+                                <div class="col-lg-4">
+                                    <h5>
+                                        State:
+                                    </h5>
+                                    <t t-if="order.state=='request_incentive_approved'">
+                                        <span>Requested Incentive Approve</span>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <strong>Sale Person:</strong>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <span t-field="order.partner_id"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <strong>Sale Order:</strong>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <span t-field="order.sale_order_id"/>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <strong>Incentive Date:</strong>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <t t-if="not order.date">
+                                                <span>-</span>
+                                            </t>
+                                            <t t-if="order.date">
+                                                <span t-field="order.date" t-options='{"widget": "date"}'/>
+                                            </t>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <strong>Type:</strong>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <span t-field="order.sale_person_type"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <strong>Branch Name:</strong>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <span t-field="order.branch_id"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <strong>Incentive Amount:</strong>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <span t-field="order.incentive_amount"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="oe_structure mb32"/>
+            </t>
+        </template>
+
+        <template id="portal_personal_sale_target" name="Portal Personal Sale Target">
+            <t t-call="portal.portal_layout">
+                <t t-set="personal_sale_target" t-value="order"/>
+                <div id="optional_placeholder"></div>
+                <t t-if="order.state in ['request_incentive_approved']">
+                    <div class="modal" tabindex="-1" role="dialog" id="helpdesk_cash_close_modal_personal">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Approve Personal Sale Incentive</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">&amp;times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Are you sure you wish to proceed?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <a role="button" class="btn btn-primary"
+                                       t-att-href="'/personal/sale/target/approve/%s' % (order.id)">Approve Personal
+                                        Sale Incentive
+                                    </a>
+                                    <button type="button" class="btn btn-light" data-dismiss="modal">Discard</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div role="dialog" class="modal fade" id="reject_sale_modal_personal">
+                        <div class="modal-dialog">
+                            <form id="reject_sale_target" t-attf-action="/personal/sale/target/reject" method="POST"
+                                  class="modal-content">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Reject Personal Sale Incentive</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            &amp;times;
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Are you sure you wish to proceed?</p>
+                                        <br/>
+                                        <input type="hidden" name="target_id" t-att-value="order.id"/>
+                                        Reason:
+                                        <textarea name="reason" rows="3" class="form-control" required=""/>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-danger"><i class="fa fa-times"></i>Reject
+                                        </button>
+                                        <button type="button" class="btn btn-light" data-dismiss="modal">Discard
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="text-center mt-5">
+                        <button class="btn btn-primary mb-1 pt-1" data-target="#helpdesk_cash_close_modal_personal"
+                                data-toggle="modal">
+                            <small>
+                                <b>Approve</b>
+                            </small>
+                        </button>
+                        <button class="btn btn-primary mb-1 pt-1" data-target="#reject_sale_modal_personal"
+                                data-toggle="modal">
+                            <small>
+                                <b>
+                                    Reject
+                                </b>
+                            </small>
+                        </button>
+                    </div>
+                </t>
+                <div class="container">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <h4>
+                                        <t>
+                                            Personal Sale Target Incentive :
+                                        </t>
+                                        <span t-esc="order.name"/>
+                                    </h4>
+                                </div>
+                                <div class="col-lg-4">
+                                    <h5>
+                                        State:
+                                    </h5>
+                                    <t t-if="order.state=='request_incentive_approved'">
+                                        <span>Requested Incentive Approve</span>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <strong>Sale Person:</strong>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <span t-field="order.sale_person_id"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <strong>Start Date:</strong>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <span t-field="order.start_date" t-options='{"widget": "date"}'/>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <strong>Sales Team:</strong>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <t t-if="not order.sale_team_id">
+                                                <span>-</span>
+                                            </t>
+                                            <t t-if="order.sale_team_id">
+                                                <span t-field="order.sale_team_id"/>
+                                            </t>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <strong>End Date:</strong>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <span t-field="order.end_date"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <strong>Target:</strong>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <span t-field="order.target"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <strong>Sales Total:</strong>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <span t-field="order.sale_total"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <strong>Sale Performance:</strong>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <span t-field="order.target_reached"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <strong>Incentive Amount:</strong>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <span t-field="order.incentive_amount"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <strong>Branch Name:</strong>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <span t-field="order.branch_id"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <strong>Pooling BU/BR Incentive Amount:</strong>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <span t-field="order.bu_br_incentive_amount"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="oe_structure mb32"/>
+            </t>
+        </template>
+
+
+        <template id="portal_my_sale_target_approval" name="Sale Target Approval">
+            <t t-call="portal.portal_layout">
+                <t t-set="breadcrumbs-searchbar" t-value="True"/>
+
+                <t t-call="portal.portal_searchbar">
+                    <t t-set="title">Sale Targets</t>
+                </t>
+                <t t-if="not targets">
+                    <p>There are currently no sale targets.</p>
+                </t>
+
+                <t t-if="targets" t-call="portal.portal_table">
+                    <thread>
+                        <tr class="active">
+                            <th>Sale Target#</th>
+                            <th>Branches</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                        </tr>
+                    </thread>
+                    <tbody>
+                        <t t-foreach="targets" t-as="target">
+                            <tr>
+                                <td>
+                                    <a t-attf-href="/my/sale/target/approval/#{target.id}?#{keep_query()}"
+                                       t-att-title="target.name">
+                                        <t t-esc="target.name"/>
+                                    </a>
+                                </td>
+                                <td>
+                                    <span t-field="target.branch_ids"/>
+                                </td>
+                                <td>
+                                    <span t-field="target.start_date"/>
+                                </td>
+                                <td>
+                                    <span t-field="target.end_date"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </t>
+            </t>
+        </template>
+
+        <template id="portal_sale_target" name="Portal Sale Target">
+            <t t-call="portal.portal_layout">
+                <t t-set="sale_target" t-value="order"/>
+                <div id="optional_placeholder"></div>
+                <t t-if="order.state in ['request_related_dh_approve','request_gm_approve','request_coo_approve','request_ceo_approve']">
+                    <div class="modal" tabindex="-1" role="dialog" id="helpdesk_cash_close_modal">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Approve Sale Target</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">&amp;times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Are you sure you wish to proceed?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <a role="button" class="btn btn-primary"
+                                       t-att-href="'/sale/target/approve/%s' % (order.id)">Approve Sale Team Target
+                                    </a>
+                                    <button type="button" class="btn btn-light" data-dismiss="modal">Discard</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div role="dialog" class="modal fade" id="reject_sale_modal">
+                        <div class="modal-dialog">
+                            <form id="reject_sale_target" t-attf-action="/sale/target/reject" method="POST"
+                                  class="modal-content">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Reject Sale Target</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            &amp;times;
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Are you sure you wish to proceed?</p>
+                                        <br/>
+                                        <input type="hidden" name="target_id" t-att-value="order.id"/>
+                                        Reason:
+                                        <textarea name="reason" rows="3" class="form-control" required=""/>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-danger"><i class="fa fa-times"></i>Reject
+                                        </button>
+                                        <button type="button" class="btn btn-light" data-dismiss="modal">Discard
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="text-center mt-5">
+                        <button class="btn btn-primary mb-1 pt-1" data-target="#helpdesk_cash_close_modal"
+                                data-toggle="modal">
+                            <small>
+                                <b>Approve</b>
+                            </small>
+                        </button>
+                        <button class="btn btn-primary mb-1 pt-1" data-target="#reject_sale_modal" data-toggle="modal">
+                            <small>
+                                <b>
+                                    Reject
+                                </b>
+                            </small>
+                        </button>
+                    </div>
+                </t>
+                <div class="container">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <h4>
+                                        <t>
+                                            Sale Target :
+                                        </t>
+                                        <span t-esc="order.name"/>
+                                    </h4>
+                                </div>
+                                <div class="col-lg-4">
+                                    <h5>
+                                        State:
+                                    </h5>
+                                    <t t-if="order.state=='request_related_dh_approve'">
+                                        <span>Requested Related DH Approve</span>
+                                    </t>
+                                    <t t-if="order.state=='request_gm_approve'">
+                                        <span>Requested GM Approve</span>
+                                    </t>
+                                    <t t-if="order.state=='request_coo_approve'">
+                                        <span>Requested COO Approve</span>
+                                    </t>
+                                    <t t-if="order.state=='request_ceo_approve'">
+                                        <span>Requested CEO Approve</span>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <strong>Branches:</strong>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <span t-field="order.branch_ids"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <strong>Start Date:</strong>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <span t-field="order.start_date" t-options='{"widget": "date"}'/>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="row">
+
+
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <strong>End Date:</strong>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <span t-field="order.end_date"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <strong>B2B/B2C:</strong>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <span t-field="order.b2b_b2c"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <strong>Define BU Name:</strong>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <span t-field="order.define_branch_id"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <!-- <div class="col-lg-4">
+                                          <strong>Target:</strong>
+                                        </div>
+                                         <div class="col-lg-8">
+                                          <span t-field="order.target"/>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br/>
+
+                            <table class="table table-sm" id="sale_target_table">
+                                <thread class="bg-100">
+                                    <tr>
+                                        <th class="text-left">Sale Team</th>
+                                        <th class="text-right">Target</th>
+                                    </tr>
+                                </thread>
+                                <tbody>
+                                    <t t-foreach="order.sale_team_target_ids" t-as="sale_target">
+                                        <tr>
+                                            <td class="text-left">
+                                                <span t-field="sale_target.sale_team_id"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-field="sale_target.target"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="oe_structure mb32"/>
+            </t>
+        </template>
+
+    </data>
+</odoo>

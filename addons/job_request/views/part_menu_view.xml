@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<odoo>
+    <menuitem id="job_request_root"
+              name="Job Order"
+              action="job_request_action"
+              groups="group_reman_user,group_reman_manager"
+              web_icon="job_request,static/description/job_request.png"
+              sequence="15"/>
+    <menuitem id="menu_job_request"
+              name="Operations"
+              parent="job_request_root" sequence="1"
+              groups="sales_team.group_sale_salesman,sales_team.group_sale_salesman_all_leads,sales_team.group_sale_manager"
+    />
+
+    <menuitem name="Job Order" id="menu_new_job_request"
+              parent="menu_job_request"
+              action="job_request.job_request_action" sequence="1"/>
+
+    <menuitem name="Part Recommendation Orders" id="menu_part_orders"
+              parent="menu_job_request"
+              action="job_request.action_part_orders" sequence="2"/>
+
+    <menuitem id="job_request_mrp_bom" name="Master Data"
+              parent="job_request_root" sequence="2"/>
+
+    <menuitem id="product_variant_mrp" name="Product Variants"
+              action="mrp.mrp_product_variant_action"
+              parent="job_request_mrp_bom"
+              groups="product.group_product_variant" sequence="2"/>
+
+    <menuitem id="menu_mrp_product_form"
+              name="Products"
+              action="mrp.product_template_action"
+              parent="job_request_mrp_bom" sequence="1"/>
+
+    <menuitem id="menu_mrp_bom_form_action"
+              action="mrp.mrp_bom_form_action"
+              parent="job_request_mrp_bom"
+              sequence="3" name="Bill of Materials"/>
+
+    <menuitem id="menu_mrp_traceability"
+              name="Lots/Serial Numbers"
+              parent="job_request_mrp_bom"
+              action="stock.action_production_lot_form"
+              groups="stock.group_production_lot" sequence="4"/>
+
+    <!-- 		<menuitem id="menu_job_request"-->
+    <!--			name="Operations"-->
+    <!--			parent="job_request_root" sequence=""-->
+    <!--            groups= "sales_team.group_sale_salesman,sales_team.group_sale_salesman_all_leads,sales_team.group_sale_manager"-->
+    <!--         />-->
+
+    <menuitem id="menu_warehouse_report" name="Reporting" sequence="3" parent="job_request_root"/>
+    <menuitem id="menu_valuation" name="Inventory Report"
+              parent="menu_warehouse_report" sequence="1"
+              action="stock.action_view_quants"/>
+
+    <menuitem id="menu_configuration" name="Configuration" sequence="4" parent="job_request_root"/>
+
+    <menuitem id="menu_html_checklist_template" name="Check List Template" parent="menu_configuration" sequence="4"
+              action="job_request.action_html_checklist_template"/>
+
+    <menuitem id="menu_job_order_type" name="Job Order Type" parent="menu_configuration" sequence="3"
+              action="job_request.action_job_order_type"/>
+
+</odoo>
+
+

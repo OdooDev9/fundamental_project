@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+     <record id="manage_br_goods_request" model="ir.rule">
+        <field name="name">Manage BR Goods Request</field>
+        <field name="model_id" ref="model_sale_order_request"/>
+        <field name="domain_force">['|',('hr_br_id', 'in', [g.id for g in user.hr_br_ids]),('hr_br_id','=',False)]</field>
+    </record>
+    <record id="manage_bu_goods_request" model="ir.rule">
+        <field name="name">Manage BU Goods Request</field>
+        <field name="model_id" ref="model_sale_order_request"/>
+        <field name="domain_force">['|',('hr_bu_id', 'in', [g.id for g in user.hr_bu_ids]),('hr_bu_id','=',False)]</field>
+    </record>
+</odoo>

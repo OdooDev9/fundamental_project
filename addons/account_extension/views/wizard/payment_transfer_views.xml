@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        
+    <!-- Form view for "account.payment.transfer" -->
+    <record id="view_account_payment_transfer_form" model="ir.ui.view">
+        <field name="name">view.account_payment_transfer.form</field>
+        <field name="model">account.payment.transfer</field>
+        <field name="type">form</field>
+        <field name="mode">primary</field>
+        <field name="priority" eval="16" />
+        <field name="active" eval="True" />
+        <field name="arch" type="xml">
+            <form string="model_form" create="true" delete="true" edit="true">
+                <header>
+                </header>
+                <sheet>
+                    <group>
+                        <group name="journal_group" string="Journals">
+                            <field name="is_br_bank_payment" readonly="1"/>
+                            <field name="is_oversea_purchase" />
+                            <field name="payment_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="bu_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="br_id" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}" attrs="{'invisible':[('br_id','=', False)]}"/>
+                            <field name="br_journal_id" attrs="{'required':[('br_id','!=', False),('is_br_bank_payment','=',False)], 'invisible':[('br_id','=', False)]}" class="oe_inline"/>
+                            <field name="bu_journal_id" attrs="{'required':[('bu_id','!=', False)]}" class="oe_inline"/>
+                            <field name="cfd_journal_id" required="1" class="oe_inline"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="description" string="Description">
+                            <field name="name" widget="text"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <button name="create_transfer_transactions" string="Run" type="object" class="btn-primary" data-hotkey="q"/>
+                    <button special="cancel" data-hotkey="z" string="Cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>  
+
+</odoo>

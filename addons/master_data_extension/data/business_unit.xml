@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- 
+            Create Business Unit : CFD 
+            This is main business unit for account transactions
+         -->
+        <record id="cfd_business_unit" model="business.unit">
+            <field name="name">CFD</field>
+            <field name="code">CFD</field>
+            <field name="business_type">cfd</field>
+        </record>    
+    </data>
+    <data>
+        
+        <function model="business.unit" name="write">
+            <function name="search" model="business.unit">
+                <value eval="[('code','=','CFD'), ('business_type','=','cfd')]" />
+            </function>
+            <value eval="{'number':'444555'}"/>
+        </function>
+
+    </data>
+
+    <!-- <function model="business.unit" name="write">
+        <value model="business.unit" eval="{'number':'123456'}"/>
+    </function> -->
+
+</odoo>

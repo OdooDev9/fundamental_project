@@ -1,0 +1,63 @@
+<odoo>
+	<data>
+
+		<menuitem name="Master Data" id="employee_master_data_menu" parent="hr.menu_hr_root" sequence="101"/>
+
+			<menuitem name="Description" id="employee_description_menu" parent="employee_master_data_menu" sequence="5"/>
+				<menuitem name="Executive Officer Name Code" id="chief_name_code_menu" parent="employee_description_menu" action="chief_name_code_action_window" sequence="5"/>
+				<menuitem name="Position Level" id="position_level_menu" parent="employee_description_menu" action="position_level_action_window" sequence="10"/>
+				<menuitem name="Job Level" id="hr_job_level_menu" parent="employee_description_menu" action="hr_job_level_action_window" sequence="15"/>
+				<menuitem name="Job Industry" id="job_industry_menu" parent="employee_description_menu" action="job_industry_action_window" sequence="20"/>
+				<menuitem name="Job Function" id="job_function_menu" parent="employee_description_menu" action="job_function_action_window" sequence="25"/>
+				<menuitem name="Job Description" id="hr_job_description_menu" parent="employee_description_menu" action="hr_job_description_action_window" sequence="30"/>
+				<menuitem name="Working Experience" id="hr_experience_menu" parent="employee_description_menu"
+                  action="hr_experience_action_window" sequence="35"/>
+        <menuitem name="Station" id="hr_station_menu" parent="employee_description_menu" action="hr_station_action_window" sequence="40"/>
+			
+			<menuitem name="Edu &amp; Exp" id="employee_edu_data_menu" parent="employee_master_data_menu" sequence="10"/>
+				<menuitem name="Qualification Type" id="qualification_type_menu" parent="employee_edu_data_menu" action="qualification_type_action_window" sequence="5"/>
+				<menuitem name="Education" id="hr_education_menu" parent="employee_edu_data_menu"
+                  action="hr_education_action_window" sequence="9"/>
+				<menuitem name="Education Type" id="education_type_menu" parent="employee_edu_data_menu" action="education_type_action_window" sequence="10"/>
+				<menuitem name="Degree" id="education_degree_menu" parent="employee_edu_data_menu" action="education_degree_action_window" sequence="15"/>
+				<menuitem name="Major" id="hr_major_menu" parent="employee_edu_data_menu" action="hr_major_action_window" sequence="20"/>
+				<menuitem name="University" id="hr_university_menu" parent="employee_edu_data_menu" action="hr_university_action_window" sequence="25"/>
+				<menuitem name="Language" id="hr_language_menu" parent="employee_edu_data_menu" action="hr_language_action_window" sequence="30"/>		
+				<menuitem name="Language Line" id="hr_language_line_menu" parent="employee_edu_data_menu" action="hr_language_line_action_window" sequence="35"/>
+				<menuitem name="Other Qualification" id="hr_other_qualification_menu"
+                  parent="employee_edu_data_menu" action="hr_other_qualification_action_window"
+                  sequence="40"/>
+
+			<menuitem name="Information" id="employee_info_data_menu" parent="employee_master_data_menu" sequence="15"/>
+				<menuitem name="Family" id="hr_family_menu" parent="employee_info_data_menu"
+                  action="hr_family_action_window" sequence="5"/>
+                <menuitem name="Family Relation" id="hr_family_relation_menu" parent="employee_info_data_menu"
+                  action="hr_family_relation_action_window" sequence="10"/>
+                  <menuitem name="Bank" id="hr_bank_menu" parent="employee_info_data_menu"
+                  action="hr_bank_action_window" sequence="15"/>
+                  <menuitem name="Account Type" id="hr_bank_type_menu" parent="employee_info_data_menu"
+                  action="hr_bank_type_action_window" sequence="20"/>
+                  <menuitem name="Religion" id="hr_religion_menu" parent="employee_info_data_menu"
+                  action="hr_religion_action_window" sequence="25"/>
+                  <menuitem name="Race" id="hr_race_menu" parent="employee_info_data_menu"
+                  action="hr_race_action_window" sequence="30"/>
+                  <menuitem name="Blood Type" id="hr_blood_type_menu" parent="employee_info_data_menu"
+                  action="hr_blood_type_action_window" sequence="35"/>
+
+			<menuitem name="NRC" id="employee_nrc_data_menu" parent="employee_master_data_menu" sequence="20"/>
+				<menuitem name="NRC Code" id="nrc_no_menu" parent="employee_nrc_data_menu"
+                  action="nrc_no_action_window" sequence="3"/>
+        		<menuitem name="NRC Township Code" id="nrc_description_menu" parent="employee_nrc_data_menu"
+                  action="nrc_description_action_window" sequence="3"/>
+        		<menuitem name="NRC Type" id="nrc_type_menu" parent="employee_nrc_data_menu"
+                  action="nrc_type_action_window" sequence="3"/>
+
+			<menuitem name="Others" id="employee_other_data_menu" parent="employee_master_data_menu" sequence="25"/>
+				<menuitem name="Competency" id="hr_competency_menu" parent="employee_other_data_menu" action="hr_competency_action_window" sequence="5"/>
+				<menuitem name="Competency Name" id="master_competency_menu" parent="employee_other_data_menu" action="master_competency_action_window" sequence="10"/>
+				<menuitem name="Candidate Program" id="candidate_program_menu" parent="employee_other_data_menu" action="candidate_program_action_window" sequence="15"/>
+				<menuitem name="Location" id="hr_location_menu" parent="employee_other_data_menu" action="hr_location_action_window" sequence="20"/>
+				<menuitem name="Sir Name" id="sir_name_menu" parent="employee_other_data_menu" action="sir_name_action_window" sequence="25"/>
+
+	</data>
+</odoo>

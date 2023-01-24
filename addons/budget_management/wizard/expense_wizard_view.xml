@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="action_expense_wizard" model="ir.actions.act_window">
+            <field name="name">Expense(Claim/Clearance)</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">expense.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        <record id="wizard_employee_expense_view" model="ir.ui.view">
+            <field name="name">Expense</field>
+            <field name="model">expense.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Expense(Claim/Clearance)">
+                    <group>
+                        <group>
+                            <field name="date"/>
+                            <field name="account_id" required="1" invisible="1"/>
+                            <field name="advance" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="journal_id"
+                                   attrs="{'invisible':[('advance','=',True)],'required':[('advance','!=',True)]}"/>
+                            <label for="amount" invisible="1"/>
+                            <div name="amount_div" class="o_row" invisible="1">
+                                <field name="amount"/>
+                                <field name="currency_id" options="{'no_create': True, 'no_open': True}"
+                                       groups="base.group_multi_currency"/>
+                            </div>
+                            <field name="memo" invisible="1"/>
+                            <field name="advance_id"
+                                   attrs="{'invisible':[('advance','!=',True)],'required':[('advance','=',True)]}"/>
+                            <field name="issue_date" invisible="1"/>
+                            <field name="business_id" invisible="1"/>
+                            <!-- <field name="have_gain_loss" invisible="1"/>
+                            <field name="gain_loss_amount" invisible="1"/>
+                            <field name="exchange_gain_loss_journal_id" options="{'no_create': True, 'no_open': True}" attrs="{'invisible':[('have_gain_loss','=' ,False)],'required':[('have_gain_loss','=',True)]}" domain="[('bu_br_id','=',business_id)]"/> -->
+                            <field name="auto_journal_entry" invisible="1"/>
+                        </group>
+                    </group>
+                    <group string="For Weekly Budget" attrs="{'invisible':[('auto_journal_entry','=',False)]}">
+                        <group>
+                            <field name="weekly_journal_id" attrs="{'invisible':[('business_type','not in',('bu','br'))],'required':[('business_type','in',('bu','br')),('auto_journal_entry','=',True)]}"  options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"/>
+                            <field name="div_journal_id" attrs="{'invisible':[('business_type','in',('bu','br'))],'required':[('business_type','not in',('bu','br')),('auto_journal_entry','=',True)]}" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}" domain="[('bu_br_id', '=', business_id),('type','in',('cash','bank'))]"/>
+                            <field name="business_type" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="receive_journal_id" domain="[('bu_br_id', '=', business_id),('type','in',('cash','bank'))]" attrs="{'invisible':[('business_type','not in',('bu','br'))],'required':[('business_type','in',('bu','br')),('auto_journal_entry','=',True)]}" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"/>
+                        </group>
+                    </group>
+                    <group name="group3"
+                           attrs="{'invisible': [('diff', '=', 0.0)]}"
+                           groups="account.group_account_readonly">
+                        <label for="diff" string="Amount Different"/>
+                        <div>
+                            <field name="expense_type" invisible="1"/>
+                            <field name="diff"/>
+                            <field name="diff_in_company_currency" invisible="1"/>
+                            <field name="handle" widget="radio" nolabel="1" attrs="{'invisible': [('diff', '&lt;', 0.0)]}"/>
+                            <div attrs="{'invisible': [('handle','=','open')]}">
+                                <label for="writeoff_account_id" string="Paid Difference In" class="oe_edit_only"/>
+                                <field name="writeoff_account_id"
+                                       string="Paid Difference In"
+                                       options="{'no_create': True}"
+                                       attrs="{'required': [('handle', '=', 'close'),('expense_type','=','clear')]}"/>
+                                <label for="writeoff_label" class="oe_edit_only" string="Description"/>
+                                <field name="writeoff_label" attrs="{'required': [('handle', '=', 'close'),('expense_type','=','clear')]}"/>
+                            </div>
+                        </div>
+                    </group>
+                <footer>
+                    <button type="object" name="action_paid" string="Paid" class="oe_highlight"/>
+                    Or
+                    <button string="Cancel" special="cancel" class="oe_link"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</data>
+        </odoo>

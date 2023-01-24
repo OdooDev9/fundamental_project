@@ -1,0 +1,71 @@
+<odoo>
+    <data>
+      <!-- Journal Search Filter: Inherited -->
+      <template id="account_reports.search_template_journals">
+            <button type="button" class="o-no-caret btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+                <span class="fa fa-book"/>
+                Journals:
+                    <t t-esc="options.get('name_journal_group')"/>
+            </button>
+            <div class="dropdown-menu o_filter_menu" role="menu">
+                <t t-foreach="options['journals']" t-as="j">
+                    <t t-if="j.get('id') == 'divider'">
+                        <div role="separator" class="dropdown-divider"/>
+                        <b role="menuitem" class="ml4 dropdown-item-text"><t t-esc="j.get('name')"/></b>
+                        <div role="separator" class="dropdown-divider"/>
+                    </t>
+                    <t t-if="j.get('id') != 'divider'">
+                        <t t-if="j.get('id') == 'group'">
+                            <a role="menuitem" class="dropdown-item js_account_report_group_choice_filter" data-filter="journals" t-att-data-id="j.get('id')" t-att-data-member-ids="j.get('ids')">
+                                <t t-esc="j.get('name')"/>
+                            </a>
+                        </t>
+                        <t t-else="">
+                            <a role="menuitem" class="dropdown-item js_account_report_choice_filter" t-att-title="j.get('name')+ '-' + j.get('code')" t-att-data-id="j.get('id')" data-filter="journals">
+                                <t t-esc="j.get('name')"/>
+                            </a>
+                        </t>
+                    </t>
+                </t>
+            </div>
+        </template>
+        <!-- BU/BR : Search Filter  -->
+        <!-- <template id="search_template_custom">
+              <button type="button" class="o-no-caret btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+                  <span class="fa fa-book"/>
+                  Custom:
+                      <t t-esc="options.get('name_journal_custom')"/>
+              </button>
+              <div class="dropdown-menu o_filter_menu" role="menu">
+                  <t t-foreach="options['journals']" t-as="j">
+                      <t t-if="j.get('id') == 'divider'">
+                          <div role="separator" class="dropdown-divider"/>
+                          <b role="menuitem" class="ml4 dropdown-item-text"><t t-esc="j.get('name')"/></b>
+                          <div role="separator" class="dropdown-divider"/>
+                      </t>
+                      <t t-if="j.get('id') != 'divider'">
+                          <t t-if="j.get('id') == 'group'">
+                              <a role="menuitem" class="dropdown-item js_account_report_group_choice_filter" data-filter="journals" t-att-data-id="j.get('id')" t-att-data-member-ids="j.get('ids')">
+                                  <t t-esc="j.get('name')"/>
+                              </a>
+                          </t>
+                          <t t-else="">
+                              <a role="menuitem" class="dropdown-item js_account_report_choice_filter" t-att-title="j.get('name')+ '-' + j.get('code')" t-att-data-id="j.get('id')" data-filter="journals">
+                                  <t t-esc="j.get('name')"/>
+                              </a>
+                          </t>
+                      </t>
+                  </t>
+              </div>
+          </template>
+
+          <template id="reportes_header_custom" inherit_id="account_reports.search_template">
+            <xpath expr="//div[last()]" position="after">
+              <div class="btn-group dropdown o_account_reports_filter_journals">
+                <t t-call="generate_financial_reports.search_template_custom"/>
+              </div>
+            </xpath>
+          </template> -->
+
+    </data>
+</odoo>

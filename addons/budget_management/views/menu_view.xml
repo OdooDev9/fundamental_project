@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<odoo>
+    <menuitem id="budget_request_root"
+              name="Budgets"
+              web_icon="budget_management,static/description/image.png"
+              sequence="20"/>
+    <menuitem id="budget_management_menu" name="Budget Management" parent="budget_request_root" sequence="1" />
+    <menuitem id="monthly_budget_request_menu" name="Monthly Budget" action="action_monthly_budget" parent="budget_management_menu" sequence="10" />
+    <menuitem id="weekly_budget_request_menu" name="Weekly Budget" action="action_weekly_budget" parent="budget_management_menu" sequence="20" />
+    <!-- <menuitem id="urgent_budget_request_menu" name="Urgent Budget" action="action_urgent_budget" parent="budget_management_menu" sequence="30" /> -->
+    <menuitem id="budget_advance_menu" name="Advances" action="action_advance" parent="budget_request_root" sequence="2" />
+    <menuitem id="budget_expenses_menu" name="Expenses" parent="budget_request_root" sequence="3" />
+    <menuitem id="budget_claim_menu" name="Claim" action="action_expense_claim" parent="budget_expenses_menu" sequence="1" />
+    <menuitem id="budget_clear_menu" name="Clearance" action="action_expense_clear" parent="budget_expenses_menu" sequence="2" />
+
+    <menuitem id="budget_configuration_menu" name="Configuration" parent="budget_request_root" sequence="10" />
+    <menuitem id="budget_request_approval_menu" name="Approval(Monthly,Weekly)" action="action_budget_request_approval" parent="budget_configuration_menu" sequence="1" />
+    <menuitem id="budget_approval_menu" name="Approval(Advance/Claim/Clearance)" action="action_budget_approval" parent="budget_configuration_menu" sequence="2" />
+</odoo>

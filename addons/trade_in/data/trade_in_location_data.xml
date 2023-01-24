@@ -1,0 +1,14 @@
+<odoo>
+    <data noupdate="1">
+
+
+        <record id="trade_in_stock_location" model="stock.location">
+            <field name="name"> Customer Location(Trade In)</field>
+            <field name="location_id" ref="stock.stock_location_locations_partner"/>
+            <field name="usage">supplier</field>
+            <field name="is_trade_in">True</field>
+            <field name="company_id"></field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="account_report_1_tree" model="ir.ui.view">
+        <field name="name">account_report_1.tree</field>
+        <field name="model">account.account</field>
+        <field name="arch" type="xml">
+                <tree editable="top" create="0" delete="0" multi_edit="0" string="Chart of accounts">
+                    <field name="code"/>
+                    <field name="name"/>
+                    <!-- <field name="user_type_id" widget="account_hierarchy_selection"/>
+                    <field name="group_id" optional="hide"/>
+                    <field name="internal_type" invisible="1"/>
+                    <field name="internal_group" invisible="1"/>
+                    <field name="reconcile" widget="boolean_toggle" attrs="{'invisible': ['|', ('internal_type','=','liquidity'), ('internal_group', '=', 'off_balance')]}"/>
+                    <field name="tax_ids" optional="hide" widget="many2many_tags"/>
+                    <field name="tag_ids" optional="hide" widget="many2many_tags"/>
+                    <field name="allowed_journal_ids" optional="hide" widget="many2many_tags"/>
+                    <field name="currency_id" options="{'no_create': True}" groups="base.group_multi_currency"/>
+                    <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
+                    <button name="action_read_account" type="object" string="Setup" class="float-right btn-secondary"/> -->
+                    <field name="bu_br_id" />
+                    <field name="current_debit" />
+                    <field name="current_credit" />
+                    <field name="current_balance" />
+                    <!-- <button name="action_read_account" type="object" string="Setup" class="float-right btn-secondary"/> -->
+                    <button class="float-right btn-secondary" string="Check" name="account.action_move_line_select" type="action" icon="fa-arrow-right"/>
+                    <button class="float-right btn-secondary" string="Entries" name="open_entries" type="object" icon="fa-arrow-right"/>
+                    <!-- <button class="float-right btn-secondary" string="Payments" name="open_payments" type="object" icon="fa-arrow-right"/> -->
+                    <groupby name="bu_br_id">
+                        <button class="oe_hightlight" string="Entries" name="open_entries" type="object"/>
+                        <button class="oe_hightlight" string="Entries Lines" name="open_entries_lines" type="object"/>
+                        <button class="oe_hightlight" string="Payments" name="open_payments" type="object"/>
+                    </groupby>
+                </tree>
+        </field>
+    </record>
+
+    <record id="account_report_1_action" model="ir.actions.act_window">
+        <field name="name">Account Balance Report</field>
+        <field name="res_model">account.account</field>
+        <field name="view_id" ref="additional_reports.account_report_1_tree"/>
+        <field name="search_view_id" ref=""/>
+    </record>
+
+    <menuitem id="menu_account_report_1_action" name="Account Balance" action="account_report_1_action" parent="customized_account_reports_legal_statements_menu" sequence="80"/>
+</odoo>

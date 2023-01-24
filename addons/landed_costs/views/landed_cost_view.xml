@@ -1,0 +1,26 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="view_stock_landed_cost_form_inherited">
+      <field name="name">stock Landed Cost Form</field>
+      <field name="model">stock.landed.cost</field>
+      <field name="inherit_id" ref="stock_landed_costs.view_stock_landed_cost_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//button[@name='button_validate']" position="after">
+          <field name="from_bill" invisible="1"></field>
+          <button name="create_bill" string="Create Bill" attrs="{'invisible':['|','|',('state','!=','done'),('visible','!=',True),('from_bill','=',True)]}" class="oe_highlight" type="object"/>
+        </xpath>
+        <xpath expr="//sheet/div/button[@name='action_view_stock_valuation_layers']" position="before">
+          <button name="action_view_invoice"
+                      type="object" class="oe_stat_button"
+                      icon="fa-pencil-square-o" states="done">
+                      <field name="invoice_count" widget="statinfo" string="BILLS"/>
+              </button>
+        </xpath>
+        <xpath expr="//field[@name='picking_ids']" position="after">
+          <field name="business_id" required="1"/>
+          <field name="visible" invisible="1" />
+        </xpath>
+      </field>
+    </record>
+  </data>
+</odoo>

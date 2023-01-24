@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_part_order_tree" model="ir.ui.view">
+        <field name="name">part.order.tree</field>
+        <field name="model">part.order</field>
+        <field name="priority">4</field>
+        <field name="arch" type="xml">
+            <tree string="Part Agreements">
+                <field name="name" string="Order Number"/>
+                <field name="date_order"/>
+                <field name="partner_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_part_order_form" model="ir.ui.view">
+        <field name="name">part.order.form</field>
+        <field name="model">part.order</field>
+        <field name="arch" type="xml">
+            <form string="Part Agreements">
+                <header>
+                    <field name="invoice_created" invisible="1"/>
+                    <button name="action_approve_production_head" class="oe_highlight"
+                            string="Approve By Production Head" type="object"
+                            attrs="{'invisible':[('state','not in','draft')]}"
+                            groups="job_request.group_reman_manager"/>
+                    <button name="action_approve_QA" class="oe_highlight" string="Approve By QA" type="object"
+                            attrs="{'invisible':[('state','not in','approved_production')]}"
+                            groups="job_request.group_qa_pic"/>
+                    <field name="check_availability_finished" invisible="1"/>
+                    <button name="action_button_check_availability" class="oe_highlight" string="Check Availability"
+                            type="object"
+                            attrs="{'invisible':['|',('state','not in','approved_qa_pic'),('check_availability_finished','=',True)]}"/>
+                    <button name="action_button_create_quotation" string="Create Quotation" class="oe_highlight"
+                            type="object"
+                            attrs="{'invisible':['|',('state','not in','approved_qa_pic'),('state','=','confirm')]}"/>
+                    <button name="action_create_pr" string="Create PR" class="oe_highlight" type="object"
+                            attrs="{'invisible':['|','|',('state','!=','confirm'),('check_availability_finished','=',True), ('pr_count','>',0)]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirm"
+                           statusbar_colors="{&quot;confirm&quot;:&quot;blue&quot;}"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_invoice_part" type="object"
+                                class="oe_stat_button" icon="fa-pencil-square-o"
+                                attrs="{'invisible': [('invoice_count', '=', 0)]}">
+                            <field name="invoice_count" widget="statinfo" string="Invoices"/>
+                        </button>
+                        <button name="action_view_order" type="object" class="oe_stat_button" icon="fa-pencil-square-o"
+                                attrs="{'invisible':[('sale_order_count','=',0)]}" groups="base.group_user">
+                            <field name="sale_order_count" widget="statinfo" string="Quotation"/>
+                        </button>
+                        <button name="action_view_pr" type="object" class="oe_stat_button" icon="fa-pencil-square-o"
+                                attrs="{'invisible':[('pr_count','=',0)]}" groups="base.group_user">
+                            <field name="pr_count" widget="statinfo" string="Purchase Quotation"/>
+                        </button>
+
+
+                    </div>
+                    <h1>
+                        <field name="name" readonly="1"/>
+                        <field name="currency_id" invisible="1"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="partner_id" context="{'search_default_customer':1, 'show_address': 1}"
+                                   options="{&quot;always_reload&quot;: True}"
+                                   attrs="{'readonly': [('state', 'in', ('confirm','close'))]}"/>
+                        </group>
+                        <group>
+                        </group>
+                        <newline/>
+                    </group>
+                    <group>
+                        <group>
+
+                            <field name="partner_invoice_id" context="{'default_type':'invoice'}"
+                                   attrs="{'readonly': [('state', 'in', ('confirm','close'))]}"/><!--  -->
+
+                            <field name="partner_shipping_id" context="{'default_type':'delivery'}"
+                                   attrs="{'readonly': [('state', 'in', ('confirm','close'))]}"/><!-- -->
+                            <field name="check_saleable" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="date_order" attrs="{'readonly': [('state', 'in', ('confirm','close'))]}"/>
+                            <field name="confirmation_date"
+                                   attrs="{'invisible': [('state', 'not in', ('confirm','close'))]}"/>
+                            <field name="client_order_ref"
+                                   attrs="{'readonly': [('state', 'in', ('confirm','close'))]}"/>
+                            <field name="expired_email_check" invisible="1"/>
+                            <field name="business_id" required="1" options="{'no_create_edit': True}"
+                                   context="{'business_filter': True}"
+                                   attrs="{'readonly': [('state', 'in', ('confirm','close'))]}"/>
+                            <field name="unit_or_part" required="1"
+                                   attrs="{'readonly': [('state', 'in', ('confirm','close'))]}"/>
+                            <field name="warehouse_id" attrs="{'readonly': [('state', 'in', ('confirm','close'))]}"/>
+                            <field name="pricelist_id" attrs="{'readonly': [('state', 'in', ('confirm','close'))]}"/>
+                            <field name="close_date" widget="date"/>
+                            <field name="procurement_group" invisible="1"/>
+                            <field name="is_delivered" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                            <!--MPT-->
+                            <page string="Equipment Part">
+                            <group string="Part Product">
+                                 <field nolabel="1" name="part_line">
+                                    <tree create="false" delete="false">
+                                        <field name="product_id"/>
+                                        <field name="name"/>
+                                        <button type="object" name="action_part_replace_product" class="oe_highlight"
+                                                icon="fa-solid fa-retweet"/>
+                                        <field name="product_uom_qty"/>
+                                        <field name="balance"/>
+                                        <field name="qty_delivered" readonly="1"/>
+                                        <field name="product_uom"/>
+                                        <field name="price_unit"/>
+                                        <field name="tax_id" widget="many2many_tags" optional="hide"/>
+                                        <field name="price_tax" optional="hide"/>
+                                        <field name="price_subtotal"/>
+                                    </tree>
+                                </field>
+                            </group>
+                                <!-- MPT -->
+<!--                            <group string="Part Product">-->
+<!--                                <field nolabel="1" name="part_line"-->
+<!--                                       attrs="{'readonly': [('state', 'in', ('confirm','close'))]}"/>-->
+<!--                            </group>-->
+
+                            <group name="note_group" col="6">
+                                <group colspan="4">
+                                    <field name="note" nolabel="1" placeholder="Terms and conditions..."/>
+                                </group>
+                                <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                                    <field name="amount_untaxed" widget='monetary'
+                                           options="{'currency_field': 'currency_id'}"/>
+                                    <field name="amount_tax" widget='monetary'
+                                           options="{'currency_field': 'currency_id'}"/>
+                                    <field name="amount_total" class="oe_subtotal_footer_separator" widget='monetary'
+                                           options="{'currency_field': 'currency_id'}"/>
+                                </group>
+                                <div class="oe_clear"/>
+                            </group>
+                        </page>
+
+                        <page string="Replacements">
+                            <group>
+                                <field nolabel="1" name="replace_ids">
+                                    <tree create="false" delete="false">
+                                        <field name="product_id"/>
+                                        <field name="replaced_product_id"/>
+                                        <field name="desc"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+
+                        <page string="Other Information" groups="base.group_user">
+                            <group name="sales_person">
+                                <field name="origin"/>
+                                <field name="user_id"/>
+
+                                <field name="company_id" widget="selection"
+                                       groups="base.group_multi_company"/>
+                                <field name="invoice_id" readonly="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+
+        </field>
+    </record>
+
+    <record id="view_part_order_line_tree" model="ir.ui.view">
+        <field name="name">part.order.line.tree</field>
+        <field name="model">part.order.line</field>
+        <field name="arch" type="xml">
+            <tree string="Asset Part Line" decoration-danger="check != False">
+                <field name="currency_id" invisible="1"/>
+                <field name="product_id"/>
+                <field name="name"/>
+                <field name="product_uom_qty"/>
+                <field name="balance"/>
+                <field name="qty_delivered" readonly="1"/>
+                <field name="product_uom"/>
+                <field name="price_unit" widget="monetary"/>
+                <field name="tax_id" widget="many2many_tags"/>
+                <field name="price_subtotal" widget="monetary"/>
+                <field name="check" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_part_order_line_form" model="ir.ui.view">
+        <field name="name">part.order.line.form</field>
+        <field name="model">part.order.line</field>
+        <field name="arch" type="xml">
+            <form string="Asset Part Line">
+                <sheet string="Part Details">
+                    <group colspan="4" cols="2">
+                        <field name="product_id"/>
+                        <field name="product_uom_qty"/>
+                        <field name="product_uom"/>
+                        <field name="qty_delivered" readonly="1"/>
+                        <field name="price_unit"/>
+                        <field name="tax_id" widget="many2many_tags"/>
+                        <field name="price_subtotal" invisible="1"/>
+                        <field name="price_total" invisible="1"/>
+                        <field name="price_tax" invisible="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_part_orders" model="ir.actions.act_window">
+        <field name="name">Part Orders</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">part.order</field>
+        <field name="binding_view_types">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_part_order_tree"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create a Quotation, the first step of a new sale.
+            </p>
+            <p>
+                Your next actions should flow efficiently: confirm the Quotation to a
+                Sale Order, then create the Invoice and collect the Payment.
+            </p>
+            <p>
+                Note that once a Quotation becomes a Sale Order, it will be moved from
+                the Quotations list to the Sales Order list.
+            </p>
+        </field>
+    </record>
+    <record id="view_picking_type_form" model="ir.ui.view">
+        <field name="name">view.picking.type.form.inherit</field>
+        <field name="model">stock.picking.type</field>
+        <field name="inherit_id" ref="stock.view_picking_type_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='code']" position="after">
+                <field name="is_part_order"/>
+                <field name="is_remanufacturing"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="job_order_picking_form" model="ir.ui.view">
+        <field name="name">stock.picking</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <field name="location_id" position="after">
+                <field name="for_part_move" invisible="1"></field>
+                <field name="job_re_id" invisible="1"></field>
+                <field name="reman_in_out" invisible="1"></field>
+                <field name="job_request" invisible="1"></field>
+            </field>
+
+        </field>
+    </record>
+    <record model="ir.ui.view" id="reman_sale_view_form_inherited">
+        <field name="name">reman.sale.view.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="umg_customize_sale.view_order_add_broker_button"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//button[@name='action_confirm'][1]" position="attributes">
+                <attribute name="attrs"></attribute>
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_confirm'][2]" position="attributes">
+                <attribute name="attrs"></attribute>
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='action_gm_agm_approve']" position="replace">
+                <!-- filter Unit only reman approval list -->
+                <field name="reman" invisible='1'/>
+                <button name="action_s_m_head" string="Approve By Sale Head" type="object" class="btn-primary"
+                        attrs="{'invisible': ['|','|','|','|',('bu_br_user_approve','=',False),('reman','=',False),('state', 'not in', 'draft'),('due_amount','=',0),('service_type','=',True)]}"
+                        groups="product_configure.group_sale_head"/>
+            </xpath>
+            <xpath expr="//button[@name='action_sale_admin_approve']" position="replace">
+
+                <button name="action_finance_pic_approve" string="Approve By F &amp; A PIC" type="object"
+                        class="btn-primary"
+                        attrs="{'invisible': ['|','|','|','|','|',('bu_br_user_approve','=',False),('unit_or_part','=','unit'),('reman','=',True),('state', 'not in', 'draft'),('due_amount','&gt;',0),('service_type','=',True)]}"
+                        groups="product_configure.group_finance_account_pic"/>
+
+                <button name="action_sale_admin_approve" string="Approve By Sale Admin" type="object"
+                        class="btn-primary"
+                        attrs="{'invisible': ['|','|','|','|','|',('bu_br_user_approve','=',False),('unit_or_part','=','part'),('reman','=',True),('state', 'not in', 'draft'),('due_amount','&gt;',0),('service_type','=',True)]}"
+                        groups="product_configure.group_sale_admin"/>
+                <button name="action_gm_agm_approve" string="Approve By GM/AGM" type="object" class="btn-primary"
+                        attrs="{'invisible': ['|','|','|',('bu_br_user_approve','=',False),('reman','=',True),('state', 'not in', ['approved_sale_admin','approved_finance_pic']),('due_amount','&gt;',0)]}"
+                        groups="product_configure.group_gm_agm"/>
+                <button name="action_gm_agm_approve" string="Approve By GM/AGM" type="object" class="btn-primary"
+                        attrs="{'invisible': ['|','|',('bu_br_user_approve','=',False),('reman','=',False),('state', 'not in', ['approved_sale_head'])]}"
+                        groups="product_configure.group_gm_agm"/>
+            </xpath>
+            <!-- Reman Sale Order Part -->
+            <!-- <button name="action_sale_admin_approve" string="Approve By Sale Admin" type="object" class="btn-primary"
+            attrs="{'invisible': ['|','|',('unit_or_part','!=','part'),('reman','=',False),('state', 'not in', 'draft')]}"
+            groups="product_configure.group_sale_admin"/>
+            <button name="action_gm_agm_approve" string="Approve By GM/AGM" type="object" class="btn-primary"
+            attrs="{'invisible': ['|','|','|',('unit_or_part','!=','part'),('due_amount','=',0),('state', 'not in', ['approved_sale_admin']),('reman','=',False)]}"
+            groups="product_configure.group_gm_agm"/>     -->
+
+            <!-- <xpath expr="//button[@name='action_gm_agm_approve']" position="replace">
+
+            </xpath> -->
+
+            <!-- **********************part reman approval end************************ -->
+
+            <!-- Due Amount > 0 and Spare Part Approve list  -->
+            <!-- <xpath expr="//button[@name='action_gm_agm_approve']" position="replace">
+                <button name="action_gm_agm_approve" string="Approve By GM/AGM" type="object" class="btn-primary"
+                        attrs="{'invisible': ['|','|',('bu_br_user_approve','=',False),('state', 'not in', ['approved_sale_head']),('reman','=',False)]}"
+                        groups="product_configure.group_gm_agm"/>
+
+                <button name="action_sale_admin_approve" string="Approve By BU Sale Admin" type="object"
+                        class="btn-primary"
+                        attrs="{'invisible': ['|','|','|','|',('bu_br_user_approve','=',False),('reman','=',False),('state', 'not in', 'draft'),('due_amount','&lt;',1),('service_type','=',True)]}"
+                        groups="product_configure.group_sale_admin"/>
+                <button name="action_gm_agm_approve" string="Approve By GM/AGM" type="object" class="btn-primary"
+                        attrs="{'invisible': ['|','|','|','|',('bu_br_user_approve','=',False),('reman','=',True),('unit_or_part','!=','part'),('state', 'not in', 'approved_sale_admin'),('due_amount','&lt;',1)]}"
+                        groups="product_configure.group_gm_agm"/>
+            </xpath> -->
+            <!-- ***********end **************** -->
+
+            <xpath expr="//button[@name='action_s_m_head']" position="replace">
+
+                <!-- Reman Sale Order Approval List -->
+                <button name="action_s_m_head" string="Approve By S &amp;M Head" type="object" class="btn-primary"
+                        attrs="{'invisible': ['|','|','|','|',('bu_br_user_approve','=',False),('reman','=',True),('state', 'not in', 'draft'),('due_amount','&lt;',1),('service_type','=',True)]}"
+                        groups="product_configure.group_sale_m_head"/>
+                <button name="action_sale_head" string="Approve By Sale Head" type="object" class="btn-primary"
+                        attrs="{'invisible': ['|','|','|',('bu_br_user_approve','=',False),('reman','=',False),('state', 'not in', 'draft'),('service_type','=',True)]}"
+                        groups="product_configure.group_sale_head"/>
+
+                <!-- Unit Due Approval -->
+                <button name="action_approve_finance" string="Approve By F&amp;A Head" type="object" class="btn-primary"
+                        attrs="{'invisible': ['|','|','|',('bu_br_user_approve','=',False),('reman','=',True),('state', 'not in', 'approved_sale_head'),('due_amount','&lt;',1)]}"
+                        groups="product_configure.group_finance_account_head"/>
+
+                <button name="action_gm_agm_credit_approve" string="Approve By GM/AGM" type="object" class="btn-primary"
+                        attrs="{'invisible': ['|','|','|',('bu_br_user_approve','=',False),('reman','=',True),('state', 'not in', 'approved_finance_head'),('due_amount','&lt;',1)]}"
+                        groups="product_configure.group_gm_agm"/>
+
+                <button name="action_approve_corporate_finance" string="Approve By Corporate F&amp;A Head" type="object"
+                        class="btn-primary"
+                        attrs="{'invisible': ['|','|','|',('reman','=',True),('state', 'not in', 'approved_gm_agm'),('due_amount','&lt;',1),('is_cor','=',False)]}"
+                        groups="product_configure.group_finance_account_head"/>
+            </xpath>
+
+
+            <!-- <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="due_amount" invisible="" attrs="{'readonly':[('state','=','sale')]}"/>
+            </xpath> -->
+            <!-- <xpath expr="//button[@name='action_confirm']" position="after">
+
+                <button name="action_new_confirm" data-hotkey="v" string="Confirm" class="btn-primary" type="object" attrs="{'invisible': ['|','|',('unit_or_part','!=','unit'),('reman','=',True),('state', 'not in', 'approved_corporate_finance')]}"/>
+            </xpath> -->
+
+            <xpath expr="//button[@name='action_confirm']" position="replace">
+
+                <!-- <button name="action_confirm" data-hotkey="v" string="Confirm" class="btn-primary" type="object"
+                        attrs="{'invisible': ['|','|','|','|',('unit_or_part','!=','unit'),('reman','=',True),('state', 'not in', 'approved_gm_agm'),('due_amount','&lt;',1),('is_cor', '=', True),]}"/> -->
+                <button name="action_new_confirm" data-hotkey="v" string="Confirm" class="btn-primary" type="object"
+                        attrs="{'invisible': ['|','|',('unit_or_part','>','unit'),('reman','=',True),('state', 'not in', 'approved_corporate_finance')]}"/>
+                <button name="action_new_confirm" data-hotkey="v" string="Confirm" class="btn-primary" type="object"
+                        attrs="{'invisible': ['|','|',('due_amount','&gt;',0),('reman','=',True),('state', 'not in', 'approved_gm_agm')]}"/>
+                <!-- <button name="action_new_confirm" data-hotkey="v" string="Confirm" class="btn-primary" type="object"
+                        attrs="{'invisible': ['|','|','|',('due_amount','&lt;',1),('unit_or_part','!=','part'),('reman','=',False),('state', 'not in', 'approved_gm_agm')]}"/> -->
+                <button name="action_new_confirm" data-hotkey="v" string="Confirm" class="btn-primary" type="object"
+                        attrs="{'invisible': ['|',('reman','=',False),('state', 'not in', 'approved_gm_agm')]}"/>
+                <!-- Service Sale Order -->
+                <button name="action_new_confirm" id="action_confirm" data-hotkey="v" string="Confirm"
+                        class="btn-primary" type="object"
+                        attrs="{'invisible': ['|',('service_type','=',False),('state', 'not in', ['draft'])]}"/>
+                <!-- <button name="action_new_confirm" data-hotkey="v" string="Confirm" class="btn-primary" type="object" attrs="{'invisible': ['|','|',('unit_or_part','!=','part'),('reman','=',False),('state', 'not in', 'approved_gm_agm')]}"/> -->
+            </xpath>
+
+
+        </field>
+    </record>
+
+
+    <record model="ir.ui.view" id="req_quotation_view_form_inherited">
+        <field name="name">view.order.form.inherit.add.split.button</field>
+        <field name="model">request.quotation</field>
+        <field name="inherit_id" ref="request_quotation.req_quotation_view_form"/>
+        <field name="priority">1000</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="pr_information"/>
+                <field name="lead_time"/>
+            </xpath>
+
+            <xpath expr="//header" position="inside">
+                <field name="reman" invisible="1"/>
+
+                <!-- Reman Part Sale Quotation Approval -->
+
+                <button type="object" name="action_approve_sale_head" string="Approve By Sale  Head"
+                        class="oe_highlight"
+                        attrs="{'invisible':['|',('reman','=',False),('state','!=','draft')]}"
+                        groups="product_configure.group_sale_head"/>
+                <button type="object" name="action_approve_gm_agm" string="Approve By GM/AGM" class="oe_highlight"
+                        attrs="{'invisible':['|',('reman','=',False),('state','!=','approved_sale_head')]}"
+                        groups="product_configure.group_gm_agm"/>
+            </xpath>
+            <xpath expr="//button[@name='action_approve']" position="replace">
+                <button name="action_approve"
+                        attrs="{'invisible':['|','|',('reman','=',True),('state','!=','draft'),('bu_br_user_approve','=',False)]}"
+                        type="object" string="Approve By Sale Admin" data-hotkey="w"
+                        class='oe_highlight' groups="product_configure.group_sale_admin"/>
+                <!-- <button name="action_approve" attrs="{'invisible':['|','|',('unit_or_part','!=','part'),('reman','=',False),('state','!=','draft')]}" type="object" string="Approve By Sale Admin" data-hotkey="w"
+                    class='oe_highlight' groups="product_configure.group_sale_admin"/> -->
+                <!-- <button name="action_approve"
+                        attrs="{'invisible':['|','|','|',('reman','=',True),('discount_view','=',False),('state','!=','draft'),('unit_or_part', '!=', 'part')]}"
+                        type="object" string="Approve By Sale Admin" data-hotkey="w"
+                        class='oe_highlight' groups="product_configure.group_sale_admin"/> -->
+            </xpath>
+
+            <xpath expr="/form/sheet/notebook/page/field[@name='req_quotation_line']/tree/field[@name='name']"
+                   position="after">
+                <button type="object" name="action_replace_product" class="oe_highlight"
+                        icon="fa-solid fa-retweet" attrs="{'invisible':[('state','=','sale')]}"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

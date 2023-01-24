@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record model="ir.module.category"
+    		id="module_category_trade_in_trade_in">
+        <field name="name">Trade In</field>
+        <field name="description">Helps you manage your Trade In</field>
+        <field name="sequence">8</field>
+    </record>
+
+	<record id="trade_in_user" model="res.groups">
+		<field name="name">User</field>
+		<field name="category_id"
+			ref="trade_in.module_category_trade_in_trade_in"/>
+	</record>
+
+	<!-- rules -->
+    <!-- Branch Manager Group -->
+	<record id="trade_in_manager" model="res.groups">
+		<field name="name">Trade In Head</field>
+		<field name="category_id"
+			ref="trade_in.module_category_trade_in_trade_in"/>
+		<field name="implied_ids"
+			eval="[(4, ref('trade_in.trade_in_user'))]"/>
+	</record>
+
+	 <record id="manage_bu_trade_in" model="ir.rule">
+            <field name="name">Manage Trade In</field>
+            <field name="model_id" ref="model_trade_in_trade_in"/>
+            <field name="domain_force">['|',('hr_bu_id', 'in', [g.id for g in user.hr_bu_ids]),('hr_bu_id','=',False)]</field>
+        </record>
+	
+</odoo>

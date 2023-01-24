@@ -1,0 +1,200 @@
+<odoo>
+    <data>
+<!--        <record id="action_sale_order_unit_report" model="ir.actions.report">-->
+<!--            <field name="name">Sale Order Unit</field>-->
+<!--            <field name="model">sale.order</field>-->
+<!--            <field name="report_type">qweb-pdf</field>-->
+<!--            <field name="report_name">report_form.report_sale_order_unit_document</field>-->
+<!--            <field name="report_file">report_form.report_sale_order_unit_document</field>-->
+<!--            <field name="print_report_name">'Sale Order Units- %s' % (object.name)</field>-->
+<!--            <field name="binding_model_id" ref="sale.model_sale_order"/>-->
+<!--            <field name="binding_type">report</field>-->
+<!--        </record>-->
+
+<!--        <record id="action_sale_order_branch_unit_report" model="ir.actions.report">-->
+<!--            <field name="name">Sale Order Branch Unit</field>-->
+<!--            <field name="model">sale.order</field>-->
+<!--            <field name="report_type">qweb-pdf</field>-->
+<!--            <field name="report_name">report_form.report_sale_order_branch_unit_document</field>-->
+<!--            <field name="report_file">report_form.report_sale_order_branch_unit_document</field>-->
+<!--            <field name="print_report_name">'Sale Order Branch Units- %s' % (object.name)</field>-->
+<!--            <field name="binding_model_id" ref="sale.model_sale_order"/>-->
+<!--            <field name="binding_type">report</field>-->
+<!--        </record>-->
+
+<!--        <record id="action_sale_order_branch_parts_report" model="ir.actions.report">-->
+<!--            <field name="name">Sale Order Branch Parts</field>-->
+<!--            <field name="model">sale.order</field>-->
+<!--            <field name="report_type">qweb-pdf</field>-->
+<!--            <field name="report_name">report_form.report_sale_order_branch_parts_document</field>-->
+<!--            <field name="report_file">report_form.report_sale_order_branch_parts_document</field>-->
+<!--            <field name="print_report_name">'Sale Order Branch Parts- %s' % (object.name)</field>-->
+<!--            <field name="binding_model_id" ref="sale.model_sale_order"/>-->
+<!--            <field name="binding_type">report</field>-->
+<!--        </record>-->
+
+        <record id="action_sale_quotation_report" model="ir.actions.report">
+            <field name="name">Sale Quotation</field>
+            <field name="model">request.quotation</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">report_form.report_sale_quotation_unit_document</field>
+            <field name="report_file">report_form.report_sale_quotation_unit_document</field>
+            <field name="print_report_name">'Sale Quotation- %s' % (object.name)</field>
+            <field name="binding_model_id" ref="request_quotation.model_request_quotation"/>
+            <field name="binding_type">report</field>
+        </record>
+
+
+<!--        <record id="action_sale_quotation_report" model="ir.actions.report">-->
+<!--            <field name="name">Sale Quotation</field>-->
+<!--            <field name="model">request.quotation</field>-->
+<!--            <field name="report_type">qweb-pdf</field>-->
+<!--            <field name="report_name">report_form.report_sale_quotation_parts_document</field>-->
+<!--            <field name="report_file">report_form.report_sale_quotation_parts_document</field>-->
+<!--            <field name="print_report_name">'Sale Quotation- %s' % (object.name)</field>-->
+<!--            <field name="binding_model_id" ref="request_quotation.model_request_quotation"/>-->
+<!--            <field name="binding_type">report</field>-->
+<!--        </record>-->
+
+<!--        <record id="action_sale_quotation_report" model="ir.actions.report">-->
+<!--            <field name="name">Sale Quotation Parts</field>-->
+<!--            <field name="model">request.quotation</field>-->
+<!--            <field name="report_type">qweb-pdf</field>-->
+<!--            <field name="report_name">report_form.report_sale_quotation_parts_document</field>-->
+<!--            <field name="report_file">report_form.report_sale_quotation_parts_document</field>-->
+<!--            <field name="print_report_name">'Sale Quotation Parts- %s' % (object.name)</field>-->
+<!--            <field name="binding_model_id" ref="request_quotation.model_request_quotation"/>-->
+<!--            <field name="binding_type">report</field>-->
+<!--        </record>-->
+
+        <record id="action_sale_order_branch_report" model="ir.actions.report">
+            <field name="name">Sale Order Report</field>
+            <field name="model">sale.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">report_form.report_sale_order_document</field>
+            <field name="report_file">report_form.report_sale_order_document</field>
+            <field name="print_report_name">'Sale Order Branch- %s' % (object.name)</field>
+            <field name="binding_model_id" ref="sale.model_sale_order"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="action_purchase_order_report" model="ir.actions.report">
+            <field name="name">Purchase Order Branch</field>
+            <field name="model">purchase.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">report_form.report_purchase_order_branch_unit_document</field>
+            <field name="report_file">report_form.report_purchase_order_branch_unit_document</field>
+            <field name="print_report_name">'Purchase Order Branch- %s' % (object.name)</field>
+            <field name="binding_model_id" ref="purchase.model_purchase_order"/>
+            <field name="binding_type">report</field>
+        </record>
+
+<!--        <record id="action_account_move_report" model="ir.actions.report">-->
+<!--            <field name="name">Sale Invoice (Unit)</field>-->
+<!--            <field name="model">account.move</field>-->
+<!--            <field name="report_type">qweb-pdf</field>-->
+<!--            <field name="report_name">report_form.report_account_move_unit_document</field>-->
+<!--            <field name="report_file">report_form.report_account_move_unit_document</field>-->
+<!--            <field name="print_report_name">'Sale Invoice- %s' % (object.name)</field>-->
+<!--            <field name="binding_model_id" ref="account.model_account_move"/>-->
+<!--            <field name="binding_type">report</field>-->
+<!--        </record>-->
+
+        <record id="action_account_move_report" model="ir.actions.report">
+            <field name="name">Sale Invoice</field>
+            <field name="model">account.move</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">report_form.report_account_move_document</field>
+            <field name="report_file">report_form.report_account_move_document</field>
+            <field name="print_report_name">'Sale Invoice- %s' % (object.name)</field>
+            <field name="binding_model_id" ref="account.model_account_move"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="a4_paper_sale_order" model="report.paperformat">
+            <field name="name">Customized A4(Sale Invoice)</field>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top" eval="25"/>
+            <field name="margin_bottom" eval="38"/>
+            <field name="margin_left" eval="2"/>
+            <field name="margin_right" eval="2"/>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing" eval="27"/>
+            <field name="dpi" eval="90"/>
+            <field name="report_ids"
+                   eval="[(4, ref('action_account_move_report'))]"/>
+        </record>
+<!--        <record id="a4_paper_sale_quotation" model="report.paperformat">-->
+<!--            <field name="name">Customized A4(Sale Quotation)</field>-->
+<!--            <field name="format">A4</field>-->
+<!--            <field name="orientation">Portrait</field>-->
+<!--            <field name="margin_top" eval="25"/>-->
+<!--            <field name="margin_bottom" eval="38"/>-->
+<!--            <field name="margin_left" eval="5"/>-->
+<!--            <field name="margin_right" eval="5"/>-->
+<!--            <field name="header_line" eval="False"/>-->
+<!--            <field name="header_spacing" eval="27"/>-->
+<!--            <field name="dpi" eval="90"/>-->
+<!--            <field name="report_ids"-->
+<!--                   eval="[(4, ref('action_sale_quotation_report'))]"/>-->
+<!--        </record>-->
+<!--        <record id="a4_paper_sale_order_Branch" model="report.paperformat">-->
+<!--            <field name="name">Customized A4(Sale Order Branch)</field>-->
+<!--            <field name="format">A4</field>-->
+<!--            <field name="orientation">Portrait</field>-->
+<!--            <field name="margin_top" eval="25"/>-->
+<!--            <field name="margin_bottom" eval="38"/>-->
+<!--            <field name="margin_left" eval="2"/>-->
+<!--            <field name="margin_right" eval="2"/>-->
+<!--            <field name="header_line" eval="False"/>-->
+<!--            <field name="header_spacing" eval="27"/>-->
+<!--            <field name="dpi" eval="90"/>-->
+<!--            <field name="report_ids"-->
+<!--                   eval="[(4, ref('action_sale_order_branch_report'))]"/>-->
+<!--        </record>-->
+<!--        <record id="a4_paper_purchase_order_Branch" model="report.paperformat">-->
+<!--            <field name="name">Customized A4(Purchase Order Branch)</field>-->
+<!--            <field name="format">A4</field>-->
+<!--            <field name="orientation">Portrait</field>-->
+<!--            <field name="margin_top" eval="25"/>-->
+<!--            <field name="margin_bottom" eval="38"/>-->
+<!--            <field name="margin_left" eval="5"/>-->
+<!--            <field name="margin_right" eval="5"/>-->
+<!--            <field name="header_line" eval="False"/>-->
+<!--            <field name="header_spacing" eval="27"/>-->
+<!--            <field name="dpi" eval="90"/>-->
+<!--            <field name="report_ids"-->
+<!--                   eval="[(4, ref('action_purchase_order_report'))]"/>-->
+<!--        </record>-->
+<!--        <record id="a4_paper_sale_order_branch_units" model="report.paperformat">-->
+<!--            <field name="name">Customized A4(Sale Order Branch Units)</field>-->
+<!--            <field name="format">A4</field>-->
+<!--            <field name="orientation">Portrait</field>-->
+<!--            <field name="margin_top" eval="47"/>-->
+<!--            <field name="margin_bottom" eval="38"/>-->
+<!--            <field name="margin_left" eval="5"/>-->
+<!--            <field name="margin_right" eval="5"/>-->
+<!--            <field name="header_line" eval="False"/>-->
+<!--            <field name="header_spacing" eval="42"/>-->
+<!--            <field name="dpi" eval="90"/>-->
+<!--            <field name="report_ids"-->
+<!--                   eval="[(4, ref('action_sale_order_branch_unit_report'))]"/>-->
+<!--        </record>-->
+<!--        <record id="a4_paper_sale_order_branch_Parts" model="report.paperformat">-->
+<!--            <field name="name">Customized A4(Sale Order Branch Parts)</field>-->
+<!--            <field name="format">A4</field>-->
+<!--            <field name="orientation">Portrait</field>-->
+<!--            <field name="margin_top" eval="47"/>-->
+<!--            <field name="margin_bottom" eval="38"/>-->
+<!--            <field name="margin_left" eval="5"/>-->
+<!--            <field name="margin_right" eval="5"/>-->
+<!--            <field name="header_line" eval="False"/>-->
+<!--            <field name="header_spacing" eval="42"/>-->
+<!--            <field name="dpi" eval="90"/>-->
+<!--            <field name="report_ids"-->
+<!--                   eval="[(4, ref('action_sale_order_branch_parts_report'))]"/>-->
+<!--        </record>-->
+
+    </data>
+</odoo>

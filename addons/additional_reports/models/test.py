@@ -1,0 +1,12 @@
+from datetime import datetime 
+
+data = [{'id': 6319, 'date': 1234, 'date_maturity': 1234, 'name': 'INV1/2022/00001', 'ref': '', 'company_id': 1, 'account_id': 5391, 'payment_id': None, 'partner_id': 403, 'currency_id': 2, 'amount_currency': 1000.0, 'debit': 1000.0, 'credit': 0.0, 'balance': 1000.0, 'move_name': 'INV1/2022/00001', 'company_currency_id': 2, 'partner_name': 'CE1 Customer', 'move_type': 'out_invoice', 'account_code': '11020001-001', 'account_name': 'Account Receivable -Trade-CE1', 'journal_code': 'INV1', 'journal_name': 'Customer Invoices CE1', 'full_rec_name': 'A237'}, {'id': 6323, 'date': 1234, 'date_maturity': 1234, 'name': 'Customer Payment $ 1,000.00 - CE1 Customer - 10/10/2022', 'ref': 'INV1/2022/00001', 'company_id': 1, 'account_id': 5391, 'payment_id': 327, 'partner_id': 403, 'currency_id': 2, 'amount_currency': -1000.0, 'debit': 0.0, 'credit': 1000.0, 'balance': -1000.0, 'move_name': 'BNKCE/2022/10/0001', 'company_currency_id': 2, 'partner_name': 'CE1 Customer', 'move_type': 'entry', 'account_code': '11020001-001', 'account_name': 'Account Receivable -Trade-CE1', 'journal_code': 'BNKCE', 'journal_name': 'Bank CE1', 'full_rec_name': 'A237'}, {'id': 6327, 'date': 1234, 'date_maturity': 1234, 'name': 'INV1/2022/00002', 'ref': '', 'company_id': 1, 'account_id': 5391, 'payment_id': None, 'partner_id': 105, 'currency_id': 2, 'amount_currency': 1500.0, 'debit': 1500.0, 'credit': 0.0, 'balance': 1500.0, 'move_name': 'INV1/2022/00002', 'company_currency_id': 2, 'partner_name': 'ABC Tra  Kelly', 'move_type': 'out_invoice', 'account_code': '11020001-001', 'account_name': 'Account Receivable -Trade-CE1', 'journal_code': 'INV1', 'journal_name': 'Customer Invoices CE1', 'full_rec_name': 'A236'}, {'id': 6331, 'date': 1234, 'date_maturity': 1234, 'name': 'Customer Payment $ 1,500.00 - ABC Tra  Kelly - 10/10/2022', 'ref': 'INV1/2022/00002', 'company_id': 1, 'account_id': 5391, 'payment_id': 328, 'partner_id': 105, 'currency_id': 2, 'amount_currency': -1500.0, 'debit': 0.0, 'credit': 1500.0, 'balance': -1500.0, 'move_name': 'BNKCE/2022/10/0002', 'company_currency_id': 2, 'partner_name': 'ABC Tra  Kelly', 'move_type': 'entry', 'account_code': '11020001-001', 'account_name': 'Account Receivable -Trade-CE1', 'journal_code': 'BNKCE', 'journal_name': 'Bank CE1', 'full_rec_name': 'A236'}]
+
+# print(data) 
+from itertools import groupby
+data.sort(key=lambda x:x['partner_id'])
+
+final = []
+for k,v in groupby(data,key=lambda x:x['partner_id']):
+    dd = list(v)
+    final.append(dd)

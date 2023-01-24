@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="crm_job_request_partner_view_form" model="ir.ui.view">
+        <field name="name">crm.job.request.partner.view.form</field>
+        <field name="model">crm.job.request.partner</field>
+        <field name="arch" type="xml">
+            <form string="New Job Request">
+                <group>
+                    <group>
+                        <field name="action" widget="radio"/>
+                        <field name="lead_id" invisible="1"/>
+                    </group>
+                </group>
+                <group>
+                    <group>
+                        <field name="partner_id" attrs="{'invisible': [('action','!=','exist')], 'required':[('action', '=','exist')]}"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_apply" string="Confirm" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="crm_job_request_partner_action" model="ir.actions.act_window">
+        <field name="name">New Job Request</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">crm.job.request.partner</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="crm_job_request_partner_view_form"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem name="Master Data" id="master_data_menu" web_icon="master_data_extension,static/description/icon.png" sequence="99"/>
+    
+    <!-- Configuration Main Menu -->
+    <menuitem name="Configuration" id="master_data_configuration_menu" parent="master_data_extension.master_data_menu" sequence="99"/>
+
+    <!-- Config menu about Address -->
+    <menuitem name="Address" id="address_config_menu" parent="master_data_extension.master_data_configuration_menu" sequence="10"/>
+    <menuitem name="Country" id="hr_country_menu" parent="master_data_extension.address_config_menu" action="hr_country_action_window" sequence="10"/>
+    <menuitem name="Region" id="hr_region_menu" parent="master_data_extension.address_config_menu" action="hr_region_action_window" sequence="20"/>
+    <menuitem name="District" id="hr_district_menu" parent="master_data_extension.address_config_menu" action="hr_district_action_window" sequence="30"/>
+    <menuitem name="City" id="hr_city_menu" parent="master_data_extension.address_config_menu" action="hr_city_action_window" sequence="40"/>
+    <menuitem name="Township" id="hr_township_menu" parent="master_data_extension.address_config_menu" action="hr_township_action_window" sequence="50"/>
+    <menuitem name="Industry Zone" id="job_industry_menu" parent="master_data_extension.address_config_menu" action="job_industry_action_window" sequence="60"/>
+    <menuitem name="Floor" id="business_type_menu" parent="master_data_extension.address_config_menu" action="building_floor_action_window" sequence="70"/>
+
+    <!-- Config menu about business unit properties -->
+    <menuitem name="BU Properties" id="bu_properties_config_menu" parent="master_data_extension.master_data_configuration_menu" sequence="20"/>
+    <menuitem name="Business Sector Type" id="business_sector_type_menu" parent="bu_properties_config_menu" action="business_sector_type_action_window" sequence="10"/>
+</odoo>

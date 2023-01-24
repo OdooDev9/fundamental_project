@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_enable_installments" model="res.groups">
+        <field name="name">Installment On Sales</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+     <!-- <record id="manage_bu_installment_plan" model="ir.rule">
+        <field name="name">Manage Installment Plan</field>
+        <field name="model_id" ref="model_re_installment_plan"/>
+        <field name="domain_force">[('business_id', 'in', [g.id for g in user.hr_bu_ids])]</field>
+    </record> -->
+
+    <record id="manage_bu_re_installment_plan" model="ir.rule">
+        <field name="name">Manage BU Re Insallment Plan</field>
+        <field name="model_id" ref="model_re_installment_plan"/>
+        <field name="domain_force">[('hr_bu_id', '=',user.current_bu_br_id.id)]</field>
+        <field name="groups" eval="[(4, ref('master_data_extension.group_bu_user'))]"/>
+     </record>
+     <record id="manage_br_re_installment_plan" model="ir.rule">
+        <field name="name">Manage BR Re Insallment Plan</field>
+        <field name="model_id" ref="model_re_installment_plan"/>
+        <field name="domain_force">[('hr_br_id', '=',user.current_bu_br_id.id)]</field>
+        <field name="groups" eval="[(4, ref('master_data_extension.group_br_user'))]"/>
+     </record>
+     <record id="manage_cfd_re_installment_plan" model="ir.rule">
+        <field name="name">Manage CFD Re Insallment Plan</field>
+        <field name="model_id" ref="model_re_installment_plan"/>
+        <field name="domain_force">[]</field>
+        <field name="groups" eval="[(4, ref('master_data_extension.group_cfd_user'))]"/>
+     </record>
+</odoo>

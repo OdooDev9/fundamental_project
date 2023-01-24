@@ -1,0 +1,14 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_broker,broker.fees,model_broker_fees,base.group_user,1,1,1,1
+access_broker_fees_wiz,broker.fees.wiz,model_broker_fees_wizard,,1,1,1,1
+access_product_brand,product.brand,model_product_brand,,1,1,1,1
+access_model_brand,model.brand,model_brand_model,,1,1,1,1
+access_sale_commission,sale.commission,model_sale_commission,,1,1,1,1
+sale.access_product_template_sale_manager,product.template salemanager,model_product_template,sales_team.group_sale_manager,1,0,0,0
+access_nrc_state,nrc_state,umg_customize_sale.model_nrc_state,base.group_user,1,1,1,1
+sale.access_product_pricelist_sale_manager,product.pricelist salemanager,product.model_product_pricelist,sales_team.group_sale_manager,1,0,0,0
+product.access_product_pricelist_manager,product.pricelist.manager,model_product_pricelist,base.group_system,1,0,0,0
+purchase.access_product_pricelist_item_purchase_manager,product.pricelist.item purchase_manager,product.model_product_pricelist_item,purchase.group_purchase_manager,1,0,0,0
+access_bu_product_pricelist_manager,product.pricelist.bu.manager,model_product_pricelist,master_data_extension.group_hr_bu_manager,1,1,1,1
+access_br_product_pricelist_user,product.pricelist.br.user,model_product_pricelist,master_data_extension.group_hr_bu_user,1,0,0,0
+access_group_model,group.model,model_group_model,,1,1,1,1

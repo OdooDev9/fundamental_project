@@ -1,0 +1,134 @@
+<odoo>
+    <data>
+        <record id="area_sale_target_form" model="ir.ui.view">
+            <field name="name">area.incentive.definition</field>
+            <field name="model">area.incentive.definition</field>
+            <field name="arch" type="xml">
+                <form string="Area Sale Target">
+                    <header>
+                        <button name="%(action_area_incentive_approval_wizard)d" type="action" class="oe_highlight"
+                                states="draft" string="Request Incentive Approve"/>
+                        <button name="incentive_approved" type="object" string="Approve"
+                                states="request_incentive_approved" class="oe_highlight"/>
+                        <button name="%(action_asm_wizard)d" type="action" class="oe_highlight" states="incentive_approved"
+                                string="Incentive Paid"/>
+                        <button name="withdraw_incentive" type="object" class="oe_highlight"
+                                states="incentive_partially_withdraw" string="Withdraw Remaining Incentive Bill"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,incentive_approved"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_sale_order"
+                                    type="object" class="oe_stat_button"
+                                    icon="fa-usd">
+                                <field name="sale_order_count" widget="statinfo" string="Sale Orders"/>
+                            </button>
+                            <button name="action_move_items" type="object" class="oe_stat_button" icon="fa-bars" string="Journal Items"/>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="user_id" required="1" attrs="{'readonly':[('state','=','incentive_approved')]}"
+                                       options="{'no_create': True}"/>
+                                <field name="business_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"
+                                       options="{'no_create': True}"/>
+                                <field name="branch_ids" widget="many2many_tags" required="1"
+                                       attrs="{'readonly':[('state','!=','draft')]}" options="{'no_create': True}"/>
+                                <field name="incentive_currency_id" />
+                            </group>
+                            <group>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="incentive_calculation" required="1"
+                                       attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="date_start" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name='date_end' required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name='target' readonly="1" widget="monetary"
+                                       attrs="{'readonly':[('state','!=','draft')]}"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Sale KPI">
+                                <group>
+                                    <group string="Sales">
+                                        <field name="sale_total" widget="monetary"/>
+                                        <label for="target_reached" string="Sale Performance"/>
+                                        <div class="o_row" name="target_reached">
+                                            <field name="target_reached"/>
+                                            <span>%</span>
+                                        </div>
+                                        <field name="incentive" widget='monetary' options="{'currency_field': 'incentive_currency_id'}"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Performance Range">
+                                <field name="incentive_performance_range_ids"
+                                       attrs="{'readonly':[('state','!=','draft')]}">
+                                    <tree string="Performance Range" editable="bottom">
+                                        <field name="lower_range"/>
+                                        <field name="conditional_operator"/>
+                                        <field name="higher_range"/>
+                                        <field name="incentive_amount"
+                                               attrs="{'column_invisible':[('parent.incentive_calculation','=','percentage')]}" widget='monetary'/>
+                                        <field name="incentive_percentage"
+                                               attrs="{'column_invisible':[('parent.incentive_calculation','=','agent')]}"/>
+                                        <field name="outstanding" invisible="1"/>
+                                        <field name="currency_id" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Accounting Information">
+                                <group>
+                                    <group>
+                                        <field name="account_id" required="1"/>
+                                        <field name="journal_id" required="1"/>
+                                        <field name="product_id" invisible="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="area_sale_target_tree" model="ir.ui.view">
+            <field name='name'>area.incentive.definition</field>
+            <field name="model">area.incentive.definition</field>
+            <field name="arch" type="xml">
+                <tree string="Personal Sale Target">
+                    <field name="name"/>
+                    <field name="user_id"/>
+                    <field name="date_start"/>
+                    <field name="date_end"/>
+                    <field name="target" widget="monetary"/>
+                    <field name="sale_total" widget="monetary"/>
+                    <field name='target_reached'/>
+                    <field name="incentive"/>
+                    <field name="state"/>
+                    <field name="currency_id" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+        <record id="area_sale_target_action" model="ir.actions.act_window">
+            <field name="name">Area Sale Target</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">area.incentive.definition</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p>
+                    Create area sale target.
+                </p>
+            </field>
+        </record>
+        <menuitem id="area_sale_target_action_menu" name="Area Sale Targets" parent="sale_team_target_menu"
+                  action="area_sale_target_action" sequence="50"/>
+    </data>
+</odoo>

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="view_job_unbuild_form" model="ir.ui.view">
+		<field name="name">job.request.unbuild.form</field>
+		<field name="model">job.request.unbuild</field>
+		<field name="arch" type="xml">
+			<form string="Unbuild Product">
+				<group>
+					<field name="product_id" string="Unbuild Product" readonly="1"/>
+					<field name="location_src_id"/>
+					<field name="location_dest_id" />
+				</group>
+				<group>
+					<field name="existing_components">
+						<tree editable="bottom" create="false">
+							<field name="product_id"/>
+							<field name="product_uom"/>
+			
+							<field name="product_uom_qty" readonly="0"/>
+							<field name="product_qty" string="Unbuild Qty" sum="Total"/>
+						</tree>
+					</field>
+				</group>
+				<footer>
+					<button string="Disassemble" name="unbuild" type="object" class="oe_highlight" groups="mrp.group_mrp_user,mrp.group_mrp_manager"/>
+					or
+					<button string="Cancel" class="oe_link" special="cancel"/>
+				</footer>
+			</form>
+		</field>
+	</record>
+	<record id="action_job_unbuild" model="ir.actions.act_window">
+		<field name="name">Disassemble</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">job.request.unbuild</field>
+		<field name="binding_view_types">form</field>
+		<field name="view_mode">form</field>
+		<field name="target">new</field>
+	</record>
+
+	<record id="view_job_build_form" model="ir.ui.view">
+		<field name="name">job.request.build.form</field>
+		<field name="model">job.request.build</field>
+		<field name="arch" type="xml">
+			<form string="build Product">
+				<group>
+					<field name="product_id" string="build Product" readonly="1"/>
+					<field name="location_src_id"/>
+					<field name="location_dest_id" groups="base.group_no_one"/>
+				</group>
+				<group col="2">
+					<group string="Components">
+						<field name="receiving_components" nolabel="1">
+							<tree editable="bottom" create="false" delete="false">
+								<field name="product_id" string="Product"/>
+								<field name="product_uom" string="UoM"/>
+								<field name="product_uom_qty"  string="Quantity" readonly="1" sum="Total"/>
+							</tree>
+						</field>
+						
+					</group>
+					<group string="Receiving Parts">
+						<field name="existing_components" nolabel="1">
+							<tree editable="bottom" create="false" delete="false">
+								<field name="product_id" string="Product"/>
+								<field name="product_uom" string="UoM"/>
+								<field name="product_qty" string="Quantity" readonly="0" sum="Total"/>
+							</tree>
+						</field>
+					</group>
+				</group>
+
+				<group col="2">
+					<group string="Order Parts">
+						<field name="part_order_components" nolabel="1">
+							<tree editable="bottom" create="false" delete="false">
+								<field name="product_id" string="Product"/>
+								<field name="product_uom" string="UoM"/>
+								<field name="product_uom_qty"  string="Quantity" readonly="1" sum="Total"/>
+							</tree>
+						</field>
+					</group>
+					<group string="Damage Parts">
+						<field name="damage_components" nolabel="1">
+							<tree editable="bottom" create="false" delete="false">
+								<field name="product_id"/>
+								<field name="product_uom"/>
+								<field name="product_uom_qty" sum="Total"/>
+								<field name="note"/>
+							</tree>
+						</field>
+					</group>
+				</group>
+
+				<footer>
+					<button string="Assembly" name="build" type="object" class="oe_highlight" groups="mrp.group_mrp_user,mrp.group_mrp_manager"/>
+					or
+					<button string="Cancel" class="oe_link" special="cancel"/>
+				</footer>
+			</form>
+		</field>
+	</record>
+	<record id="action_job_build" model="ir.actions.act_window">
+		<field name="name">Assembly</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">job.request.build</field>
+		<field name="binding_view_types">form</field>
+		<field name="view_mode">form</field>
+		<field name="target">new</field>
+	</record>
+
+
+	<record id="view_job_deliver_form" model="ir.ui.view">
+		<field name="name">job.request.deliver.form</field>
+		<field name="model">job.request.deliver</field>
+		<field name="arch" type="xml">
+			<form string="Deliver Product">
+				<group>
+					<field name="product_id" string="Build Product" readonly="1"/>
+					<field name="location_src_id"/>
+					<field name="location_dest_id" />
+				</group>
+				<footer>
+					<button string="Deliver" name="deliver" type="object" class="oe_highlight" groups="mrp.group_mrp_user,mrp.group_mrp_manager"/>
+					or
+					<button string="Cancel" class="oe_link" special="cancel"/>
+				</footer>
+			</form>
+		</field>
+	</record>
+	<record id="action_job_deliver" model="ir.actions.act_window">
+		<field name="name">Deliver</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">job.request.deliver</field>
+		<field name="binding_view_types">form</field>
+		<field name="view_mode">form</field>
+		<field name="target">new</field>
+	</record>
+
+	<record id="view_job_close_form" model="ir.ui.view">
+		<field name="name">job.request.close.form</field>
+		<field name="model">job.request.close</field>
+		<field name="arch" type="xml">
+			<form string="Deliver Product">
+				<group>
+					<field name="product_id" string="Build Product" readonly="1"/>
+					<field name="location_src_id"/>
+					<field name="location_dest_id" />
+					<field name="damage" />
+				</group>
+				<footer>
+					<button string="Close" name="close" type="object" class="oe_highlight" />
+					or
+					<button string="Cancel" class="oe_link" special="cancel"/>
+				</footer>
+			</form>
+		</field>
+	</record>
+	<record id="action_job_close" model="ir.actions.act_window">
+		<field name="name">Close</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">job.request.close</field>
+		<field name="binding_view_types">form</field>
+		<field name="view_mode">form</field>
+		<field name="target">new</field>
+	</record>
+
+</odoo>

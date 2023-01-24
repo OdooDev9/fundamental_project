@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <!-- Sequences for broker.fees -->
+        <record id="seq_broker_fees" model="ir.sequence">
+            <field name="name">Broker Fees</field>
+            <field name="code">broker.fees</field>
+            <field name="prefix">BRF</field>
+            <field name="padding">6</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+    </data>
+</odoo>
+

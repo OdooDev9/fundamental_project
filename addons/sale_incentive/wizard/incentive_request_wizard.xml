@@ -1,0 +1,58 @@
+<odoo>
+    <data>
+        
+
+
+        <record id="action_view_incentive_request" model="ir.actions.act_window">
+            <field name="name">Request</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">incentive.request.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="sale_incentive.model_normal_incentive_main" />
+            <field name="binding_view_types">list,form</field>
+       
+        </record>
+
+
+        <record id="action_wizard_incentive_request" model="ir.actions.act_window">
+            <field name="name">Incentive Req. Wizard</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">incentive.request.wizard</field>
+            <field name="binding_view_types">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <record id="view_incentive_request_wizard" model="ir.ui.view">
+            <field name="name">incentive.request.wizard</field>
+            <field name="model">incentive.request.wizard</field>
+            <field name="arch" type="xml">
+            <form string="ncentive Request Wizard">
+                    <group>
+                        <field name="request_date"/>
+                        <field name="business_id"/>
+                        <field name="branch_id"/>
+                        <field name="manager" invisible="1"/>
+                    </group>
+                    <field name="request_wizard_line">
+                        <tree editable="bottom">
+                            <field name="normal_incentive_id"></field>
+                        </tree>
+                    </field>
+            <footer>
+                 <button name="process" string="Request" type="object" class="oe_highlight"/>
+                 <button string="Cancel" special="cancel" class="oe_link"/>
+             </footer>
+                </form>
+            </field>
+        </record>
+
+       
+
+      
+
+      
+                
+    </data>
+</odoo>

@@ -1,0 +1,203 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="res_partner_inherit_nrc_view">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="priority" eval="11"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='category_id']" position="after">
+                    <field name="supplier_rank" invisible="1"/>
+                    <field name="customer_rank" invisible="1"/>
+                    <field name="customer"/>
+                    <field name="supplier"/>
+                    <!--YZO add oversea_supplier field-->
+                    <field name="oversea_supplier"/>
+                    <field name="broker"/>
+                    <label for="nrc"/>
+                    <div>
+                        <div class="o_row" name="nrc">
+                            <field name="nrc" nobel="1"/>
+                            <span>/</span>
+                            <field name="nrc_state" nobel="1" options="{'no_open':True}"/>
+                            <field name="nrc_national" nobel="1"/>
+                            <span/>
+                        </div>
+                        <field name="nrc_number"/>
+                    </div>
+                </xpath>
+                <xpath expr="//page[@name='internal_notes']" position="after">
+                    <page name="allowed_bu_br" string="Allowed BU/BR"
+                          attrs="{'invisible': [('supplier_rank','!=', 0)]}">
+                        <group>
+
+                            <field name="hr_bu_ids" options="{'no_create': True}" widget="many2many_tags"/>
+                            <field name="hr_br_ids" options="{'no_create': True}" widget="many2many_tags"/>
+                        </group>
+
+                    </page>
+                    <page name="edited_bu_br" string="Edited BU/BR/DIV">
+                        <group>
+                            <field name="edit_hr_br_ids" options="{'no_create': True}" widget="many2many_tags"/>
+                            <field name="edit_hr_bu_ids" options="{'no_create': True}" widget="many2many_tags"/>
+                        </group>
+                    </page>
+                </xpath>
+
+                <xpath expr="//field[@name='phone']" position="replace">
+<!--                    <field name="phone" widget="phone" options="{'enable_sms': false}"/>-->
+                    <field name="phone" widget="phone" options="{'enable_sms': false}"
+                           attrs="{'required': ['|',('customer','=',True),('customer_rank','!=', 0)]}"/>
+                </xpath>
+<!--                <xpath expr="//notebook//page[@name='sales_purchases']//group[@name='sale']//field[@name='user_id']"-->
+<!--                       position="before">-->
+<!--                    <field name="customer"/>-->
+<!--                </xpath>-->
+<!--                <xpath expr="//notebook//page[@name='sales_purchases']//group[@name='purchase']//field[@name='property_supplier_payment_term_id']"-->
+<!--                       position="before">-->
+<!--                    <field name="supplier" string="Is A Vendor?"/>-->
+<!--                </xpath>-->
+                <xpath expr="//field[@name='vat']" position="replace">
+                    <field name="vat" string="Registration No./License No."
+                           attrs="{'readonly': [('parent_id','!=',False)]}"/>
+                    <field name="no_have_company_registration" widget="boolean_toggle"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!--YZO change Action name -->
+        <record id="account.res_partner_action_supplier" model="ir.actions.act_window">
+            <field name="name">Local Vendors</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[('supplier', '=', True)]</field>
+            <field name="context">{'default_customer': 0,'default_supplier': 1, 'default_is_company': True}</field>
+        </record>
+
+        <!-- YZO Add oversea_supplier_action menu -->
+        <record id="oversea_supplier_action" model="ir.actions.act_window">
+            <field name="name">Oversea Vendors</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[('oversea_supplier', '=', True)]</field>
+            <field name="context">{'default_customer': 0,'default_oversea_supplier': 1, 'default_is_company': True}</field>
+        </record>
+
+        <record id="account.res_partner_action_customer" model="ir.actions.act_window">
+            <field name="name">Customers</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[('customer', '=', True)]</field>
+            <field name="context">{'default_customer':1, 'default_supplier': 0, 'default_is_company': True}</field>
+        </record>
+        <record id="base.action_partner_supplier_form" model="ir.actions.act_window">
+            <field name="name">Vendors</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[('supplier', '=', True)]</field>
+            <field name="context">{'default_customer': 0,'default_supplier': 1, 'default_is_company': True}</field>
+            <field name="filter" eval="True"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">Create a new vendor in your address book</p>
+                <p>Odoo helps you easily track all activities related to a vendor.</p>
+            </field>
+        </record>
+        <record id="base.action_partner_form" model="ir.actions.act_window">
+            <field name="name">Customers</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[('customer', '=', True)]</field>
+            <field name="context">{}</field>
+            <field name="search_view_id" ref="base.view_res_partner_filter"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">Create a new customer in your address book</p>
+                <p>Odoo helps you easily track all activities related to a customer.</p>
+            </field>
+        </record>
+        <record id="base.action_partner_customer_form" model="ir.actions.act_window">
+            <field name="name">Customers</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="context">{'default_customer':1, 'search_default_customer':1, 'default_is_company': True}
+            </field>
+            <field name="filter" eval="True"/>
+        </record>
+        <record id="view_res_partner_filter_inherit" model="ir.ui.view">
+            <field name="name">res.partner.select</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <filter string="Customers" name="customer" domain="[('customer', '=', True)]"/>
+                    <filter string="Local Vendors" name="supplier" domain="[('supplier', '=', True)]"/>
+                    <!-- YZO add filter Oversea vendor-->
+                    <filter string="Oversea Vendors" name="oversea_supplier" domain="[('oversea_supplier', '=', True)]"/>
+                    <filter string="Brokers" name="broker" domain="[('broker', '=', True)]"/>
+                    <filter string="No Have Company Registration Number" name="no_have_company_registration_number"
+                            domain="[('is_company','=',False),('vat','=',False)]"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="nrc_state_form_view" model="ir.ui.view">
+            <field name="name">NRC State</field>
+            <field name="model">nrc.state</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="state_number"/>
+                                <field name="name"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="nrc_state_tree_view" model="ir.ui.view">
+            <field name="name">NRC State</field>
+            <field name="model">nrc.state</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="state_number"/>
+                </tree>
+            </field>
+        </record>
+        <record id="nrc_state_action" model="ir.actions.act_window">
+            <field name="name">NRC State</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">nrc.state</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+        <menuitem id="nr_state_menu" action="nrc_state_action" groups="base.group_user" name="NRC State" sequence="500"
+                  parent="contacts.res_partner_menu_config"/>
+
+        <!-- YZO Replace Vendors -> Local Vendors menu name -->
+        <record model="ir.ui.menu" id="purchase.menu_procurement_management_supplier_name">
+            <field name="name">Local Vendors</field>
+        </record>
+
+        <record model="ir.ui.menu" id="account.menu_account_supplier">
+            <field name="name">Local Vendors</field>
+        </record>
+
+        <!-- YZO add Oversea Vendor menu-->
+        <!-- This Menu Item Must have a parent -->
+        <menuitem name="Oversea Vendors" id="menu_oversea_vendor"
+            parent="purchase.menu_procurement_management"
+            action="umg_customize_sale.oversea_supplier_action" sequence="16"/>
+
+        <menuitem name="Oversea Vendors" id="menu_account_oversea_vendor"
+            parent="account.menu_finance_payables"
+            action="umg_customize_sale.oversea_supplier_action" sequence="200"/>
+    </data>
+</odoo>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- REGISTER PAYMENT WIZARD -->
+        <record id="view_account_payment_register_inherit_form" model="ir.ui.view">
+            <field name="name">view_account_payment_register_form.inherit</field>
+            <field name="model">account.payment.register</field>
+            <field name="inherit_id" ref="account.view_account_payment_register_form" />
+            <field name="arch" type="xml">
+                <!-- <field name="journal_id" position="attributes">
+                    <attribute name="attrs">{'invisible': [('hr_bu_id','=', False),('service_type', '=', True)]}</attribute>
+                </field> -->
+                <field name="journal_id" position="replace">
+                    <field name="journal_id" options="{'no_open': True, 'no_create': True}" required="1" string="BU Journal" attrs="{'invisible': ['|','|',('hr_bu_id','=', False),('service_type', '=', True),('broker_button','=',True)]}" />
+                    <field name="journal_id" string="CFD Journal" options="{'no_open': True, 'no_create': True}" required="1" attrs="{'invisible': ['|','|',('hr_bu_id','=', False),('service_type', '=', True),('broker_button','=',False)]}" />
+                </field>
+                <field name="journal_id" position="after">
+                    <field name="hr_bu_id" invisible="1"/>
+                    <field name="hr_br_id" invisible="1"/>
+                    <!-- <field name="br_journal_id" attrs="{'invisible': [('hr_br_id', '=', False)]}"/> -->
+                    <field name="br_journal_id" attrs="{'invisible': ['|',('hr_br_id', '=', False),('broker_button','=',True)]}"/>
+                    <field name="cfd_journal_id" attrs="{'invisible': [('is_oversea_purchase', '=', False)]}" />
+                </field>
+                <field name='communication' position='after'>
+                    <field name="is_oversea_purchase" readonly="1" attrs="{'invisible': [('payment_type','not in','outbound')]}" />
+                    <field name='unit_or_part' readonly="1"/>
+                    <field name="service_type" readonly="1"/>
+                    <field name="broker_button" readonly="1" />
+                </field>
+                <!-- <label for='journal_id' string='Bu Journal' attrs="{'invisible': ['|','|',('hr_bu_id','=', False),('service_type', '=', True),('broker_button','=',True)]}"/>
+                    <label for='journal_id' string='CFD Journal' attrs="{'invisible': ['|','|',('hr_bu_id','=', False),('service_type', '=', True),('broker_button','=',False)]}"/> -->
+                <!-- FOOTER -->
+                <xpath expr="//footer" position="replace">
+                    <footer>
+                        <button string="Create Payment" name="action_create_payments" attrs="{'invisible': [('is_oversea_purchase', '=', True)]}" type="object" class="oe_highlight" data-hotkey="q"/>
+                        <button string="Create Oversea Payment" name="action_create_oversea_payments" attrs="{'invisible': [('is_oversea_purchase', '=', False)]}" type="object" class="oe_highlight" data-hotkey="q"/>
+                        <button string="Cancel" class="btn btn-secondary" special="cancel" data-hotkey="z"/>
+                        
+                    </footer>
+                </xpath>
+            </field>
+        </record>
+        <!-- PAYMENT VIEW -->
+        <record id="view_payment_form_inherit" model="ir.ui.view">
+            <field name="name">account.payment.form.inherit</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//button[@name='button_open_journal_entry']" position="after">
+                        <button name="button_extra_entries" type="object" class="oe_stat_button" icon="fa-bars" attrs="{'invisible': ['|',('service_type','=', True),('count_extra_entry_line','&lt;', 1)]}">
+                            <field name="count_extra_entry"/>
+                            <span attrs="{'invisible': [('count_extra_entry','&gt;', 1)]}">Extra Entry</span>
+                            <span attrs="{'invisible': [('count_extra_entry','&lt;=', 1)]}">Extra Entries</span>
+                        </button>
+                        <button name="button_extra_entrie_lines" type="object" class="oe_stat_button" icon="fa-bars" attrs="{'invisible': ['|',('service_type','=', True),('count_extra_entry_line','&lt;', 1)]}">
+                            <field name="count_extra_entry_line"/>
+                            <span attrs="{'invisible': [('count_extra_entry_line','&gt;', 1)]}">Extra Line</span>
+                            <span attrs="{'invisible': [('count_extra_entry_line','&lt;=', 1)]}">Extra Lines</span>
+                        </button>
+                        <button name="button_oversea_entrie_lines" type="object" class="oe_stat_button" icon="fa-bars" attrs="{'invisible': ['|',('service_type','=', True),('is_oversea_purchase','=', False)]}">
+                            <field name="count_oversea_entry_line"/>
+                            <span attrs="{'invisible': [('count_oversea_entry_line','&gt;', 1)]}">Oversea Line</span>
+                            <span attrs="{'invisible': [('count_oversea_entry_line','&lt;=', 1)]}">Oversea Lines</span>
+                        </button>
+                    </xpath>
+                    <xpath expr="//header" position="inside">
+                        <field name="is_oversea_purchase" invisible='1'/>
+                        <field name="service_type" invisible='1'/>
+                        <button name="action_payment_transfer" attrs="{'invisible': ['|',('is_transfered','=', True), ('service_type','=', True)]}" type="object" string="Transfer"/>
+                    </xpath>
+                    <xpath expr="//field[@name='journal_id']" position="before">
+                        <field name="reconciled_bills_count" invisible='1' />
+                        <field name="is_transfered" invisible='1'/>
+                        <field name="is_pre_payment" readonly="1" force_save="1" attrs="{'invisible': [('is_pre_payment','=', False)]}" />
+                        <field name="hr_bu_id" />
+                        <field name="hr_br_id" attrs="{'invisible': ['|',('reconciled_bills_count','&gt;', 0),('is_oversea_purchase','=', True)]}"/>
+                    </xpath>
+                    <xpath expr="//field[@name='journal_id']" position="after">
+                        <field name="br_journal_id" attrs="{'invisible': ['|',('reconciled_bills_count','&gt;', 0),('is_oversea_purchase','=', True)]}"/>
+                    </xpath>
+                    <xpath expr="//field[@name='partner_bank_id']" position="after">
+                        <field name='unit_or_part'/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
+        <!-- PAYMENT FILTER VIEW -->
+        <record id="view_account_payment_search_inherit" model="ir.ui.view">
+            <field name="name">account.payment.search.inherit</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_search" />
+            <field name="arch" type="xml">
+                <!-- Filter on batch pre payments -->
+                <filter name="inbound_filter" position="after">
+                    <filter string="Pre Payments" name="pre_payments_filter" domain="[('is_pre_payment', '=', True)]"/>
+                </filter>
+            </field>
+        </record>
+
+        <record id="action_account_pre_payments" model="ir.actions.act_window">
+            <field name="name">Pre Payments</field>
+            <field name="res_model">account.payment</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('is_pre_payment', '=', True), ('payment_type', '=', 'inbound')]</field>
+            <field name="context">{
+                'default_ref': 'Pre Payment/Down Payment',
+                'default_is_pre_payment': True,
+                'default_payment_type': 'inbound',
+                'default_partner_type': 'customer',
+                'search_default_pre_payments_filter': 1,
+                'default_move_journal_types': ('bank', 'cash'),
+            }</field>
+            <!-- <field name="view_id" ref="account_extension.view_payment_form_inherit"/> -->
+            <field name="view_id" ref="account.view_account_payment_tree"/>
+            <!-- <field name="domain">[('is_pre_payment','=',True)]</field> -->
+        </record>
+
+
+        <record id="action_account_outbound_pre_payments" model="ir.actions.act_window">
+            <field name="name">Pre Payments</field>
+            <field name="res_model">account.payment</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('is_pre_payment', '=', True), ('payment_type', '=', 'outbound')]</field>
+            <field name="context">{
+                'default_ref': 'Pre Payment/Down Payment',
+                'default_is_pre_payment': True,
+                'default_payment_type': 'outbound',
+                'default_partner_type': 'supplier',
+                'search_default_pre_payments_filter': 1,
+                'default_move_journal_types': ('bank', 'cash'),
+            }</field>
+            <!-- <field name="view_id" ref="account_extension.view_payment_form_inherit"/> -->
+            <field name="view_id" ref="account.view_account_payment_tree"/>
+            <!-- <field name="domain">[('is_pre_payment','=',True)]</field> -->
+        </record>
+
+        <menuitem name="Pre Payment" parent="account.menu_finance_receivables" id="menu_action_account_pre_payments" action="action_account_pre_payments" sequence="16"/>
+
+        <menuitem name="Pre Payment" parent="account.menu_finance_payables" id="menu_action_account_outbound_pre_payments" action="action_account_outbound_pre_payments" sequence="20"/>
+
+    </data>
+</odoo>

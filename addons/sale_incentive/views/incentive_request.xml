@@ -1,0 +1,255 @@
+<odoo>
+    <data>
+
+        <!-- Multi Pooling Payment -->
+        <record id="ir_actions_server_pooling_paid" model="ir.actions.server">
+            <field name="name">Pooling Paid</field>
+            <field name="type">ir.actions.server</field>
+            <field name="state">code</field>
+            <field name="model_id" ref="sale_incentive.model_incentive_request"/>
+            <field name="binding_model_id" ref="sale_incentive.model_incentive_request"/>
+            <field name="code">
+                record.multi_pooling_paid()
+            </field>
+           
+        </record>
+
+
+         <!-- Multi Retain Payment -->
+         <record id="ir_actions_server_retain_paid" model="ir.actions.server">
+            <field name="name">Retain Paid</field>
+            <field name="type">ir.actions.server</field>
+            <field name="state">code</field>
+            <field name="model_id" ref="sale_incentive.model_incentive_request"/>
+            <field name="binding_model_id" ref="sale_incentive.model_incentive_request"/>
+            <field name="code">
+                record.multi_retain_paid()
+            </field>
+           
+        </record>
+
+
+        <!-- <record id="pooling_payment_wizard" model="ir.actions.act_window">
+            <field name="name">Pooling Register Payment</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">incentive.pooling.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="sale_incentive.model_incentive_request" />
+            <field name="binding_view_types">list,form</field>
+       
+        </record>
+        -->
+         <!-- <record id="retain_payment_wizard" model="ir.actions.act_window">
+            <field name="name">Retain Register Payment</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">incentive.retain.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="sale_incentive.model_incentive_request" />
+            <field name="binding_view_types">list,form</field>
+
+        </record> -->
+
+        <!-- Tree View -->
+        <record id="incentive_request_list_view" model="ir.ui.view">
+            <field name="name">Incentive Request List</field>
+            <field name="model">incentive.request</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="manager" invisible="1"></field>
+                    <field name="name"></field>
+                    <field name="business_id"></field>
+                    <field name="branch_id"></field>
+                    <field name="currency_id"></field>
+                    <field name="saleman_amount" attrs="{'invisible': [('manager','=',True)]}"></field>
+                    <field name="pooling_amount" attrs="{'invisible': [('manager','=',True)]}" ></field>
+                    <field name="retain_amount" attrs="{'invisible': [('manager','=',True)]}"></field>
+                    <field name="total"></field>
+                    <field name="paid_amount"></field>
+                    <field name="due_amount"></field>
+                    <field name="state"></field>
+
+                </tree>
+                
+            </field>
+        </record>
+
+        <!-- SearchView -->
+        <record id="view_incentive_request_search" model="ir.ui.view">
+            <field name="name">incentive.request.search</field>
+            <field name="model">incentive.request</field>
+            <field name="arch" type="xml">
+                <search string="Incentive Request">
+                    <group expand='0' string='Filters'>
+                        <filter name="group_business_id" string="Business Unit" icon="terp-partner" context="{'group_by':'business_id'}"/>
+                        <filter name="group_state" string="Status" icon="terp-partner" context="{'group_by':'state'}"/>
+
+                        <filter name="pooling_payment_status" string="Pooling Payment Status" domain="[('state','=', 'incentive_withdraw')]"/>
+                        <filter name="retain_payment_status" string="Retain Payment Status" domain="[('state','=', 'pooling_withdraw')]"/>
+                      
+                    </group>
+                    
+                </search>
+            </field>
+        </record>
+
+        <!-- FormView -->
+
+        <record id="incentive_request_form_view" model="ir.ui.view">
+            <field name="name">Incentive Request</field>
+            <field name="model">incentive.request</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header> 
+                        <field name="br_user" invisible="1"></field>
+                        <field name="bu_user" invisible="1"></field>
+                        <field name="cfd_user" invisible="1"></field>
+                        <button name="approve_sale_admin" type="object" class="oe_highlight" string="Approve By Sale Admin" attrs="{'invisible':['|','|',('branch_id','=',True),('state','!=','request_incentive_approved'),('bu_user','=',False)]}" groups="product_configure.group_sale_admin"/>
+                        <button name="approve_sale_head" type="object" class="oe_highlight" string="Approve By Sale Head" attrs="{'invisible':['|','|',('branch_id','=',True),('state','!=','saleadmin_approved'),('bu_user','=',False)]}" groups="product_configure.group_sale_head"/>
+                        <button name="approve_boh" type="object" class="oe_highlight" string="Approve By BOH" attrs="{'invisible':['|','|',('branch_id','=',False),('state','!=','request_incentive_approved'),('br_user','=',False)]}" groups="product_configure.group_boh"/>
+                        <button name="approve_finance_account" type="object" class="oe_highlight" string="Approve By F  &amp; A " attrs="{'invisible':['|','|',('branch_id','=',True),('state','!=','salehead_approved'),('bu_user','=',False)]}" groups="product_configure.group_finance_account_head"/>
+                        <button name="approve_finance_account" type="object" class="oe_highlight" string="Approve By F  &amp; A " attrs="{'invisible':['|','|',('branch_id','=',False),('state','!=','boh_approved'),('bu_user','=',False)]}" groups="product_configure.group_finance_account_head"/>
+                        <button name="approve_cca_dh" type="object" class="oe_highlight" string="Approve By CCA Dept. Head" attrs="{'invisible':['|',('state','!=','finance_account_approved'),('cfd_user','=',False)]}" groups="sale_incentive.group_cca_dh"/>
+                        <button name="approve_cca_gm" type="object" class="oe_highlight" string="Approve By CCA GM "  attrs="{'invisible':['|',('state','!=','cca_dh_approved'),('cfd_user','=',False)]}" groups="sale_incentive.group_cca_gm"/>
+                        <button name="%(sale_incentive.action_normal_approval_wizard)d" type="action" class="oe_highlight"  attrs="{'invisible':[('state','not in',['cca_gm_approved'])]}"
+                                string="Incentive paid"/>
+                        <button name="pooling_paid" type="object" class="oe_highlight"
+                                string="Pooling Paid"
+                                attrs="{'invisible':['|','|',('state','!=','incentive_withdraw'),('due_amount','=',0.0),('manager','=',True)]}"/>
+
+                        <button name="retain_paid" type="object" class="oe_highlight"
+                                string="Retain Paid"
+                                attrs="{'invisible':['|','|',('state','!=','pooling_withdraw'),('due_amount','=',0.0),('manager','=',True)]}"/>
+                        
+                                <!-- <button name="%(sale_incentive.action_retain_paid_wizard)d" type="action" class="oe_highlight"
+                        string="Retain Paid"
+                        attrs="{'invisible':['|','|',('state','!=','pooling_withdraw'),('due_amount','=',0.0),('manager','=',True)]}"/> -->
+                        <field name="state" widget="statusbar"
+                        statusbar_visible="draft,request_incentive_approved,incentive_approved"/>
+                    </header>
+
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                           
+                            <button name="action_move_items" type="object" class="oe_stat_button" icon="fa-bars"
+                                    string="Journal Items"/>
+                        </div>
+                        
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="request_date" attrs="{'readonly':[('state','!=','draft')]}"
+                                options="{'no_create': True}"></field>
+                                <field name="branch_id" attrs="{'readonly':[('state','!=','draft')]}"
+                                options="{'no_create': True}"></field>
+                                <field name="business_id" attrs="{'readonly':[('state','!=','draft')]}"
+                                options="{'no_create': True}"></field>
+                                <field name="incentive_definition_id" readonly="1"></field>
+                                <field name="pooling_date" invisible="1"/>
+                                <field name="retain_date" invisible="1"></field>
+                                <field name="manager" invisible="1"/>
+
+                            </group>
+                            <group>
+                                <field name="journal_id" invisible="1"></field>
+                                <field name="receive_journal_id" invisible="1"></field>
+                                <field name="currency_id" invisible="1"></field>
+                                <field name="mmk_currency_id" attrs="{'invisible':[('exchange_rate','=',0.0)]}" readonly="1"></field>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="incentive_request_line" string="Incentive Request Line">
+
+                                <field name="incentive_request_line" readonly="0">
+                                    <tree editable="bottom" create='0'>
+
+                                        <field name="normal_incentive_id" readonly="1"/>
+                                        <field name="invoice_id" readonly="1"/>
+                                        <field name="unit_or_part"/>
+                                        <field name="saleman_amount" attrs="{'column_invisible':[('parent.manager','=',True)]}"/>
+                                        <field name="pooling_amount" attrs="{'column_invisible':[('parent.manager','=',True)]}"/>
+                                        <field name="retain_amount" attrs="{'column_invisible':[('parent.manager','=',True)]}"/>
+                                        <field name="total"/>
+                                        <field name="invoice_amount" readonly="1"/>
+                                        <field name="deduct_amount" attrs="{'readonly':[('parent.state','not in',['boh_approved','salehead_approved'])]}"/>
+                                       
+                                        <!-- <field name="amount_due"/>
+                                        <field name ="paid_amount"/> -->
+                                        <field name="currency_id" readonly="1" />
+                                        <field name="remark" attrs="{'readonly':[('parent.state','not in',['boh_approved','salehead_approved'])]}"/>
+                                        <field name="state" invisible="1"/>
+                                        <button name="action_run" type="object" class="oe_highlight" string="Run" icon="fa-bars" attrs="{'invisible':[('parent.state','not in','boh_approved')]}" groups="master_data_extension.group_bu_user"/>
+                                    </tree>
+                                </field>
+                                <group>
+                                    <group>
+                                          <field name="exchange_rate" attrs="{'required':[('state','=','finance_account_approved')],'readonly':[('cfd_user','=',False)]}"></field>
+                                    </group>
+                                    <group class="oe_subtotal_footer oe_right">
+                                     
+                                        <field name="manager_amount" attrs="{'invisible':['|',('manager','!=',True),('exchange_rate','=',0.0)]}"></field>
+                                        <field name="saleman_amount" attrs="{'invisible':['|',('manager','=',True),('exchange_rate','=',0.0)]}"></field>
+                                        <field name="pooling_amount" attrs="{'invisible':['|',('manager','=',True),('exchange_rate','=',0.0)]}"></field>
+                                        <field name="retain_amount" attrs="{'invisible':['|',('manager','=',True),('exchange_rate','=',0.0)]}"></field>
+                                        <field name="paid_amount" invisible="1"></field>
+                                        <field name="total"></field>
+                                        <field name="due_amount"></field>  
+                                      
+                                        
+                                    </group>
+                                </group>
+                                <div class="oe_clear"/>
+                                
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+       
+        <record id="incentive_request_action" model="ir.actions.act_window">
+            <field name="name">Incentive Request Action</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">incentive.request</field>
+            <field name="domain">[('manager','!=',True)]</field>
+            <field name="context">{'search_default_group_business_id': 1}</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p>
+                    Create Incentive Request
+                </p>
+            </field>
+        </record>
+
+        <!-- ASM Request Form -->
+
+        <record id="asm_incentive_request_action" model="ir.actions.act_window">
+            <field name="name">Area Sale Incentive Request</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">incentive.request</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('manager','=',True)]</field>
+            <field name="context">{'search_default_group_business_id': 1}</field>
+           
+            <field name="help" type="html">
+                <p>
+                    ASM Normal Incentive Request
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="incentive_request_menu" name="Incentive Request" parent="normal_incentive_menu" sequence="5" action="sale_incentive.incentive_request_action"/>
+        <menuitem id="asm_incentive_request_menu" name="Area Sale Incentive Request" parent="normal_incentive_menu"
+        sequence="1" action="sale_incentive.asm_incentive_request_action"/>
+    </data>
+</odoo>

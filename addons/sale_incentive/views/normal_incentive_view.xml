@@ -1,0 +1,561 @@
+<odoo>
+    <data>
+
+        <record id="normal_incentive_form_view" model="ir.ui.view">
+            <field name="name">Normal Incentive</field>
+            <field name="model">normal.incentive</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="withdraw_incentive" type="object" class="oe_highlight" states="incentive_approved"
+                                string="Incentive Paid"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,request_incentive_approved,incentive_approved"/>
+                    </header>
+
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_sale_order"
+                                    type="object" class="oe_stat_button"
+                                    icon="fa-usd">
+                                <field name="sale_order_count" widget="statinfo" string="Sale Orders"/>
+                            </button>
+                            <button name="action_view_invoice"
+                                    type="object" class="oe_stat_button"
+                                    icon="fa-pencil-square-o">
+                                <field name="invoice_count" widget="statinfo" string="Invoices"/>
+                            </button>
+
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="partner_id" attrs="{'readonly':[('state','!=','draft')]}"
+                                       options="{'no_create': True}"/>
+                                <field name="sale_order_id" attrs="{'readonly':[('state','!=','draft')]}"
+                                       options="{'no_create': True}"/>
+                                <field name="date" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="incentive_definition_id" readonly="1"/>
+                                <field name="journal_id" invisible="1"/>
+                                <field name="account_id" invisible="0" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="product_id" invisible="1"/>
+                                <field name="sale_person_type" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="branch_id" attrs="{'readonly':[('state','!=','draft')]}"
+                                       options="{'no_create': True}"/>
+                                <field name="business_id" attrs="{'readonly':[('state','!=','draft')]}"
+                                       options="{'no_create': True}"/>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="incentive_amount" attrs="{'readonly':[('state','!=','draft')]}"
+                                       widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="normal_incentive_tree" model="ir.ui.view">
+            <field name="name">Normal Incentive</field>
+            <field name="model">normal.incentive</field>
+            <field name="arch" type="xml">
+                <tree string="Normal Incentive">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="sale_order_id" invisible="1"/>
+                    <field name="invoice_id" string="INV Number"/> 
+                    <field name="date"/>
+                    <field name="sale_person_type"/>
+                    <field name="branch_id"/>
+                    <field name="business_id"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="incentive_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="normal_incentive_filter" model="ir.ui.view">
+            <field name="name">Normal Incentive Filter</field>
+            <field name="model">normal.incentive</field>
+            <field name="priority" eval="15"/>
+            <field name="arch" type="xml">
+                <search string='Normal Incentive'>
+                    <field name="name" string="Normal Incentive" filter_domain="[('name','ilike',self)]"/>
+                    <field name="branch_id"/>
+                    <field name="date"/>
+                    <field name="sale_order_id"/>
+                    <field name="partner_id"/>
+                    <field name="sale_person_type"/>
+                    <group>
+                        <filter string="Salesperson" name='salesperson' domain="[]"
+                                context="{'group_by':'partner_id'}"/>
+                        <filter string="Branch" name="branch" domain="[]" context="{'group_by':'branch_id'}"/>
+                        <filter string="Sale Order" name="sale" domain="[]" context="{'group_by':'sale_order_id'}"/>
+                        <filter string="Date" name="date" domain="[]" context="{'group_by':'date'}"/>
+                        <filter string="Type" name="type" domain="[]" context="{'group_by':'sale_person_type'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="normal_incentive_definition_form_view" model="ir.ui.view">
+            <field name="name">Normal Incentive Definition</field>
+            <field name="model">normal.incentive.definition</field>
+            <field name="arch" type="xml">
+
+                <form string="Normal Incentive Definition">
+                    <header>
+                        <field name="bu_user_approve" invisible="1"></field>
+                        <button name="%(action_normal_incentive_def_wizard)d" type="action" class="oe_highlight"
+                                string="To Apply Normal Incentive Rules"
+                                attrs="{'invisible':[('state', '=', 'finance_head')]}"/>
+
+                        <button name="action_finance_head" type="object" class="oe_highlight"
+                                string="Approve By F A Head"
+                                attrs="{'invisible':['|',('bu_user_approve','=',False),('state','!=','draft')]}"
+                                groups="product_configure.group_finance_account_head"/>
+                        <button name="action_draft" type="object" class="oe_highlight"
+                                string="Set To Draft" groups="base.group_no_one"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title mb24">
+                            <field name="sale" widget="radio" options="{'horizontal': true}" invisible='1'/>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" attrs="{'readonly':[('state','not in','draft')]}"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="is_active" />
+                                <field name='is_b2b' invisible="1"/>
+                                <field name="is_gov_tender"/>
+                                <field name="rates_definition" attrs="{'readonly':[('state','not in','draft')]}"/>
+                                <field name="currency_id" attrs="{'readonly':[('state','not in','draft')]}"/>
+                            </group>
+
+                            <group>
+                                <field name="calculation_type" attrs="{'readonly':[('state','not in','draft')]}"/>
+                                <field name="payment_rule" attrs="{'readonly':[('state','not in','draft')]}"/>
+                                <field name="branch_ids" widget="many2many_tags" invisible="1"/>
+                                <field name="business_id" options="{'no_create': True}" attrs="{'readonly':[('state','not in','draft')]}"/>
+                                <field name="journal_id" options="{'no_create': True}" attrs="{'readonly':[('state','not in','draft')]}"/>
+                                <field name="product_id" options="{'no_create': True}" attrs="{'readonly':[('state','not in','draft')]}"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Incentive Salesperson">
+                                <group attrs="{'readonly':[('state','not in','draft')]}">
+                                    <group string="Salesperson">
+                                        <field name="salesperson_used"/>
+                                        <field name="salesperson_settlement_period"/>
+                                        <field name="sale_person_monthly_start_day"
+                                               attrs="{'invisible':[('salesperson_settlement_period','!=','monthly')],'required':[('salesperson_settlement_period','=','monthly')]}"/>
+                                        <field name="sale_person_monthly_end_day"
+                                               attrs="{'invisible':[('salesperson_settlement_period','!=','monthly')],'required':[('salesperson_settlement_period','=','monthly')]}"/>
+                                        <field name="sale_person_quaterly_time"
+                                               attrs="{'invisible':[('salesperson_settlement_period','!=','quaterly')],'required':[('salesperson_settlement_period','=','quaterly')]}"/>
+                                        <field name="sale_person_quaterly_start_date"
+                                               attrs="{'invisible':[('salesperson_settlement_period','!=','quaterly')],'required':[('salesperson_settlement_period','=','quaterly')]}"/>
+                                        <field name="sale_person_quaterly_end_date"
+                                               attrs="{'invisible':[('salesperson_settlement_period','!=','quaterly')],'required':[('salesperson_settlement_period','=','quaterly')]}"/>
+
+                                        <field name="sale_person_annually_date"
+                                               attrs="{'invisible':[('salesperson_settlement_period','!=','annually')],'required':[('salesperson_settlement_period','=','annually')]}"/>
+                                        <field name="sale_person_user_defined_date"
+                                               attrs="{'invisible':[('salesperson_settlement_period','!=','user_defined')],'required':[('salesperson_settlement_period','=','user_defined')]}"/>
+                                        <field name="account_id" options="{'no_create': True}"
+                                               attrs="{'invisible':[('salesperson_used','!=',True)],'required':[('salesperson_used','=',True)]}"/>
+                                    </group>
+                                    <group string="Pooling BU/BR">
+                                        <field name="bu_br_used"/>
+                                        <field name="bu_br_settlement_period"/>
+                                        <field name="bu_br_monthly_start_day"
+                                               attrs="{'invisible':[('bu_br_settlement_period','!=','monthly')],'required':[('bu_br_settlement_period','=','monthly')]}"/>
+                                        <field name="bu_br_monthly_end_day"
+                                               attrs="{'invisible':[('bu_br_settlement_period','!=','monthly')],'required':[('bu_br_settlement_period','=','monthly')]}"/>
+                                        <field name="bu_br_quaterly_time"
+                                               attrs="{'invisible':[('bu_br_settlement_period','!=','quaterly')],'required':[('bu_br_settlement_period','=','quaterly')]}"/>
+                                        <field name="bu_br_quaterly_start_date"
+                                               attrs="{'invisible':[('bu_br_settlement_period','!=','quaterly')],'required':[('bu_br_settlement_period','=','quaterly')]}"/>
+                                        <field name="bu_br_quaterly_end_date"
+                                               attrs="{'invisible':[('bu_br_settlement_period','!=','quaterly')],'required':[('bu_br_settlement_period','=','quaterly')]}"/>
+
+                                        <field name="bu_br_annually_date"
+                                               attrs="{'invisible':[('bu_br_settlement_period','!=','annually')],'required':[('bu_br_settlement_period','=','annually')]}"/>
+                                        <field name="bu_br_user_defined_date"
+                                               attrs="{'invisible':[('bu_br_settlement_period','!=','user_defined')],'required':[('bu_br_settlement_period','=','user_defined')]}"/>
+                                        <field name="pooling_account_id" options="{'no_create': True}"
+                                               attrs="{'invisible':[('bu_br_used','!=',True)],'required':[('bu_br_used','=',True)]}"/>
+                                    </group>
+                                    <group string="Retain for Salesperson">
+                                        <field name="retain_for_salesperson_used"/>
+                                        <field name="retain_settlement_period"/>
+                                        <field name="retain_monthly_start_day"
+                                               attrs="{'invisible':[('retain_settlement_period','!=','monthly')],'required':[('retain_settlement_period','=','monthly')]}"/>
+                                        <field name="retain_monthly_end_day"
+                                               attrs="{'invisible':[('retain_settlement_period','!=','monthly')],'required':[('retain_settlement_period','=','monthly')]}"/>
+                                        <field name="retain_quaterly_time"
+                                               attrs="{'invisible':[('retain_settlement_period','!=','quaterly')],'required':[('retain_settlement_period','=','quaterly')]}"/>
+                                        <field name="retain_quaterly_start_date"
+                                               attrs="{'invisible':[('retain_settlement_period','!=','quaterly')],'required':[('retain_settlement_period','=','quaterly')]}"/>
+                                        <field name="retain_quaterly_end_date"
+                                               attrs="{'invisible':[('retain_settlement_period','!=','quaterly')],'required':[('retain_settlement_period','=','quaterly')]}"/>
+
+                                        <field name="retain_annually_date"
+                                               attrs="{'invisible':[('retain_settlement_period','!=','annually')],'required':[('retain_settlement_period','=','annually')]}"/>
+                                        <field name="retain_user_defined_date"
+                                               attrs="{'invisible':[('retain_settlement_period','!=','user_defined')],'required':[('retain_settlement_period','=','user_defined')]}"/>
+                                        <field name="retain_account_id" options="{'no_create': True}"
+                                               attrs="{'invisible':[('retain_for_salesperson_used','!=',True)],'required':[('retain_for_salesperson_used','=',True)]}"/>
+                                    </group>
+                                    <group string="Area Sale Manager">
+                                        <field name="area_sale_manager_used"/>
+                                        <field name="area_sale_manager_settlement_period"/>
+                                        <field name="area_sale_manager_monthly_start_day"
+                                               attrs="{'invisible':[('area_sale_manager_settlement_period','!=','monthly')],'required':[('area_sale_manager_settlement_period','=','monthly')]}"/>
+                                        <field name="area_sale_manager_monthly_end_day"
+                                               attrs="{'invisible':[('area_sale_manager_settlement_period','!=','monthly')],'required':[('area_sale_manager_settlement_period','=','monthly')]}"/>
+                                        <field name="area_sale_manager_quaterly_time"
+                                               attrs="{'invisible':[('area_sale_manager_settlement_period','!=','quaterly')],'required':[('area_sale_manager_settlement_period','=','quaterly')]}"/>
+                                        <field name="area_sale_manager_quaterly_start_date"
+                                               attrs="{'invisible':[('area_sale_manager_settlement_period','!=','quaterly')],'required':[('area_sale_manager_settlement_period','=','quaterly')]}"/>
+                                        <field name="area_sale_manager_quaterly_end_date"
+                                               attrs="{'invisible':[('area_sale_manager_settlement_period','!=','quaterly')],'required':[('area_sale_manager_settlement_period','=','quaterly')]}"/>
+
+
+                                        <field name="area_sale_manager_annually_date"
+                                               attrs="{'invisible':[('area_sale_manager_settlement_period','!=','annually')],'required':[('area_sale_manager_settlement_period','=','annually')]}"/>
+                                        <field name="area_sale_manager_user_defined_date"
+                                               attrs="{'invisible':[('area_sale_manager_settlement_period','!=','user_defined')],'required':[('area_sale_manager_settlement_period','=','user_defined')]}"/>
+                                        <field name="asm_account_id" options="{'no_create': True}"
+                                               attrs="{'invisible':[('area_sale_manager_used','!=',True)],'required':[('area_sale_manager_used','=',True)]}"/>
+                                    </group>
+                                    <group string="Gov for Salesperson"
+                                           attrs="{'invisible':[('is_gov_tender','!=',True)]}">
+                                        <field name="government_salesperson_used"/>
+                                    </group>
+                                    <group string="Gov for Pooling BU/BR"
+                                           attrs="{'invisible':[('is_gov_tender','!=',True)]}">
+                                        <field name="government_pooling_used"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Rule Definition" >
+                                <field name="incentive_rule_ids" string="Incentive Rules"
+                                       context="{'default_branch_ids':branch_ids}" attrs="{'readonly':[('state','not in','draft')]}">
+                                    <tree string="Incentive Rules" editable="bottom">
+                                        <field name="branch_ids" invisible="1"/>
+                                        <field name="product_id"
+                                               attrs="{'column_invisible':['|',('parent.rates_definition','!=','product'),('parent.calculation_type','=','by_section_fixed_amount')],'required':[('parent.rates_definition','=','product')]}"/>
+                                        <field name="product_categ_id"
+                                               attrs="{'column_invisible':['|',('parent.rates_definition','!=','category'),('parent.calculation_type','=','by_section_fixed_amount')],'required':[('parent.rates_definition','=','category')]}"/>
+                                        <field name="unit_or_part"
+                                               attrs="{'column_invisible':['|',('parent.rates_definition','!=','sale_order_type'),('parent.calculation_type','=','by_section_fixed_amount')],'required':[('parent.rates_definition','=','sale_order_type')]}"/>
+                                        <field name="lower_range"
+                                               attrs="{'column_invisible':[('parent.calculation_type','not in',['by_section_fixed_amount'])],'required':[('parent.calculation_type','in',['by_section_fixed_amount'])]}"
+                                               widget="monetary"/>
+                                        <field name="by_section_operator"
+                                               attrs="{'column_invisible':[('parent.calculation_type','not in',['by_section_fixed_amount'])],'required':[('parent.calculation_type','in',['by_section_fixed_amount'])]}"/>
+                                        <field name="upper_range"
+                                               attrs="{'column_invisible':[('parent.calculation_type','not in',['by_section_fixed_amount'])],'required':[('parent.calculation_type','in',['by_section_fixed_amount'])]}"
+                                               widget="monetary"/>
+                                        <field name="incentive_percentage" string="Incentive (%)"
+                                               attrs="{'column_invisible':[('parent.calculation_type','in',['fixed_amount','fixed_amount_multi_agent','by_section_fixed_amount'])]}"/>
+                                        <field name="incentive_fixed_rate" string="Incentive Amount"
+                                               attrs="{'column_invisible':[('parent.calculation_type','in',['fixed_percent','fixed_percent_multi_agent'])]}"/>
+                                        <field name="salesperson_incentive_rate"
+                                               attrs="{'column_invisible':['|',('parent.calculation_type','in',['fixed_amount','fixed_percent']),('parent.salesperson_used','=',False)]}"
+                                               string="Salesperson (%)"/>
+                                        <field name="bu_br_rate"
+                                               attrs="{'column_invisible':['|',('parent.calculation_type','in',['fixed_amount','fixed_percent']),('parent.bu_br_used','=',False)]}"
+                                               string="Pooling BU/BR (%)"/>
+                                        <field name="retain_rate"
+                                               attrs="{'column_invisible':['|',('parent.calculation_type','in',['fixed_amount','fixed_percent']),('parent.retain_for_salesperson_used','=',False)]}"
+                                               string="Retain for Salesperson (%)"/>
+                                        <field name="sales_manager_rate"
+                                               attrs="{'column_invisible':['|',('parent.calculation_type','in',['fixed_amount','fixed_percent']),('parent.area_sale_manager_used','=',False)],'required':[('parent.area_sale_manager_used','=',True)]}"
+                                               string="ASM(%)"/>
+                                        <field name="gov_salesperson_percentage"
+                                               attrs="{'column_invisible':['|',('parent.calculation_type','in',['fixed_amount','fixed_percent']),('parent.government_salesperson_used','=',False)]}"/>
+                                        <field name="gov_pooling_percentage"
+                                               attrs="{'column_invisible':['|',('parent.calculation_type','in',['fixed_amount','fixed_percent']),('parent.government_pooling_used','=',False)]}"/>
+                                        <field name="currency_id" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+
+            </field>
+        </record>
+
+        <record id="normal_incentive_definition_tree_view" model="ir.ui.view">
+            <field name="name">Normal Incentive Definition</field>
+            <field name="model">normal.incentive.definition</field>
+            <field name="arch" type="xml">
+                <tree string="Normal Incentive Definition">
+                    <field name="name"/>
+                    <field name="calculation_type"/>
+                    <field name="payment_rule"/>
+                    <field name="branch_ids" invisible='1'/>
+                    <field name="rates_definition"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="normal_incentive_definition_filter" model="ir.ui.view">
+            <field name="name">Normal Incentive Definition</field>
+            <field name="model">normal.incentive.definition</field>
+            <field name="priority" eval="10"/>
+            <field name="arch" type="xml">
+                <search string="Search Normal Incentive Definition Filter">
+                    <field name="name" string="Normal Incentive Definition" filter_domain="[('name','ilike',self)]"/>
+                    <field name="user_id"/>
+                    <field name="business_id"/>
+                    <group expand="0" string="Group By">
+                        <filter string="User" name="user" domain="[]" context="{'group_by':'user_id'}"/>
+                        <filter string="Business Unit" name="business_id" domain="[]"
+                                context="{'group_by':'business_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="normal_incentive_definition_action" model="ir.actions.act_window">
+            <field name="name">Normal Incentive Definition</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">normal.incentive.definition</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p>
+                    Create Normal Incentive Definition
+                </p>
+            </field>
+        </record>
+
+        <record id="normal_incentive_action" model="ir.actions.act_window">
+            <field name="name">Normal Incentive Items</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">normal.incentive</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('sale_person_type','!=','sale_manager')]</field>
+            <field name="help" type="html">
+                <p>
+                    Normal Incentive
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="normal_incentive_menu" name="Normal Incentive" parent="sale_incentive.sale_team_target_root"
+                  sequence="11"
+                  groups="master_data_extension.group_hr_branch_user,sale_incentive.group_normal_incentive"/>
+
+        <menuitem id="normal_incentive_definition_menu" name="Normal Incentive Definition"
+                  parent="normal_incentive_menu" sequence="10" groups="master_data_extension.group_hr_bu_manager"
+                  action="sale_incentive.normal_incentive_definition_action"/>
+
+        <menuitem id="normal_incentive_action_menu" name="Incentive Items" parent="normal_incentive_menu" sequence="2"
+                  action="sale_incentive.normal_incentive_action"/>
+
+        <!-- Search Veiw
+         -->
+    <record id="view_normal_incentive_main_search" model="ir.ui.view">
+        <field name="name">incentive.main.search</field>
+        <field name="model">normal.incentive.main</field>
+        <field name="arch" type="xml">
+            <search string="Incentive Invoice">
+                <group expand='0' string='Filters'>
+                    <filter name="group_business_id" string="Business Unit" icon="terp-partner" context="{'group_by':'business_id'}"/>
+                    <filter name="ready_request_payment" string="Ready Request Payment" domain="[('ready_request_payment','=', True),('state','=','incentive_approved')]"/>
+                    <field name="ready_request_payment"></field>
+                    
+                </group>
+                
+            </search>
+        </field>
+    </record>
+                  <!--parent Incentive-->
+
+        <record id="normal_incentive_main_form_view" model="ir.ui.view">
+            <field name="name">Normal Incentive</field>
+            <field name="model">normal.incentive.main</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="incentive_approved" type="object" class="oe_highlight" attrs="{'invisible':[('state', 'not in', ['draft'])]}" string="Approve"/>
+<!--                        <button name="%(action_normal_incentive_approval_wizard)d" type="action" class="oe_highlight"-->
+<!--                                states="draft" string="Request Incentive Approve"/>-->
+<!--                        <button name="incentive_approved" type="object" class="oe_highlight"-->
+<!--                                attrs="{'invisible':['|', ('state', 'not in', ['request_incentive_approved']), ('manager','=',True)]}"-->
+<!--                                string="Approve"/>-->
+<!--                        <button name="incentive_approved" type="object" class="oe_highlight"-->
+<!--                                attrs="{'invisible':['|', ('state', 'not in', ['request_incentive_approved']), ('manager','!=',True)]}"-->
+<!--                                string="ASM Approve"/>-->
+<!--                        <button name="%(action_normal_approval_wizard)d" type="action" class="oe_highlight"-->
+<!--                                string="Incentive Paid"-->
+<!--                                attrs="{'invisible':['|',('state','!=','incentive_approved'),('manager','=',True)]}"/>-->
+<!--                        <button name="%(action_normal_approval_wizard)d" type="action" class="oe_highlight"-->
+<!--                                string="ASM Paid"-->
+<!--                                attrs="{'invisible':['|',('state','!=','incentive_approved'),('manager','!=',True)]}"/>-->
+<!--                        <button name="%(action_pooling_paid_wizard)d" type="action" class="oe_highlight"-->
+<!--                                string="Pooling Paid"-->
+<!--                                attrs="{'invisible':['|',('state','!=','incentive_withdraw'),('due_amount','=',0.0)]}"/>-->
+<!--                        <button name="%(action_retain_paid_wizard)d" type="action" class="oe_highlight"-->
+<!--                                string="Retain Paid"-->
+<!--                                attrs="{'invisible':['|',('state','!=','pooling_withdraw'),('due_amount','=',0.0)]}"/>-->
+<!--                        <button name="action_close" type="object" class="oe_highlight" string="Close"-->
+<!--                                attrs="{'invisible':['|',('due_amount','!=',0.0),('state','=','close')]}"/>-->
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,incentive_approved,request_incentive_approved,"/>
+                    </header>
+
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_sale_order"
+                                    type="object" class="oe_stat_button"
+                                    icon="fa-usd">
+                                <field name="sale_order_count" widget="statinfo" string="Sale Orders"/>
+                            </button>
+                            <button name="action_view_invoice"
+                                    type="object" class="oe_stat_button"
+                                    icon="fa-pencil-square-o">
+                                <field name="invoice_count" widget="statinfo" string="Invoices"/>
+                            </button>
+                            <button name="action_move_items" type="object" class="oe_stat_button" icon="fa-bars"
+                                    string="Journal Items"/>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="invoice_id" attrs="{'readonly':[('state','!=','draft')]}"
+                                options="{'no_create': True}"></field>
+                                <field name="sale_order_id" attrs="{'readonly':[('state','!=','draft')]}"
+                                       options="{'no_create': True}"/>
+                                <field name="date" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="incentive_definition_id" readonly="1"/>
+                                <field name="branch_id" attrs="{'readonly':[('state','!=','draft')]}"
+                                       options="{'no_create': True}"/>
+                                <field name="business_id" attrs="{'readonly':[('state','!=','draft')]}"
+                                       options="{'no_create': True}"/>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="manager" invisible="1"/>
+                               
+                            </group>
+                            <group>
+                                <field name="incentive_request_id" readonly="1"/>
+                                <field name="invoice_amount" readonly="1"></field>
+                                <field name="ready_request_payment" force_save="1" invisible="1"></field>
+                                <field name="currency_id"/>
+                                <field name="unit_or_part" readonly="1"></field>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="incentive_items" string="Incentive Items">
+                                <field name="line_ids" attrs="{'readonly':[('state','!=','draft')]}">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="partner_id"/>
+                                        <field name="sale_person_type"/>
+                                        <field name="account_id"/>
+                                        <field name="origin_incentive_amount"/>
+                                        <field name="incentive_amount"/>
+                                        <field name="deduct_amount"/>
+                                        <field name ="paid_amount" invisible="1"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                                <group>
+                                    <group class="oe_subtotal_footer oe_right">
+                                        <field name="total" colspan="2"/>
+<!--                                        <field name="due_amount" class="oe_subtotal_footer_separator"-->
+<!--                                               attrs="{'invisible': [('state', '=', 'draft')]}" string="Amount Due"/>-->
+                                    </group>
+                                </group>
+                                <div class="oe_clear"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="normal_incentive_main_tree" model="ir.ui.view">
+            <field name="name">Normal Incentive</field>
+            <field name="model">normal.incentive.main</field>
+            <field name="arch" type="xml">
+                <tree string="Normal Incentive">
+                    <field name="name" string="Incentive Number"/>
+                    <field name="sale_order_id"/>
+                    <field name="invoice_id"/>
+                    <field name="date"/>
+                    <field name="branch_id"/>
+                    <field name="business_id"/>
+                    <field name="unit_or_part"/>
+                    <field name="saleman_amount" />
+                    <field name="pooling_amount" />
+                    <field name="retain_amount"/>
+                    <field name="salemanager_amount" invisible="1"/>
+                    <field name="currency_id"/>
+                    <field name="state"/>
+                    <field name="manager" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+        <record id="normal_incentive_main_action" model="ir.actions.act_window">
+            <field name="name">Normal Incentive</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">normal.incentive.main</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('manager','!=',True)]</field>
+            <field name="context">{'search_default_group_business_id': 1}</field>
+            <field name="help" type="html">
+                <p>
+                    Normal Incentive
+                </p>
+            </field>
+        </record>
+        <record id="asm_incentive_main_action" model="ir.actions.act_window">
+            <field name="name">Area Sale Incentive</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">normal.incentive.main</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('manager','=',True)]</field>
+            <field name="context">{'search_default_group_business_id': 1}</field>
+            <field name="help" type="html">
+                <p>
+                    Normal Incentive
+                </p>
+            </field>
+        </record>
+        <menuitem id="normal_incentive_action_main_menu" name="Normal Incentive" parent="normal_incentive_menu"
+                  sequence="1"
+                  action="sale_incentive.normal_incentive_main_action"/>
+        <menuitem id="asm_incentive_action_main_menu" name="Area Sale Incentive" parent="normal_incentive_menu"
+                  sequence="1"
+                  action="sale_incentive.asm_incentive_main_action"/>
+    </data>
+</odoo>

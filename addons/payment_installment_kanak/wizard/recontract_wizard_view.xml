@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="re_contract_wizard_form">
+        <field name="name">re.contract.wizard.form</field>
+        <field name="model">re.contract.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Installment Plan">
+				<group>
+                    <field name="order_id" />
+                    <field name="installment_plan_id" required="1"/>
+                    <field name="amount" required="1"/>
+                    <field name="name" required="1"/>
+				</group>
+				<footer>
+					<button name="recontract" string="Re-Contract" type="object" class="btn-primary"/>
+					<button string="Cancel" class="btn-secondary" special="cancel"/>
+				</footer>
+			</form>
+        </field>
+    </record>
+</odoo>

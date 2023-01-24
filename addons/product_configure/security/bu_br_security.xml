@@ -1,0 +1,210 @@
+<odoo>
+	<record id="rule_hr_bu_product_categ" model="ir.rule">
+		<field name="name">
+			BU User Product Category
+		</field>
+		<field name="model_id" ref="model_product_category" />
+		<!-- <field name="domain_force">['|',('business_id','in', user.hr_bu_ids.ids + user.hr_br_ids.ids),('business_id','=',False)]
+		</field> -->
+		<field name="domain_force">[(1,'=',1)]</field>
+	</record>
+	<record id="manage_bu_product" model="ir.rule">
+		<field name="name">
+			Manage BU Product
+		</field>
+		<field name="model_id" ref="model_product_template" />
+		<field name="domain_force">['|',('business_id','in', user.hr_bu_ids.ids + user.hr_br_ids.ids),('business_id','=',False)]</field>
+		<!-- <field name="domain_force">
+			['|',('business_id', 'in', [g.id for g in user.hr_bu_ids]),('business_id','=',False)]
+		</field> -->
+	</record>
+	<!-- ************************************************************************** -->
+	<!-- BU/BR Sale User Group -->
+	<record model="ir.module.category" id="module_category_bu_br_sale">
+		<field name="name">
+			 UMG Sale Approval
+		</field>
+		<field name="description">
+			Helps you manage your BU/BR Sale.
+		</field>
+		<field name="sequence">20</field>
+	</record>
+	<!-- Sale and Marketing  Group -->
+	<record id="group_sale_m_pic" model="res.groups">
+		<field name="name">
+			Sale &amp; Marketing PIC
+		</field>
+		<field name="category_id" ref="product_configure.module_category_bu_br_sale" />
+	</record>
+	<!-- Sale and Marketing Head -->
+	<!-- <record id="group_sale_m_head" model="res.groups">
+		<field name="name">
+			Sale &amp; Marketing Head
+		</field>
+		<field name="category_id" ref="product_configure.module_category_bu_br_sale" />
+		<field name="implied_ids" eval="[(4, ref('product_configure.group_sale_m_pic'))]" />
+	</record> -->
+	<!-- Sale Admin -->
+	<record id="group_sale_admin" model="res.groups">
+		<field name="name">
+			Sale Admin
+		</field>
+		<field name="category_id" ref="product_configure.module_category_bu_br_sale" />
+		<field name="implied_ids" eval="[(4, ref('product_configure.group_sale_m_pic'))]" />
+	</record>
+	<!-- Sale Head -->
+	<record id="group_sale_head" model="res.groups">
+		<field name="name">
+			Sale Head
+		</field>
+		<field name="category_id" ref="product_configure.module_category_bu_br_sale" />
+		<field name="implied_ids" eval="[(4, ref('product_configure.group_sale_admin'))]" />
+	</record>
+	<!-- *************************************************** -->
+	<!-- BU/BR Procurement User Group -->
+	<record model="ir.module.category" id="module_category_bu_br_po">
+		<field name="name">
+			UMG Purchase Approval
+		</field>
+		<field name="description">
+			Helps you manage your BU/BR Purchase.
+		</field>
+		<field name="sequence">
+			12
+		</field>
+	</record>
+	<!-- Purchase Head -->
+	<record id="group_po_head" model="res.groups">
+		<field name="name">
+			Purchase Head
+		</field>
+		<field name="category_id" ref="product_configure.module_category_bu_br_po" />
+		
+	</record>
+	<!-- COO PO Management Dept -->
+	<record id="group_coo_dept" model="res.groups">
+		<field name="name">
+			COO
+		</field>
+		<field name="category_id" ref="product_configure.module_category_bu_br_po" />
+		<field name="implied_ids" eval="[(4, ref('product_configure.group_po_head'))]" />
+	</record>
+	<!-- PO Management Dept -->
+	<record id="group_po_management_dept" model="res.groups">
+		<field name="name">
+			PO. Mgt. Dept. PIC
+		</field>
+		<field name="category_id" ref="product_configure.module_category_bu_br_po" />
+		<field name="implied_ids" eval="[(4, ref('product_configure.group_coo_dept'))]" />
+	</record>
+	
+	<!-- ****************************************************** -->
+	<!-- BU/BR Inventory -->
+	<record model="ir.module.category" id="module_category_bu_br_inventory">
+		<field name="name">
+			UMG Inventory Approval
+		</field>
+		<field name="description">
+			Helps you manage your BU/BR Inventory.
+		</field>
+		<field name="sequence">
+			13
+		</field>
+	</record>
+	<!-- Inventory PIC -->
+	<record id="group_inventory_pic" model="res.groups">
+		<field name="name">
+			Inventory PIC
+		</field>
+		<field name="category_id" ref="product_configure.module_category_bu_br_inventory" />
+	</record>
+	<record id="group_boh" model="res.groups">
+		<field name="name">
+			BOH
+		</field>
+		<field name="category_id" ref="product_configure.module_category_bu_br_inventory" />
+		<field name="implied_ids" eval="[(4, ref('product_configure.group_inventory_pic'))]" />
+	</record>
+	<!-- Inventory Head -->
+	<record id="group_inventory_head" model="res.groups">
+		<field name="name">
+			Inventory Head
+		</field>
+		<field name="category_id" ref="product_configure.module_category_bu_br_inventory" />
+		<field name="implied_ids" eval="[(4, ref('product_configure.group_boh'))]" />
+	</record>
+	<!-- ************************************************* -->
+	<record model="ir.module.category" id="module_category_bu_br_finance">
+		<field name="name">
+			UMG Finance &amp; Account Approval
+		</field>
+		<field name="description">
+			Helps you manage your BU/BR Finance &amp; Accounting.
+		</field>
+		<field name="sequence">
+			14
+		</field>
+	</record>
+	<!-- Finance and Account PIC -->
+	<record id="group_finance_account_pic" model="res.groups">
+		<field name="name">
+			Finance &amp; Account PIC
+		</field>
+		<field name="category_id" ref="product_configure.module_category_bu_br_finance" />
+	</record>
+	<!-- Finance and Account Head -->
+	<record id="group_finance_account_head" model="res.groups">
+		<field name="name">
+			Finance &amp; Account Head
+		</field>
+		<field name="category_id" ref="product_configure.module_category_bu_br_finance" />
+		<field name="implied_ids" eval="[(4, ref('product_configure.group_finance_account_pic'))]" />
+	</record>
+	<!-- *********************************************************** -->
+	<record model="ir.module.category" id="module_category_bu_br_other">
+		<field name="name">
+			UMG	Management Approval
+		</field>
+		<field name="description">
+			Helps you manage your BU/BR Management Approval.
+		</field>
+		<field name="sequence">
+			25
+		</field>
+	</record>
+
+	
+	
+	<record id="group_gm_agm" model="res.groups">
+		<field name="name">
+			GM/AGM
+		</field>
+		<field name="category_id" ref="product_configure.module_category_bu_br_other" />
+	</record>
+
+	<record id="group_cfo" model="res.groups">
+		<field name="name">
+			CFO
+		</field>
+		<field name="category_id" ref="product_configure.module_category_bu_br_other" />
+		<field name="implied_ids" eval="[(4, ref('product_configure.group_gm_agm'))]" />
+	</record>
+	<record id="group_ceo" model="res.groups">
+		<field name="name">
+			CEO
+		</field>
+		<field name="category_id" ref="product_configure.module_category_bu_br_other" />
+		<field name="implied_ids" eval="[(4, ref('product_configure.group_cfo'))]" />
+	</record>
+
+
+	<!-- Sale and Marketing Head -->
+	<record id="group_sale_m_head" model="res.groups">
+		<field name="name">
+			Sale &amp; Marketing Head
+		</field>
+	</record>
+
+
+
+</odoo>

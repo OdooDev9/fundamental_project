@@ -1,0 +1,75 @@
+<odoo>
+    <record id="inherit_product_pricelist_view" model="ir.ui.view">
+        <field name="name">product.pricelist.form</field>
+        <field name="model">product.pricelist</field>
+        <field name="inherit_id" ref="product.product_pricelist_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="/form/*" position="before">
+                <header>
+                    <button name="action_finance_approve" string="Fincance &amp; Account Approval" type="object"
+                            class="oe_highlight" attrs="{'invisible': [('state','not in', ['draft'])]}"
+                            groups="product_configure.group_finance_account_pic"/>
+                    <button name="action_finance_head_approve" string="Fincance &amp; Account Head Approval"
+                            type="object" class="oe_highlight"
+                            attrs="{'invisible': ['|',('state','not in', ['approved_finance_pic']),('unit_or_part','=','part')]}"
+                            groups="product_configure.group_finance_account_head"/>
+                    <button name="action_reset" string="Reset To Draft"
+                            type="object" class="oe_highlight"
+                            attrs="{'invisible': ['|', ('state','not in', ['approved_finance_head']), ('unit_or_part', '=', 'part')]}"
+                            groups="product_configure.group_finance_account_head"/>
+
+                    <button name="action_reset" string="Reset To Draft"
+                            type="object" class="oe_highlight"
+                            attrs="{'invisible': ['|', ('state','not in', ['approved_finance_pic']), ('unit_or_part', '=', 'unit')]}"
+                            groups="product_configure.group_finance_account_pic"/>
+                    <field name="state" statusbar_visible="draft" widget="statusbar"/>
+                </header>
+            </xpath>
+            <xpath expr="//field[@name='currency_id']" position="after">
+                <field name="hr_br_ids" widget="many2many_tags"
+                       attrs="{'readonly': [('state','in', ['approved_finance_pic', 'approved_finance_head'])]}"
+                       options="{'no_create': True, 'no_create_edit':True}"/>
+                <field name="hr_bu_id" options="{'no_create': True, 'no_create_edit':True}"
+                       attrs="{'readonly': [('state','in', ['approved_finance_pic', 'approved_finance_head'])]}"/>
+                <field name="unit_or_part"
+                       attrs="{'readonly': [('state','in', ['approved_finance_pic', 'approved_finance_head'])]}"/>
+            </xpath>
+
+            <xpath expr="//field[@name='currency_id']" position="replace">
+                <field name="currency_id"
+                       attrs="{'readonly': [('state','in', ['approved_finance_pic', 'approved_finance_head'])]}"
+                       groups="base.group_multi_currency"/>
+            </xpath>
+
+            <xpath expr="//field[@name='item_ids']/tree/field[@name='product_tmpl_id']" position="before">
+                <field name="state" invisible="1" context="{'default_state': 'state'}"/>
+            </xpath>
+
+            <xpath expr="//field[@name='item_ids']/tree/field[@name='product_tmpl_id']" position="replace">
+                <field name="product_tmpl_id" string="Products" required="1"
+                       attrs="{'readonly': [('state','in', ['approved_finance_pic', 'approved_finance_head'])]}"/>
+            </xpath>
+
+            <xpath expr="//field[@name='item_ids']/tree/field[@name='min_quantity']" position="replace">
+                <field name="min_quantity"
+                       attrs="{'readonly': [('state','in', ['approved_finance_pic', 'approved_finance_head'])]}"/>
+            </xpath>
+
+            <xpath expr="//field[@name='item_ids']/tree/field[@name='fixed_price']" position="replace">
+                <field name="fixed_price" string="Price"
+                       attrs="{'readonly': [('state','in', ['approved_finance_pic', 'approved_finance_head'])]}"/>
+            </xpath>
+
+            <xpath expr="//field[@name='item_ids']/tree/field[@name='date_start']" position="replace">
+                <field name="date_start"
+                       attrs="{'readonly': [('state','in', ['approved_finance_pic', 'approved_finance_head'])]}"/>
+            </xpath>
+
+            <xpath expr="//field[@name='item_ids']/tree/field[@name='date_end']" position="replace">
+                <field name="date_end"
+                       attrs="{'readonly': [('state','in', ['approved_finance_pic', 'approved_finance_head'])]}"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,169 @@
+<odoo>
+    <data>
+        <record id="view_broker_fees_tree" model="ir.ui.view">
+            <field name="name">broker.fees.tree</field>
+            <field name="model">broker.fees</field>
+            <field eval="12" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Broker Fees" create='false' edit="false">
+                    <field name="partner_id"/>
+                    <field name="quote_name"/>
+                    <field name="invoice_name" />
+                    <field name="hr_bu_id"/>
+                    <field name="hr_br_id"/>
+
+                    <field name="payment_type" invisible="1"/>
+                    <field name="fixed_amount"/>
+                    <field name="fixed_percentage" invisible="1"/>
+                    <field name="phone_no"/>
+
+                </tree>
+            </field>
+        </record>
+        <record id="view_broker_fees_form" model="ir.ui.view">
+            <field name="name">broker.fees.form</field>
+            <field name="model">broker.fees</field>
+            <field eval="12" name="priority"/>
+            <field name="arch" type="xml">
+                <form string="Broker Fees" create='false' edit="true">
+                    <header>
+                        <field name="br_user_approve" invisible="1"></field>
+                        <field name="bu_user_approve" invisible="1"></field>
+                        <field name="cfd_user_approve" invisible="1"></field>
+                        <field name="br" invisible="1"></field>
+                        <field name="bu" invisible="1"></field>
+                        <button name="create_bill" string="Create Bill" type="object" data-hotkey="w"
+                                class="oe_highlight" attrs="{'invisible': ['|',('broker_bill','=',True),('state', 'not in', 'approve_cfd_agm')]}"/>
+                        <!--Start Approve for BR  -->
+                        <button name="br_sale_admin" string="BR Sales Admin" type="object" class="btn-primary"
+                            attrs="{'invisible':['|','|',('br_user_approve','=',False),('br','=',False),('state','!=','new')]}" groups="product_configure.group_sale_admin"/>
+                        <button name="br_finance_a" string="BR F &amp; A" class="oe_highlight"
+                                type="object" attrs="{'invisible':['|','|',('br_user_approve','=',False),('br','=',False),('state','!=','br_sale_admin')]}" groups="product_configure.group_finance_account_head"/>
+                        <button name="br_boh" string="BR BOH" class="oe_highlight"
+                                type="object" attrs="{'invisible':['|','|',('br_user_approve','=',False),('br','=',False),('state','!=','br_finance_a')]}" groups=" product_configure.group_boh"/>
+                        <button name="approve_f_and_ahead" string="BU F &amp; A Head" class="oe_highlight"
+                                type="object" attrs="{'invisible':['|','|',('bu_user_approve','=',False),('br','=',False),('state','!=','br_boh')]}" groups='product_configure.group_finance_account_head'/>
+                        <button name="approve_gm_agm" string="BU GM/AGM" class="oe_highlight"
+                                type="object" attrs="{'invisible':['|','|',('bu_user_approve','=',False),('br','=',False),('state','!=','approve_f_and_ahead')]}" groups="product_configure.group_gm_agm"/>
+                        <!--End Approve for BR  -->
+                        
+                        <!-- Start Approve for BU  -->
+                        <button name="bu_sale_admin" string="BU Sales Admin" type="object" class="btn-primary" attrs="{'invisible':['|','|',('bu_user_approve','=',False),('bu','=',False),('state','!=','new')]}" groups="product_configure.group_sale_admin"/>
+                        <button name="bu_s_and_mhead" string="S &amp; M Head" class="oe_highlight"
+                                type="object" attrs="{'invisible':['|','|',('bu_user_approve','=',False),('bu','=',False),('state','!=','bu_sale_admin')]}" groups="product_configure.group_sale_m_head"/>
+                        <button name="approve_f_and_ahead" string="BU F &amp; A Head" class="oe_highlight"
+                                type="object" attrs="{'invisible':['|','|',('bu_user_approve','=',False),('bu','=',False),('state','!=','bu_s_and_mhead')]}" groups='product_configure.group_finance_account_head'/>
+                        <button name="approve_gm_agm" string="BU GM/AGM" class="oe_highlight"
+                                type="object" attrs="{'invisible':['|','|',('bu_user_approve','=',False),('bu','=',False),('state','!=','approve_f_and_ahead')]}" groups="product_configure.group_gm_agm"/>
+                        <!-- End Approve for BU  -->  
+                        
+
+
+
+                        <button name="approve_coo" string="COO" class="oe_highlight"
+                                type="object" attrs="{'invisible':['|','|','|',('br_user_approve','=',True),('bu_user_approve','=',True),('cfd_user_approve','=',False),('state','!=','approve_gm_agm')]}" groups="product_configure.group_coo_dept"/>
+
+                        <button name="approve_cfd_ar_pic" string="CFD AR PIC" class="oe_highlight"
+                                type="object" attrs="{'invisible':['|','|','|',('br_user_approve','=',True),('bu_user_approve','=',True),('cfd_user_approve','=',False),('state','!=','approve_coo')]}" groups=" umg_customize_sale.group_cfd_ar_pic"/>
+
+                        <button name="approve_cfd_ar_dh" string="CFD AR DH" class="oe_highlight"
+                                type="object" attrs="{'invisible':['|','|','|',('br_user_approve','=',True),('bu_user_approve','=',True),('cfd_user_approve','=',False),('state','!=','approve_cfd_ar_pic')]}" groups="umg_customize_sale.group_cfd_ar_dh"/>
+
+                        <button name="approve_cfd_agm" string="CFD AGM" class="oe_highlight"
+                                type="object" attrs="{'invisible':['|','|','|',('br_user_approve','=',True),('bu_user_approve','=',True),('cfd_user_approve','=',False),('state','!=','approve_cfd_ar_dh')]}" groups="product_configure.group_gm_agm"/>
+                        <field name="state" widget="statusbar" readonly="1"/>
+                        <!-- statusbar_visible="new,"  -->
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_open_bill" type="object" class="oe_stat_button" icon="fa-file-text"
+                                    attrs="{'invisible': [('bill_count','=', 0)]}">
+                                <field name="bill_count" widget="statinfo"/>
+                            </button>
+                        </div>
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                        <group>
+                            <group>
+                                <field name="broker_bill" invisible="1" readonly="0"/>
+                                <field name="partner_id" options="{'no_create': True}" readonly="1"/>
+                                <field name="hr_bu_id" readonly="1"/>
+                                <field name="hr_br_id" readonly="1"/>
+                                <field name="quote_name" readonly="1"/>
+                                <field name="invoice_name" readonly="1"/>
+                                <field name="bfoker_type" attrs="{'readonly': [('state', 'not in', 'approve_f_and_ahead')]}"/>
+                                <!-- <field name="attachment_id" filename="xfile" widget="many2many_binary" attrs="{'required': [('state', 'in', 'approve_f_and_ahead')],'readonly': [('state', 'not in', 'approve_f_and_ahead')]}"/> -->
+                                <field name="attachment_id" filename="xfile" widget="many2many_binary" />
+                            </group>
+                            <group>
+                                <field name="product_id" options="{'no_create': True}" readonly="1"/>
+                                <field name="payment_type" readonly="1" invisible="1"/>
+                                <field name="fixed_amount" attrs="{'invisible': [('payment_type', '=','percentage')]}" readonly="1"/>
+                                <field name="fixed_percentage"
+                                       attrs="{'invisible': [('payment_type', '=', 'fixed_amount')]}" readonly="1"/>
+                                <field name="payment_amt"
+                                       attrs="{'invisible': [('payment_type', '=', 'fixed_amount')]}"/>
+                                <field name="phone_no" attrs="{'readonly': [('state', 'not in', 'new')]}"/>
+                                <field name="payment_id" invisible="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+
+            </field>
+        </record>
+
+
+        <record id="action_brokers" model="ir.actions.act_window">
+            <field name="name">Broker Fees</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">broker.fees</field>
+            <field name="binding_view_types">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Create a Broker Fees.
+                </p>
+            </field>
+        </record>
+
+        <record id="action_brokers_users" model="ir.actions.act_window">
+            <field name="name">Brokers</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[('broker', '=', True)]</field>
+            <field name="context">{'default_broker':1}</field>
+            <field name="search_view_id" ref="base.view_res_partner_filter"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">Create a new customer in your address book</p>
+                <p>Odoo helps you easily track all activities related to a customer.</p>
+            </field>
+        </record>
+
+
+
+
+        <menuitem name="Broker" id="menu_broker_main"
+                  parent="sale.sale_menu_root"/>
+
+
+        <menuitem name="Broker Fees" id="menu_broker_fees"
+                  parent="umg_customize_sale.menu_broker_main" action="umg_customize_sale.action_brokers"/>
+
+        <menuitem name="Brokers" id="menu_broker_user"
+                  parent="umg_customize_sale.menu_broker_main" action="umg_customize_sale.action_brokers_users"/>
+
+
+
+
+        <!--        <menuitem name="Broker Fees" id="menu_broker_fees"-->
+        <!--                  parent="sale.sale_menu_root" action="action_brokers"/>-->
+
+    </data>
+</odoo>

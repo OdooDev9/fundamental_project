@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="settlement_wizard_view" model="ir.ui.view">
+		<field name="name">Settlement Wizard View</field>
+		<field name="model">branch.settlement.wizard</field>
+		<field name="arch" type="xml">
+			<form string="Branch Settlement Wizard">
+				<sheet>
+				<group>
+					<p colspan="4">Select the date up to which you want to create invoice for branch:</p>
+				</group>
+				<group colspan="2">
+					<field name="branch_id"/>
+					<field name="date_from"/>
+					<field name="date_to"/>
+				</group>
+				
+				
+					<notebook>
+						<page string="Incentives">
+							<field name="incentive_ids" widget="one2many"/>
+						</page>
+					</notebook>
+				</sheet>
+				
+				<footer>
+					<button name="action_settle"
+						string="Make Bill For Selected Branch"
+						type="object"
+						class="oe_highlight"/>
+					or
+					<button name="action_cancel"
+						string="Cancel"
+						class="oe_link"
+						special="cancel"/>
+				</footer>
+			</form>
+		</field>
+	</record>
+
+	<!-- <act_window id="action_branch_settlement" name="Branch Incentive Settlement" res_model="branch.settlement.wizard"
+		view_mode="form" target="new"/>
+
+	<menuitem id="menu_branch_settlement" parent="sale_incentive.branch_incentive_settlement_menu" action="action_branch_settlement" sequence="2"/> -->
+
+
+	<record id="normal_incentive_settlement_wizard_view" model="ir.ui.view">
+		<field name="name">Normal Incentive Settlement Wizard View</field>
+		<field name="model">normal.incentive.settlement.wizard</field>
+		<field name="arch" type="xml">
+			<form string="Normal Incentive Settlement Wizard">
+				<sheet>
+				<group>
+					<p colspan="4">Select the date up to which you want to create invoice for saleperson:</p>
+				</group>
+				<group colspan="2">
+					<field name="partner_id"/>
+					<field name="date_from"/>
+					<field name="date_to"/>
+				</group>
+				
+				
+					<notebook>
+						<page string="Incentives">
+							<field name="incentive_ids" widget="one2many"/>
+						</page>
+					</notebook>
+				</sheet>
+				
+				<footer>
+					<button name="action_settle"
+						string="Make Bill For Selected Branch"
+						type="object"
+						class="oe_highlight"/>
+					or
+					<button name="action_cancel"
+						string="Cancel"
+						class="oe_link"
+						special="cancel"/>
+				</footer>
+			</form>
+		</field>
+	</record>
+
+	<!-- <act_window id="action_normal_incentive_settlement" name="Normal Incentive Settlement" res_model="normal.incentive.settlement.wizard"
+		view_mode="form" target="new"/>
+
+	<menuitem id="menu_normal_incentive_settlement" parent="sale_incentive.normal_incentive_menu" action="action_normal_incentive_settlement" sequence="100"/> -->
+</odoo>

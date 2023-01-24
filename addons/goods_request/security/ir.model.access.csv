@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_goods_request,sale.order.request,model_sale_order_request,base.group_user,1,1,1,1
+access_goods_request_line,sale.order.request.line,model_sale_order_line_request,base.group_user,1,1,1,1
+access_sale_order_request_temp,sale.order.request.temp,model_sale_order_request_temp,base.group_user,1,1,1,1
+access_sale_order_line_request_temp,sale.order.line.request.temp,model_sale_order_line_request_temp,base.group_user,1,1,1,1

@@ -1,0 +1,154 @@
+<odoo>
+    <data>
+        <record id="inherit_view_picking_form" model="ir.ui.view">
+            <field name="name">stock.picking.form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='user_id']" position="before">
+                    <field name="trade_in_id"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="trade_action_view_delivery" model="ir.actions.act_window">
+            <field name="name">Stock Picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.picking</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('trade_in_id','=',active_id)]</field>
+        </record>
+
+        <record model="ir.ui.view" id="trade_in_tree_view">
+            <field name="name">Trade In Tree</field>
+            <field name="model">trade_in.trade_in</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="customer"/>
+                    <field name="receiving_date"/>
+                    <field name="hr_bu_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="trade_in_form_view" model="ir.ui.view">
+            <field name="name">trade in</field>
+            <field name="model">trade_in.trade_in</field>
+            <field name="arch" type="xml">
+                <form string="trade_in">
+                    <header>
+                        <!-- //Stage 1 by finance approve Unit -->
+                        <button name="action_finance_approve" string="Approve By Finance &amp; Account PIC"
+                                attrs="{'invisible': ['|',('unit_or_part','!=','unit'),('state', 'not in', ('draft'))]}" class="oe_highlight"
+                                type="object" groups="product_configure.group_finance_account_pic"/>
+                             <!-- //Stage 2 by GM/AGM approve Unit -->
+                        <button name="action_gm_agm" string="Approve By GM/AGM"
+                                attrs="{'invisible': ['|',('unit_or_part','!=','unit'),('state', 'not in', ('approved_finance'))]}" class="oe_highlight"
+                                type="object" groups="product_configure.group_gm_agm"/>
+                           <!-- //Stage 3 by Finance Head approve Unit -->
+                        <button name="action_finance_head" type="object" attrs="{'invisible': ['|',('unit_or_part','!=','unit'),('state', 'not in', ('approved_gm_agm'))]}"
+                                state="approved_gm_agm" class="oe_highlight" string="Approved By Finance &amp; Account Head" groups="product_configure.group_finance_account_head"/>
+                        
+                             <!-- Confirm   -->
+                     <button name="action_confirm" type="object" attrs="{'invisible': ['|',('unit_or_part','!=','unit'),('state', 'not in', ('approved_finance_head'))]}"
+                                state="approved_finace_head" class="oe_highlight" string="Confirm" groups="trade_in.trade_in_user"/>
+                        <!-- //Part Trade In Confirm -->
+                        <button name="action_confirm" type="object" attrs="{'invisible': ['|',('unit_or_part','!=','part'),('state', 'not in', ('draft'))]}" class="oe_highlight" string="Confirm" groups="trade_in.trade_in_user"/>
+                        <button name="%(reason_action)d" string="Cancel" type="action" attrs="{'invisible': [('state', 'in', ('cancel'))]}"/>
+                        <button name="set_to_draft" string="Set To Draft" type="object" attrs="{'invisible': [('state', 'not in', ('cancel'))]}"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,trade,done" readonly="1"/>
+                        
+                    </header>
+
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="%(trade_action_view_delivery)d" class="oe_stat_button" icon="fa-truck"
+                                    type="action" attrs="{'invisible': [('delivery_count', '=', 0)]}">
+                                <field name="delivery_count" widget="statinfo" string="Receipt"/>
+                            </button>
+                            <button name="action_move_items" type="object" class="oe_stat_button" icon="fa-bars" string="Journal Items" attrs="{'invisible': [('state', '!=', 'done')]}"/>
+                        </div>
+                        <div class="oe_title">
+                            <span class="o_form_label" attrs="{'invisible': [('state','not in',('draft','trade'))]}">
+                                Trade In Process
+                            </span>
+                            <span class="o_form_label" attrs="{'invisible': [('state','in',('draft','trade'))]}">Request
+                                for Quotation
+                            </span>
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="customer" domain="[('customer','=',True)]" required="1" attrs="{'readonly': [ ('state', 'not in', ['draft'])]}"/>
+                                <field name='machine_location' attrs="{'readonly': [ ('state', 'not in', ['draft'])]}"/>
+                                <field name='picking_type_id' groups='base.group_no_one'/>
+                                <field name="receiving_date" attrs="{'readonly': [ ('state', 'not in', ['draft'])]}"/>
+                                <field name='hr_bu_id' options="{'no_create': True, 'no_create_edit':True}" attrs="{'readonly': [ ('state', 'not in', ['draft'])]}"/>
+                                <field name="warehouse_id" invisible="1"/>
+                                <field name="currency_id" />
+                            </group>
+                            <group>
+                                <field name="create_by" string='Create By' attrs="{'readonly': [ ('state', 'not in', ['draft'])]}"/>
+                                <field name="machine_hour" widget="float_time" attrs="{'readonly': [ ('state', 'not in', ['draft'])]}"/>
+                                <field name='related_bu' string='Related Business Unit' required='0' options="{'no_create': True, 'no_create_edit':True}" />
+                                <field name="unit_or_part" required='1' />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Product Lines">
+                                <field name="product_lines"
+                                       widget="section_and_note_one2many"
+                                       mode="tree,kanban" attrs="{'readonly': [ ('state', 'not in', ['draft'])]}">
+                                    <tree create="1" editable="bottom">
+                                        <field name="product_id" required="1"
+                                               options="{'no_create': True, 'no_create_edit':True}"/>
+                                        <field name="name"/>
+                                        <field name="serial_number" optional="1"/>
+                                        <field name="inspection_date" optional="1"/>
+                                        <field name="working_condition" optional="1"/>
+                                        <field name="file_name" invisible='1'/>
+                                        <field name="check_sheet_att" filename="file_name" widget='binary' optional="1"/>
+                                        <field name="qty"/>
+                                        <field name="product_uom"/>
+                                        <field name="price"  widget="monetary"/>
+                                        <field name="total" string='SubTotal' widget="monetary"/>
+                                        <field name="currency_id" invisible="1" />
+                                    </tree>
+                                </field>
+                                <group>
+                                    <group>
+
+                                    </group>
+                                    <group class="oe_subtotal_footer oe_right">
+                                        <field name="amount_total" nolabel="0" colspan="2" widget="monetary"/>
+                                    </group>
+                                </group>
+                                <div class="oe_clear"/>
+                            </page>
+                            <page string="Notes">
+                                <field name='note'/>
+                            </page>
+
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="trade_in.action_window">
+            <field name="name">Trade In Process</field>
+            <field name="res_model">trade_in.trade_in</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="Trade In Process" id="menu_part_orders" parent="job_request.menu_job_request" groups="trade_in_user,trade_in_manager" action='trade_in.action_window' sequence="3"/>
+
+    </data>
+</odoo>

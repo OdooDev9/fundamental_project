@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record model="ir.ui.view" id="re_installment_tree">
+        <field name="name">Re Contract Tree</field>
+        <field name="model">re.installment.plan</field>
+        <field name="arch" type="xml">
+            <tree create="false" >
+                <field name="name" />
+                <field name="partner_id" />
+                <field name="hr_bu_id" />
+                <field name="order_id" />
+                <field name="installment_plan_id" />
+                <field name="tenure_amt" string="Amount"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="re_installment_form">
+        <field name="name">Re Contract Form</field>
+        <field name="model">re.installment.plan</field>
+        <field name="arch" type="xml">
+            <form string="Re-Contract" create="false" edit="false">
+                <header>
+                    <field name="bu_br_user_approve" invisible="1"></field>
+                    <field name="is_cor" invisible="1"></field>
+                    <button name="action_approve_finance_head" string="Approve By F&amp;A Head" type="object" class="btn-primary"
+                            attrs="{'invisible': ['|',('bu_br_user_approve','=',False),('state', 'not in', 'draft')]}"
+                            groups="product_configure.group_finance_account_head"/>
+                    <button name="action_approve_corp_finance_head" string="Approve By Corp. F&amp;A Head" type="object" class="btn-primary"
+                            attrs="{'invisible': ['|',('is_cor','=',False),('state', 'not in', 'approved_finance_head')]}"
+                            groups="product_configure.group_finance_account_head"/>
+                    <button type="object" name="action_confirm" states="approved_corp_finance_head" class="oe_highlight" string="Confirm" />
+                    <button type="object" name="action_close" states="confirm" class="oe_highlight" string="Close" />
+                    <button type="object" name="action_invoice_wizard" class="oe_highlight" string="Create Invoice" attrs="{'invisible': ['|',('amount_residual','=',0.0),('state','!=','confirm')]}"/>
+                    <button type="object" name="action_installment_modify" class="oe_highlight" string="Modify Installment" attrs="{'invisible': ['|',('state','!=','confirm'),('invoice_count', '>', 0)]}"/>
+                    <field name="state"  widget="statusbar" statusbar_visible="draft,confirm"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_invoice_view" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('invoice_count', '=', 0)]}">
+                            <field name="invoice_count" widget="statinfo" string="Invoices" />
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Description ..." nolabel="1" attrs="{'readonly': [('state','=','confirm')]}"/>
+                        </h1>
+                    </div>
+                    <div class="oe_title">
+                        <label for="partner_id" string="Customer"/>
+                        <h3>
+                            <div class="d-flex">
+                                <field class="o_text_overflow" name="partner_id" attrs="{'readonly': [('state','=','confirm')]}"/>
+                            </div>
+                        </h3>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="order_id" attrs="{'readonly': [('state','=','confirm')]}"/>
+                            <field name="installment_plan_id" attrs="{'readonly': [('state','=','confirm')]}"/>
+                        </group>
+                        <group>
+                            <field name="hr_bu_id" attrs="{'readonly': [('state','=','confirm')]}"/>
+                            <field name="hr_br_id" attrs="{'readonly': [('state','=','confirm')]}"/>
+                            <field name="amount_residual" invisible="1"/>
+                            <field name="total_interest" invisible="1"/>
+                        </group>
+                    </group>
+                    <group col="3">
+                        <group>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="tenure_amt" string="Recontract Amount" widget="monetary" attrs="{'readonly': [('state','=','confirm')]}"/>
+                            <field name="tenure_amount_untaxed" widget="monetary" invisible="1"/>
+                            <field name="tenure_amount_tax" widget="monetary" invisible="1"/>
+                            <label for="tenure"/>
+                            <div class="o_row" name="Tenure">
+                                <field name="tenure" class="oe_inline"/>
+                                <field name="tenure_type" nolabel="1" class="oe_inline" style="margin-left:5px" attrs="{'readonly': [('state','=','confirm')]}"/>
+                            </div>
+                            <label for="fine_threshold"/>
+                            <div class="o_row" name="fine_threshold">
+                                <field name="fine_threshold" class="oe_inline" attrs="{'readonly': [('state','=','confirm')]}"/>
+                                <span>Days</span>
+                            </div>
+                            <field name="start_invoice_date"/>
+                            <field name="contract_date"/>
+
+                        </group>
+                        <group>
+                            <field name="payment_circle_count"/>
+                            <field name="down_payment_type"/>
+                            <field name="down_payment_percent" attrs="{'invisible':[('down_payment_type','=','fix')]}"/>
+                            <field name="down_payment_fixed"
+                                   attrs="{'invisible':[('down_payment_type','=','percent')]}" widget="monetary" string="Down Payment"/>
+                            <field name="down_payment_amt" widget="monetary" string="Down Payment"/>
+                        </group>
+                        <group>
+                            <field name="payable_amt" widget="monetary"/>
+                            <field name="installment_amt" widget="monetary"/>
+                            <field name="interest_rate" attrs="{'readonly': [('state','=','confirm')]}"/>
+                            <field name="fine_rate" attrs="{'readonly': [('state','=','confirm')]}"/>
+                        </group>
+
+
+                    </group>
+                    <field name="installment_ids" attrs="{'readonly': [('state','=','confirm')]}">
+                        <tree editable="bottom" string="Installments" create="0" edit="0">
+                            <field name="index" optional="hide"/>
+                            <field name="payment_date" string="Due Date" optional="show"/>
+                            <field name="description" string="Particular" optional="show"/>
+                            <field name="interest_rate" string="Rate"/>
+                            <field name="total_remaining_amount" string="Principal Beginning" optional="show"/>
+                            <field name="without_interest_amount" string="Principal Amount" sum="Total Principal Amount"
+                                   optional="show"/>
+                            <field name="interest_amount" sum="Total Interest Amount" optional="show"/>
+                            <field name="each_period_ar_amount" sum="Total Ar Amount" string="Principal Balance"
+                                   optional="show"/>
+                            <field name="due_amount" sum="Total Due Amount"/>
+                            <field name="fine_rate" optional="hide"/>
+                            <field name="fine_current_period"/>
+                            <field name="fine_previous_period"/>
+                            <field name="fine_amount" sum="Total Fine Amount" string="Total Fine" optional="show"/>
+                            <field name="fine_discount" sum="Total Fine Discount" string="Fine Discount"
+                                   optional="show"/>
+                            <field name="interest_discount" sum="Total Interest Discount" string="Interest Discount"
+                                   optional="show"/>
+
+                            <field name="amount" sum="Total Amount" widget="monetary"
+                                   options="{'currency_field':'invoice_currency_id'}"/>
+                            <field name="paid_amount" sum="Total Paid Amount" widget="monetary"
+                                   options="{'currency_field':'paid_currency_id'}"/>
+                            <field name="rv_date"/>
+                            <field name="rv_no"/>
+                            <field name="fine_paid" sum="Total Fine Paid" widget="monetary"
+                                   options="{'currency_field':'paid_currency_id'}"/>
+                            <field name="principal_paid" sum="Total Principal Paid" widget="monetary"
+                                   options="{'currency_field':'paid_currency_id'}"/>
+                            <field name="ar_balance_previous" invisible="1"/>
+                            <field name="ar_balance" widget="monetary"
+                                   options="{'currency_field':'invoice_currency_id'}"/>
+                            <field name="state"/>
+                        </tree>
+                    </field>
+                    <field name="note" placeholder="Note ...."/>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="re_installment_plan_action" model="ir.actions.act_window">
+        <field name="name">Re-Contract</field>
+        <field name="res_model">re.installment.plan</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Re-Contract" id="reinstallment_plan_menu" parent="sale.sale_order_menu"
+              action="re_installment_plan_action" sequence="100" groups="sales_team.group_sale_salesman"/>
+</odoo>

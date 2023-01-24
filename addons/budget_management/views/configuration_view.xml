@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_budget_request_approval_form" model="ir.ui.view">
+        <field name="name">budget.request.approval.form</field>
+        <field name="model">budget.request.approval</field>
+        <field name="arch" type="xml">
+            <form string="Approval Form">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="business_id" required="1" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"/>
+                            <field name="business_type" invisible="1"/>
+                            <field name="approval_type" required="1"/>
+                            <field name="currency_id" required="1" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"/>
+                            <field name="active" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string='Approval Configuration'>
+                            <group>
+                                <group>
+                                    <field name="superior"/>
+                                    <field name="f_n_a_m" attrs="{'invisible': [('business_type', '!=', 'bu')]}"/>
+                                    <field name="f_n_a" attrs="{'invisible': [('business_type', '!=', 'br')]}"/>
+                                    <field name="manager" attrs="{'invisible': [('business_type', 'not in', ['div','cfd'])]}"/>
+                                    <field name="gm" attrs="{'invisible': [('business_type', '=', 'br')]}" string="GM/AGM"/>
+                                    <field name="coo" attrs="{'invisible': [('business_type', '=', 'br')]}" string="COO"/>
+                                    <field name="boh" attrs="{'invisible': [('business_type', '!=', 'br')]}"/>
+                                    <field name="ccd" attrs="{'invisible': [('business_type', '!=', 'br')]}"/>
+                                    <field name="pic" string="CFD Budgt PIC"/>
+                                    <field name="cfd" string="CFD GM/AGM"/>
+                                    <field name="cfo" string="CFD CFO"/>
+                                    <field name="cmc" string="CMC GM"/>
+                                    <field name="ceo" string="CEO"/>
+                                    <field name="md" string="MD Office"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_budget_approval_form" model="ir.ui.view">
+        <field name="name">budget.approval.form</field>
+        <field name="model">budget.approval</field>
+        <field name="arch" type="xml">
+            <form string="Approval Form">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="business_id" required="1" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"/>
+                            <field name="business_type" invisible="1"/>
+                            <field name="currency_id" required="1" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"/>
+                            <field name="budget_type" widget="radio" options="{'horizontal': true}" required="1"/>
+                            <field name="active" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string='Approval Line'>
+                            <field name='line_ids'>
+                                <tree editable="bottom">
+                                    <field name="operator" />
+                                    <field name="amount" widget="monetary"/>
+                                    <field name="superior" optional="show"/>
+                                    <field name="f_n_a_m" attrs="{'column_invisible': [('parent.business_type', '!=', 'bu')]}"/>
+                                    <field name="f_n_a" attrs="{'column_invisible': [('parent.business_type', '!=', 'br')]}"/>
+                                    <field name="manager" attrs="{'column_invisible': [('parent.business_type', 'not in', ['div','cfd'])]}"/>
+                                    <field name="gm" optional="hide" attrs="{'column_invisible': [('parent.business_type', '=', 'br')]}"/>
+                                    <field name="coo" optional="hide" attrs="{'column_invisible': [('parent.business_type', '=', 'br')]}"/>
+                                    <field name="boh" optional="hide" attrs="{'column_invisible': [('parent.business_type', '!=', 'br')]}"/>
+                                    <field name="ccd" optional="hide" attrs="{'column_invisible': [('parent.business_type', '!=', 'br')]}"/>
+                                    <field name="pic" optional="hide"/>
+                                    <field name="cfd" optional="hide"/>
+                                    <field name="cfo" optional="hide"/>
+                                    <field name="cmc" optional="hide"/>
+                                    <field name="ceo" optional="hide"/>
+                                    <field name="md" optional="hide"/>
+                                    <field name="currency_id" invisible="1" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_budget_approval_tree" model="ir.ui.view">
+        <field name="name">budget.approval.tree</field>
+        <field name="model">budget.approval</field>
+        <field name="arch" type="xml">
+            <tree string="Approval tree">
+                <field name="budget_type"/>
+                <field name="name" />
+                <field name="business_id"/>
+                <field name="currency_id"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_budget_request_approval_tree" model="ir.ui.view">
+        <field name="name">budget.request.approval.tree</field>
+        <field name="model">budget.request.approval</field>
+        <field name="arch" type="xml">
+            <tree string="Approval tree">
+                <field name="approval_type"/>
+                <field name="name" />
+                <field name="business_id"/>
+                <field name="currency_id"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="action_budget_approval">
+        <field name="name">Budget Approval(Advance/Claim/Clearance)</field>
+        <field name="res_model">budget.approval</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record model="ir.actions.act_window" id="action_budget_request_approval">
+        <field name="name">Budget Approval(Monthly,Weekly)</field>
+        <field name="res_model">budget.request.approval</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

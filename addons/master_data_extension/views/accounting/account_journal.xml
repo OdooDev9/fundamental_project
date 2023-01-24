@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_account_journal_warehouse" model="ir.actions.act_window">
+        <field name="name">Journals</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">account.journal</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('bu_br_id','=', active_id)]</field>
+        <field name="context">{'group_by': 'type'}</field>
+    </record>
+
+    <record id="account.action_account_journal_form" model="ir.actions.act_window">
+        <field name="name">Journals</field>
+        <field name="res_model">account.journal</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('account.view_account_journal_tree')}),
+            (0, 0, {'view_mode': 'kanban', 'view_id': ref('account.account_journal_view_kanban')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('account.view_account_journal_form')})]"/>
+        <field name="context">{'group_by':'bu_br_id'}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+            Add a journal
+            </p><p>
+            A journal is used to record transactions of all accounting data
+            related to the day-to-day business.
+            </p>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,240 @@
+<odoo>
+    <data>
+
+        <record id="bonus_rule_definition_form" model="ir.ui.view">
+            <field name="name">bonus.rule.definition</field>
+            <field name="model">bonus.rule.definition</field>
+            <field name="arch" type="xml">
+                <form string="Incentive Bonus Rule Definition">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="rule_ids">
+                                <form string="Quaterly Bonus Rules">
+                                    <group>
+                                        <group>
+                                            <field name="definition_id" invisible="1"/>
+                                            <field name="sale_target_operator"/>
+                                            <field name="sale_target_amount"/>
+                                            <field name="is_special_condition"/>
+                                            <field name="lower_range" string="Lower Range"/>
+                                            <field name="performance_operator"/>
+                                            <field name="upper_range" string="Upper Range"/>
+                                            <field name="bonus_incentive"/>
+                                        </group>
+                                    </group>
+                                </form>
+                                <tree string="Quaterly Bonus Rules" editable="bottom">
+                                    <field name="definition_id" invisible="1"/>
+                                    <field name="sale_target_operator"/>
+                                    <field name="sale_target_amount"/>
+                                    <field name="is_special_condition"/>
+                                    <field name="lower_range" string="Lower"/>
+                                    <field name="performance_operator"/>
+                                    <field name="upper_range" string="Upper"/>
+                                    <field name="bonus_incentive"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="bonus_rule_definition_tree" model="ir.ui.view">
+            <field name="name">bonus.rule.definition</field>
+            <field name="model">bonus.rule.definition</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="incentive_quaterly_bonus_form" model="ir.ui.view">
+            <field name="name">Incentive.quaterly.bonus</field>
+            <field name="model">incentive.quaterly.bonus</field>
+            <field name="arch" type="xml">
+                <form string="Incentive Quaterly Bonus Form View">
+                    <header>
+                        <button name="create_first_quater_bill" type="object" class="oe_highlight" states="draft"
+                                string="Generate First Quater Bonus Invoice"/>
+                        <button name="create_second_quater_bill" type="object" class="oe_highlight"
+                                states="first_quater" string="Generate Second Quater Bonus Invoice"/>
+                        <button name="create_third_quater_bill" type="object" class="oe_highlight"
+                                states="second_quater" string="Generate Third Quater Bonus Invoice"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_invoice"
+                                    type="object" class="oe_stat_button"
+                                    icon="fa-pencil-square-o" attrs="{'invisible':[('state','=','draft')]}">
+                                <field name="invoice_count" widget="statinfo" string="Invoices"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="branch_id"/>
+                                <field name="sale_person_id"/>
+                                <field name="start_date"/>
+                                <field name="end_date"/>
+                                <field name="achievement_threadshold"/>
+                                <field name="definition_id"/>
+                            </group>
+                            <group>
+                                <field name="account_id"/>
+                                <field name="journal_id"/>
+                                <field name="product_id"/>
+                            </group>
+                        </group>
+                        <!--  <group>
+
+                           <field name="rule_ids" widget="one2many">
+
+                             <tree string="Quaterly Bonus Rules" editable="bottom">
+                               <field name="sale_target_operator"/>
+                               <field name="sale_target_amount"/>
+                               <field name="is_special_condition"/>
+                               <field name="lower_range" string="Lower"/>
+                               <field name="performance_operator"/>
+                               <field name="upper_range" string="Upper"/>
+                               <field name="bonus_incentive"/>
+                             </tree>
+                           </field>
+                         </group> -->
+                        <notebook>
+                            <page string="First Quater Bonus">
+                                <field name="first_quater_bonus_ids">
+                                    <form>
+                                        <group>
+                                            <field name="quaterly_bonus_id" invisible="1"/>
+                                            <field name="quaterly_month"/>
+                                            <field name="monthly_sale_target"/>
+                                            <field name="monthly_sale_total"/>
+                                            <field name="target_achievement_status"/>
+                                        </group>
+                                    </form>
+                                    <tree string="First Quater Bonus" editable="bottom">
+                                        <field name="quaterly_bonus_id" invisible='1'/>
+                                        <field name="quaterly_month"/>
+                                        <field name="monthly_sale_target"/>
+                                        <field name="monthly_sale_total"/>
+                                        <field name="target_achievement_status"/>
+                                    </tree>
+                                </field>
+                                <group>
+                                    <group class="oe_subtotal_footer oe_right" colspan="2" name="first_quater_bonus">
+                                        <field name="first_quater_bonus"/>
+                                    </group>
+                                </group>
+
+                            </page>
+                            <page string="Second Quater Bonus">
+                                <field name="second_quater_bonus_ids">
+                                    <form>
+                                        <group>
+                                            <field name="quaterly_bonus_id" invisible="1"/>
+                                            <field name="quaterly_month"/>
+                                            <field name="monthly_sale_target"/>
+                                            <field name="monthly_sale_total"/>
+                                            <field name="target_achievement_status"/>
+                                        </group>
+                                    </form>
+                                    <tree string="Second Quater Bonus" editable="bottom">
+                                        <field name="quaterly_bonus_id" invisible='1'/>
+                                        <field name="quaterly_month"/>
+                                        <field name="monthly_sale_target"/>
+                                        <field name="monthly_sale_total"/>
+                                        <field name="target_achievement_status"/>
+                                    </tree>
+                                </field>
+                                <group>
+                                    <group class="oe_subtotal_footer oe_right" colspan="2" name="second_quater_bonus">
+                                        <field name="second_quater_bonus"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Third Quater Bonus">
+                                <field name="third_quater_bonus_ids">
+                                    <form>
+                                        <group>
+                                            <field name="quaterly_bonus_id" invisible="1"/>
+                                            <field name="quaterly_month"/>
+                                            <field name="monthly_sale_target"/>
+                                            <field name="monthly_sale_total"/>
+                                            <field name="target_achievement_status"/>
+                                        </group>
+                                    </form>
+                                    <tree string="Third Quater Bonus" editable="bottom">
+                                        <field name="quaterly_bonus_id" invisible='1'/>
+                                        <field name="quaterly_month"/>
+                                        <field name="monthly_sale_target"/>
+                                        <field name="monthly_sale_total"/>
+                                        <field name="target_achievement_status"/>
+                                    </tree>
+                                </field>
+                                <group>
+                                    <group class="oe_subtotal_footer oe_right" colspan="2" name="third_quater_bonus">
+                                        <field name="third_quater_bonus"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="incentive_quaterly_bonus_tree_view" model="ir.ui.view">
+            <field name="name">incentive.quaterly.bonus</field>
+            <field name="model">incentive.quaterly.bonus</field>
+            <field name="arch" type="xml">
+                <tree string="Incentive Quaterly Bonus">
+                    <field name="name"/>
+                    <field name="branch_id"/>
+                    <field name="sale_person_id"/>
+                    <field name="start_date"/>
+                    <field name='end_date'/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="incentive_quaterly_bonus_action" model="ir.actions.act_window">
+            <field name="name">Incentive Quaterly Bonus</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">incentive.quaterly.bonus</field>
+            <field name="help" type="xml">
+                <p>
+                    Create Incentive Quaterly Bonus
+                </p>
+            </field>
+        </record>
+
+        <record id="bonus_rule_definition_action" model="ir.actions.act_window">
+            <field name="name">Bonus Rule Definition</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bonus.rule.definition</field>
+            <field name="help" type="xml">
+                <p>
+                    Create Incentive Bonus Rule Definitions
+                </p>
+            </field>
+        </record>
+
+        <!--    <menuitem id="incentive_quaterly_bonus_menu" name="Incentive Quaterly Bonus" parent="sale_team_target_menu" sequence="10" groups="base.group_user" action="incentive_quaterly_bonus_action"/>-->
+
+        <!--    <menuitem id="bonus_rule_definition_menu" name="Incentive Bonus Rule" parent="sale_team_target_menu" sequence="11" groups="base.group_user" action="bonus_rule_definition_action"/>-->
+
+    </data>
+</odoo>
+

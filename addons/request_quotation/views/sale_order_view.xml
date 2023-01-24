@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_quot_no_filter_sale" model="ir.ui.view">
+        <field name="name">sale.list.select.quot.no.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <search string="Search Sales Order">
+                <field name="req_quot_id"/>
+                <filter string="Quotation No" context="{'group_by':'req_quot_id'}" name="req_quot_id"/>
+
+
+            </search>
+        </field>
+    </record>
+    <record id="view_order_inherit_form" model="ir.ui.view">
+        <field name="name">sale.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date_order']" position='after'>
+                <field name="req_quot_id" options="{'no_create': True}" readonly="1"/>
+
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="view_sale_order_inherit_forms" model="ir.ui.view">
+        <field name="name">sale.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position='attributes'>
+                <attribute name="options">{'no_create': True}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_quot_to_sale" model="ir.actions.act_window">
+        <field name="name">Sales Orders</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('req_quot_id','=',active_id)]</field>
+    </record>
+
+
+</odoo>

@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_borrow_request,borrow_request.borrow_request,model_borrow_request,,1,1,1,
+access_borrow_request_line,borrow.request.line,model_borrow_request_line,,1,1,1,1
+access_borrow_quot,borrow.quot,model_borrow_quotation_tmp,,1,1,1,1
+access_borrow_quotation_line_tmp,borrow.quotation.line.tmp,model_borrow_quotation_line_tmp,,1,1,1,1
+access_borrow_refuse_wizard,borrow.refuse.wizard,model_borrow_refuse_wizard,,1,1,1,1
+

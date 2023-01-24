@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_config_settings_view_form_inherited_5" model="ir.ui.view">
+        <field name="name">res.config.settings.inherited</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('settings')]" position="inside">
+                    <div class="app_settings_block" data-string="Main Structure" string="Main Structure" data-key="master_data_extension">
+                        <h2>Main Structure</h2>
+                        <div class="row mt16 o_settings_container">
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="is_inv_auto" widget="upgrade_boolean"/>
+                                </div>
+                                <div class="o_setting_right_pane" name="is_inv_auto_setting">
+                                    <label for="is_inv_auto" string="Warehouse &amp; Locations Autocreate"/>
+                                    <div class="text-info">
+                                        Automatically create while your create a new BU/BR/DIV.
+                                    </div>
+                                </div>                                
+                            </div>
+                        </div>
+                        <div class="row mt16 o_settings_container">
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="account_config" widget="upgrade_boolean"/>
+                                </div>
+                                <div class="o_setting_right_pane" name="account_config_setting">
+                                    <label for="account_config" string="Account Config"/>
+                                    <div class="text-info">
+                                        The action that will be showing account configuratuion options.
+                                    </div>
+                                </div>                                
+                            </div>
+                        </div>
+                        <div class="row mt16 o_settings_container" attrs="{'invisible': [('account_config', '=', False)]}">
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="is_acc_auto" widget="upgrade_boolean"/>
+                                </div>
+                                <div class="o_setting_right_pane" name="is_acc_auto_setting">
+                                    <label for="is_acc_auto" string="Account Autocreate"/>
+                                    <div class="text-info">
+                                        Automatically create while your create a new BU/BR/DIV.
+                                    </div>
+                                </div>                                
+                            </div>
+                        </div>                        
+                    </div>
+                </xpath>
+            </field>
+    </record>
+
+</odoo>
