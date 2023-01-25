@@ -1,2 +1,2 @@
-# san_san
+# fundamental_project
 Repository for EiSan
