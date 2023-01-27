@@ -1,6 +1,6 @@
 from odoo import fields, models,api
 
-class ARAssign(models.Model):
+class CandidateRecord(models.Model):
     _name = 'candidate.record'
     _description = 'Candidate Record!!!'
 
@@ -15,7 +15,7 @@ class ARAssign(models.Model):
     education = fields.Text('Education')
     skills = fields.Text('Skills')
     full_time = fields.Boolean('Full Time')
-    not_full_time = fields.Boolean('Not')
+    # not_full_time = fields.Boolean('Not')
     marital_status = fields.Selection([
         ('single','Single'),
         ('married','Married')
