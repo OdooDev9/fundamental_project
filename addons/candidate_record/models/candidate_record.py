@@ -19,4 +19,4 @@ class CandidateRecord(models.Model):
     marital_status = fields.Selection([
         ('single','Single'),
         ('married','Married')
-    ],'Maritl Status')
+    ],'Marital Status')

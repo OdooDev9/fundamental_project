@@ -72,7 +72,6 @@
     <menuitem
         id="candidate_record_root_menu"
         name="Candidate Record "
-        web_icon="candidate_record,static/description/icon.png"
         sequence="10"/>
         <menuitem
             id="candidate_record_sub_menu"

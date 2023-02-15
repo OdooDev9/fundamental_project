@@ -4,7 +4,7 @@
     'author' : 'UMG odoo dev',
     'license' : 'LGPL-3',
     'description' : """Fundamental Project""",
-    'depand' : [],
+    'depand' : ['base'],
     'data' : [
         'security/ir.model.access.csv',
         'views/candidate_record_view.xml'
