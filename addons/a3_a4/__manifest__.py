@@ -6,8 +6,8 @@
     'description' : """A3 A4""",
     'depand' : [],
     'data' : [
-        # 'security/ir.model.access.csv',
-        # 'views/candidate_record_view.xml'
+        'security/ir.model.access.csv',
+        # 'views/improvement.xml'
     ],
     
 }
