@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_users_form_inherit" model="ir.ui.view">
+            <field name="name">res.users.form</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+                <field name="image_1920" position="after">
+                    <div class="oe_title mb24">
+                    <field name="user_type_id" widget="radio" options="{'horizontal': true}"/>
+                    </div>
+                </field>
+                <xpath expr="//page[2]" position="after">
+                    <page name="bu_br"  string="BU/BR/DIV">
+                        <group string="BU/BR/DIV">
+                            <field name="current_bu_br_id_domain" invisible="1"/>
+                            <field name="current_bu_br_id" string="Current Business Unit/Branches"  domain="[('business_type', '=', current_bu_br_id_domain)]" options="{'no_create': True}" />
+                            <field string="Allowed Business Units" name="hr_bu_ids" widget="many2many_tags" options="{'no_create': True}" />
+                            <field string="Allowed Branches" name="hr_br_ids" widget="many2many_tags" options="{'no_create': True}" />
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

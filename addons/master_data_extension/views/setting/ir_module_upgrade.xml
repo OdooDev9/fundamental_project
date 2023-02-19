@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="module_tree_form" model="ir.ui.view">
+		<field name="name">module_tree.form</field>
+		<field name="model">ir.module.module</field>
+		<field name="inherit_id" ref="base.module_tree" />
+		<field name="arch" type="xml">
+			<xpath expr="//header/button[@name='button_immediate_install']" position="after">
+				<button name="button_immediate_upgrade" type="object" string="Upgrade"/>
+			</xpath>
+		</field>
+	</record>
+
+</odoo>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<!-- Township -->
+		<record model="ir.ui.view" id="hr_township_tree">
+			<field name="name">Township</field>
+			<field name="model">hr.township</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="name" />
+					<field name="code" />
+					<field name="city_id" />
+					<field name="district_id" />
+				</tree>
+			</field>
+		</record>
+		<record model="ir.ui.view" id="hr_township_form">
+			<field name="name">Township</field>
+			<field name="model">hr.township</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group>
+							<group>
+								<field name="name" />
+								<field name="code" />
+							</group>
+							<group>
+								<field name="city_id" />
+								<field name="district_id" />
+							</group>
+						</group>
+					</sheet>
+					<div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+						<field name="activity_ids" widget="mail_activity"/>
+						<field name="message_ids" widget="mail_thread"/>
+					</div>
+				</form>
+			</field>
+		</record>
+		<record id="hr_township_search" model="ir.ui.view">
+			<field name="name">hr.township.search</field>
+			<field name="model">hr.township</field>
+			<field name="arch" type="xml">
+				<search>
+					<field name="name" />
+					<field name="code" />
+					<field name="city_id" />
+					<field name="district_id" />
+				</search>
+			</field>
+		</record>
+		<record model="ir.actions.act_window" id="hr_township_action_window">
+			<field name="name">Township</field>
+			<field name="res_model">hr.township</field>
+			<field name="view_mode">tree,form</field>
+			<field name="search_view_id" ref="hr_township_search"/>
+		</record>
+	<!-- End -->
+</odoo>

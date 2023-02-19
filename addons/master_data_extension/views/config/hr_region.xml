@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Region -->
+        <record model="ir.ui.view" id="hr_region_tree">
+            <field name="name">Region</field>
+            <field name="model">hr.region</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name" />
+                    <field name="types" />
+                    <field name="code" />
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="hr_region_form">
+            <field name="name">Region</field>
+            <field name="model">hr.region</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" />
+                                <field name="types" />
+                            </group>
+                            <group>
+                                <field name="code" />
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="hr_region_search" model="ir.ui.view">
+            <field name="name">hr.region.search</field>
+            <field name="model">hr.region</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name" />
+                    <field name="types" />
+                    <field name="code" />
+                </search>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="hr_region_action_window">
+            <field name="name">Region</field>
+            <field name="res_model">hr.region</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="hr_region_search"/>
+        </record>
+    <!-- End -->
+</odoo>

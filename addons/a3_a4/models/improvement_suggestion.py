@@ -1,19 +1,20 @@
+from datetime import datetime
 from odoo import models,fields,api
 
 class ImprovementSuggestion(models.Model):
     _name = 'improvement.suggestion'
 
     name = fields.Char(string='Doc No', required=True, copy=False,default=lambda self: ('New'))
-    issue_date = fields.Date(string='Issue Date:[Date]')
-    proposed_id = fields.Many2one("hr.employee",string='Proposed By')
-    proposed_email = fields.Char(string='Proposed By Email')
-    designation = fields.Char(string='Designation')
+    issue_date = fields.Date(string='Issue Date:[Date]',default=datetime.today())
+    proposed_id = fields.Many2one("hr.employee",string='Proposed By',default=lambda self:self.env.user)
+    proposed_email = fields.Char(string='Proposed By Email',related='proposed_id.work_email')
+    job_title = fields.Char(string='Designation',related='proposed_id.job_title')
     div_bu_br = fields.Char(string='Division/Bu/Branch Name')
-    dept_name = fields.Char(string='Department Name')
+    dept_name = fields.Char(string='Department Name',related='proposed_id.department_id.name')
     facilitor_id = fields.Many2one('hr.employee',string='Facilitated By')
-    facilitor_email = fields.Char(string='Facilitated By Email')
+    facilitor_email = fields.Char(string='Facilitated By Email',related='facilitor_id.work_email')
     dh_id= fields.Many2one('hr.employee',string='Department Head Name')
-    dh_email = fields.Char(string='Department Head Email')
+    dh_email = fields.Char(string='Department Head Email',related='dh_id.work_email')
     improvement_theme = fields.Text('IMPROVEMENT THEME')
     cur_con_analyze = fields.Text('CURRENT CONDITION ANALYZE')
     improvement_suggestion = fields.Text('IMPROVEMENT SUGGESTION')
@@ -54,9 +55,7 @@ class ImprovementSuggestion(models.Model):
 
     @api.model
     def create(self,values):
-        print('**************************** =>',values.get('name'))
         if not values.get('name', False) or values['name'] == ('New'):
             values['name'] = self.env['ir.sequence'].next_by_code('improvement.suggestion') or 'New'
         res = super(ImprovementSuggestion, self).create(values)
-        print("***********************=>",res)
         return res

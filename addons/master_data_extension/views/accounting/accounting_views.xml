@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- 
+        MODEL: account.account
+        VIEW: Search Action
+     -->
+        <record id="account.action_account_form" model="ir.actions.act_window">
+            <field name="name">Chart of Accounts</field>
+            <field name="res_model">account.account</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="search_view_id" ref="account.view_account_search"/>
+            <field name="view_id" ref="account.view_account_list"/>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Add a new account
+              </p><p>
+                An account is part of a ledger allowing your company
+                to register all kinds of debit and credit transactions.
+                Companies present their annual accounts in two main parts: the
+                balance sheet and the income statement (profit and loss
+                account). The annual accounts of a company are required by law
+                to disclose a certain amount of information.
+              </p>
+            </field>
+            <field name="context">{'search_default_activeacc': True,'group_by':'bu_br_id'}</field>
+        </record>
+    <!-- 
+        MODEL: account.account
+        VIEW: COA list view
+     -->
+    <record id="account_account_inherit_tree" model="ir.ui.view">
+        <field name="name">account_account.tree</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_list" />
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="bu_br_id"/>
+            </field>
+        </field>
+    </record>
+    <!-- 
+        MODEL: account.account
+        VIEW: COA Form view
+     -->
+    <record id="account_account_inherit_form" model="ir.ui.view">
+        <field name="name">account_account.form</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/div[last()]" position="after">
+                <h1 style="font-size: 1.9rem;">
+                    <div class="row">
+                        <div class="col col-md-auto">
+                            <label for="bu_br_id" string="Business"/>
+                            <div>
+                                <field name="bu_br_id" class="oe_inline"/>
+                            </div>
+                        </div>
+                    </div>
+                </h1>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- 
+        MODEL: account.journal
+        VIEW: journal form view
+     -->
+    <record id="account_journal_inherit_form" model="ir.ui.view">
+        <field name="name">account_journal.form</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='type']" position="before">
+                <field name="is_transit_jr"/>
+            </xpath>
+            <field name="type" position="after">
+                <field name="bu_br_id"/>
+            </field>
+            <xpath expr="//field[@name='default_account_id'][2]" position="after">
+                <field name="cash_in_transit_id" domain="[('bu_br_id', '=', bu_br_id)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_account_journal_tree" model="ir.ui.view">
+        <field name="name">view_account_journal_tree.inherit</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="bu_br_id"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

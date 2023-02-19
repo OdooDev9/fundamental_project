@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Account Menu Separator -->
+    <menuitem name="Account Properties" id="account_properties_config_menu" parent="master_data_extension.master_data_configuration_menu" sequence="30"/>
+    <!-- 
+        FACT: Account type or user_type_id Menu
+        Reason: In Odoo default lack of menu for this model,
+                already defined default records for default account setup.
+     -->
+    <menuitem
+        id="account_type_menu"
+        name="Account Type"
+        action="account.action_account_type_form"
+        groups="base.group_no_one"
+        parent="account_properties_config_menu"
+        sequence="10"
+    />
+
+</odoo>

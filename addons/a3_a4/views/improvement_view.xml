@@ -6,53 +6,164 @@
         <field name="model">improvement.suggestion</field>
         <field name="arch" type="xml">
             <form string="">
+                <header>
+                    <field name="state" widget="statusbar" nolabel="1" options="{'clickable':'1'}" statusbar_visible="draft,add,approve,close" />       
+                </header>
                 <sheet>
                     <div class="oe_title">
                         <h1>
                             <field name="name" readonly="1"/>
                         </h1>
-                    </div>
-                    <group>
+                    </div>                   
+                    <group name="name" string="Improvement Suggestion Form">
                         <field name="issue_date" />
                         <field name="proposed_id" />
                         <field name="proposed_email" />
-                        <field name="designation" />
+                        <field name="job_title" />
                         <field name="div_bu_br" />
                         <field name="dept_name" />
                         <field name="facilitor_id" />
                         <field name="facilitor_email" />
                         <field name="dh_id" />
                         <field name="dh_email" />
+                    </group>
+                    <group name="name" string="Improvement Theme">
                         <field name="improvement_theme" />
                         <field name="cur_con_analyze" />
                         <field name="improvement_suggestion" />
-                        <field name="safety_healthy" />
-                        <field name="quality" />
-                        <field name="cost_budget" />
-                        <field name="delivery" />
-                        <field name="morality" />
-                        <field name="man_people" />
-                        <field name="machine" />
-                        <field name="method" />
-                        <field name="material" />
-                        <field name="environment" />
-                        <field name="information" />
-                        <field name="sort" />
-                        <field name="set_in_order" />
-                        <field name="shine" />
-                        <field name="standardize" />
-                        <field name="sustain" />
+                    </group>
+                    <group>
+                        <div class="row">
+                            <div class="col">
+                                <ul class="list-group">
+                                    <li class="list-group-item">                                        
+                                        <field name="safety_healthy" />
+                                        Safety/Healthy
+                                    </li>
+                                    <li>
+                                        <field name="quality" />
+                                        Quality
+                                    </li>
+                                    <li>
+                                        <field name="cost_budget" />
+                                        Cost Budget
+                                    </li>
+                                    <li>
+                                        <field name="delivery" />
+                                        Delivery
+                                    </li>
+                                    <li>
+                                       <field name="morality" />
+                                       Morality
+                                    </li>
+                                </ul>                                
+                            </div>
+                            <div class="col">
+                                <field name="man_people" />
+                                <field name="machine" />
+                                <field name="method" />
+                                <field name="material" />
+                                <field name="environment" />
+                                <field name="information" />
+                            </div>
+                            <div class="col">
+                                <field name="sort" />
+                                <field name="set_in_order" />
+                                <field name="shine" />
+                                <field name="standardize" />
+                                <field name="sustain" />
+                            </div>
+                        </div>
+                        <!-- <group name="name" string="SQCDM Objective">
+                            <field name="safety_healthy" />
+                            <field name="quality" />
+                            <field name="cost_budget" />
+                            <field name="delivery" />
+                            <field name="morality" />
+                        </group>                        
+                        <group name="name" string="4M+EI Objective">
+                            <field name="man_people" />
+                            <field name="machine" />
+                            <field name="method" />
+                            <field name="material" />
+                            <field name="environment" />
+                            <field name="information" />
+                        </group>                        
+                        <group name="name" string="5S Objective">
+                            <field name="sort" />
+                            <field name="set_in_order" />
+                            <field name="shine" />
+                            <field name="standardize" />
+                            <field name="sustain" />
+                        </group> -->
+                    </group>
+                    <group name="name" string="Improvement Scope">
                         <field name="improvement_scope" />
-                        <field name="before" />
-                        <field name="after" />
+                    </group>                        
+                    <group>
+                        <group name="name" string="Before">
+                            <field name="before" widget="image" />
+                        </group>
+                        <group name="name" string="After">
+                            <field name="after" widget="image" />
+                        </group>
+                    </group>                   
+                    <group name="name" string="Deliverables">
                         <field name="deliverables" />
+                    </group>
+                    <group name="name" string="Next Improvement Plan">
                         <field name="next_improve_plan" />
+                    </group>                                 
+                    <group>
                         <field name="create_id" />
                         <field name="create_date" />
-                        <field name="state" />
-                    </group>
+                    </group>                     
                 </sheet>
             </form>
+        </field>
+    </record>
+    <record id="improvement_suggestion_view_tree" model="ir.ui.view">
+        <field name="name">improvement_suggestion.view.tree</field>
+        <field name="model">improvement.suggestion</field>
+        <field name="arch" type="xml">
+            <tree string="">                
+                <field name="name" />
+                <field name="issue_date" />
+                <field name="proposed_id" />
+                <field name="proposed_email" />
+                <field name="job_title" />
+                <field name="div_bu_br" />
+                <field name="dept_name" />
+                <field name="facilitor_id" />
+                <field name="facilitor_email" />
+                <field name="dh_id" />
+                <field name="dh_email" />
+                <field name="improvement_theme" />
+                <field name="cur_con_analyze" />
+                <field name="improvement_suggestion" />
+                <field name="safety_healthy" />
+                <field name="quality" />
+                <field name="cost_budget" />
+                <field name="delivery" />
+                <field name="morality" />
+                <field name="man_people" />
+                <field name="machine" />
+                <field name="method" />
+                <field name="material" />
+                <field name="environment" />
+                <field name="information" />
+                <field name="sort" />
+                <field name="set_in_order" />
+                <field name="shine" />
+                <field name="standardize" />
+                <field name="sustain" />
+                <field name="improvement_scope" />
+                <field name="deliverables" />
+                <field name="next_improve_plan" />
+                <field name="create_id" />
+                <field name="create_date" />
+                <field name="state" />
+            </tree>
         </field>
     </record>
 
