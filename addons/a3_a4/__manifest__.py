@@ -4,10 +4,13 @@
     'author' : 'UMG odoo dev',
     'license' : 'LGPL-3',
     'description' : """A3 A4""",
-    'depand' : [],
+    'depends' : [
+        'base','hr','mail'
+    ],
     'data' : [
         'security/ir.model.access.csv',
-        # 'views/improvement.xml'
+        'data/ir_sequence.xml',
+        'views/improvement_view.xml'
     ],
     
 }

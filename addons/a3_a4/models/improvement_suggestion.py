@@ -1,22 +1,22 @@
 from odoo import models,fields,api
 
-class ARAssign(models.Model):
+class ImprovementSuggestion(models.Model):
     _name = 'improvement.suggestion'
 
     name = fields.Char(string='Doc No', required=True, copy=False,default=lambda self: ('New'))
     issue_date = fields.Date(string='Issue Date:[Date]')
-    proposed_id = fields.Many2one('hr.employee',string='Proposed By')
+    proposed_id = fields.Many2one("hr.employee",string='Proposed By')
     proposed_email = fields.Char(string='Proposed By Email')
     designation = fields.Char(string='Designation')
     div_bu_br = fields.Char(string='Division/Bu/Branch Name')
     dept_name = fields.Char(string='Department Name')
     facilitor_id = fields.Many2one('hr.employee',string='Facilitated By')
     facilitor_email = fields.Char(string='Facilitated By Email')
-    dh_name = fields.Many2one('hr.employee',string='Department Head Name')
+    dh_id= fields.Many2one('hr.employee',string='Department Head Name')
     dh_email = fields.Char(string='Department Head Email')
-    improvment_theme = fields.Text('IMPROVEMENT THEME')
+    improvement_theme = fields.Text('IMPROVEMENT THEME')
     cur_con_analyze = fields.Text('CURRENT CONDITION ANALYZE')
-    improvement_suggestion = fields.Text('IMPR(OVEMENT SUGGESTION')
+    improvement_suggestion = fields.Text('IMPROVEMENT SUGGESTION')
     safety_healthy = fields.Boolean(string='Safety/Healthy')
     quality = fields.Boolean(string='Quality (next process/customer satisfaction)')
     cost_budget = fields.Boolean(string='Cost/Budget')
@@ -43,7 +43,7 @@ class ARAssign(models.Model):
     after = fields.Image(string='After Improvement')   
     deliverables = fields.Text(string='DELIVERABLES')
     next_improve_plan = fields.Text(string='NEXT IMPROVEMENT PLAN')
-    create_by = fields.Many2one('res.user',string='Created By:')
+    create_id = fields.Many2one('res.users',string='Created By:',default=lambda self:self.env.user)
     create_date = fields.Datetime('Create Date')
     state = fields.Selection([
         ('draft', 'Draft'),
@@ -51,3 +51,12 @@ class ARAssign(models.Model):
         ('approve', 'Approve'),
         ('close', 'Close')
     ], string='State')
+
+    @api.model
+    def create(self,values):
+        print('**************************** =>',values.get('name'))
+        if not values.get('name', False) or values['name'] == ('New'):
+            values['name'] = self.env['ir.sequence'].next_by_code('improvement.suggestion') or 'New'
+        res = super(ImprovementSuggestion, self).create(values)
+        print("***********************=>",res)
+        return res
