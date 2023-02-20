@@ -32,70 +32,88 @@
                         <field name="cur_con_analyze" />
                         <field name="improvement_suggestion" />
                     </group>
-                    <group>
+                    <group>  
                         <div class="row">
                             <div class="col">
-                                <ul class="list-group">
-                                    <li class="list-group-item">                                        
+                                <h1>SQCDM</h1>
+                                <ul class="list-inline">
+                                    <li>                                        
                                         <field name="safety_healthy" />
-                                        Safety/Healthy
+                                        <b>Safety/Healthy</b>
                                     </li>
                                     <li>
                                         <field name="quality" />
-                                        Quality
+                                        <b>Quality (next process/customer satisfaction)</b>
                                     </li>
                                     <li>
                                         <field name="cost_budget" />
-                                        Cost Budget
+                                        <b>Cost Budget</b>
                                     </li>
                                     <li>
                                         <field name="delivery" />
-                                        Delivery
+                                        <b>Delivery (next process/customer send on time)</b>
                                     </li>
                                     <li>
                                        <field name="morality" />
-                                       Morality
+                                       <b>Morality/Good Habit</b>
                                     </li>
                                 </ul>                                
                             </div>
                             <div class="col">
-                                <field name="man_people" />
-                                <field name="machine" />
-                                <field name="method" />
-                                <field name="material" />
-                                <field name="environment" />
-                                <field name="information" />
+                                <h1>4M+EI</h1>
+                                <ul class="list-inline">
+                                    <li>                                        
+                                        <field name="man_people" />
+                                        <b>Man/People</b>
+                                    </li>
+                                    <li>
+                                        <field name="machine" />
+                                        <b>Machine/Equipment/Tools</b>
+                                    </li>
+                                    <li>
+                                        <field name="method" />
+                                        <b>Method/Process(SOP)</b>
+                                    </li>
+                                    <li>
+                                        <field name="material" />
+                                        <b>Material/Parts</b>
+                                    </li>
+                                    <li>
+                                       <field name="environment" />
+                                       <b>Envirenment</b>
+                                    </li>
+                                     <li>
+                                       <field name="information" />
+                                       <b>Information</b>
+                                    </li>
+                                </ul>                   
                             </div>
                             <div class="col">
-                                <field name="sort" />
-                                <field name="set_in_order" />
-                                <field name="shine" />
-                                <field name="standardize" />
-                                <field name="sustain" />
+                                <h1>5S</h1>
+                                <ul class="list-inline">
+                                    <li>                                        
+                                        <field name="sort" />
+                                        <b>Sort (Separating needed and unneeded)</b>
+                                    </li>
+                                    <li>
+                                        <field name="set_in_order" />
+                                        <b>Set in Order (Keep well and easy to retrieval) </b>
+                                    </li>
+                                    <li>
+                                        <field name="shine" />
+                                        <b>Shine (Neat and Clean)</b>
+                                    </li>
+                                    <li>
+                                         <field name="standardize" />
+                                        <b>standardize (Standard for 3S above)</b>
+                                    </li>
+                                    <li>
+                                       <field name="sustain" />
+                                       <b>Sustain (Do it and maintain with discipline)</b>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
-                        <!-- <group name="name" string="SQCDM Objective">
-                            <field name="safety_healthy" />
-                            <field name="quality" />
-                            <field name="cost_budget" />
-                            <field name="delivery" />
-                            <field name="morality" />
-                        </group>                        
-                        <group name="name" string="4M+EI Objective">
-                            <field name="man_people" />
-                            <field name="machine" />
-                            <field name="method" />
-                            <field name="material" />
-                            <field name="environment" />
-                            <field name="information" />
-                        </group>                        
-                        <group name="name" string="5S Objective">
-                            <field name="sort" />
-                            <field name="set_in_order" />
-                            <field name="shine" />
-                            <field name="standardize" />
-                            <field name="sustain" />
-                        </group> -->
                     </group>
                     <group name="name" string="Improvement Scope">
                         <field name="improvement_scope" />

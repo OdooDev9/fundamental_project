@@ -5,7 +5,7 @@
     'license' : 'LGPL-3',
     'description' : """A3 A4""",
     'depends' : [
-        'base','hr','mail','master_data_extension'
+        'base','hr','mail'
     ],
     'data' : [
         'security/ir.model.access.csv',

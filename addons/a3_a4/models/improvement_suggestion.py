@@ -6,7 +6,7 @@ class ImprovementSuggestion(models.Model):
 
     name = fields.Char(string='Doc No', required=True, copy=False,default=lambda self: ('New'))
     issue_date = fields.Date(string='Issue Date:[Date]',default=datetime.today())
-    proposed_id = fields.Many2one("hr.employee",string='Proposed By',default=lambda self:self.env.user)
+    proposed_id = fields.Many2one("hr.employee",string='Proposed By')
     proposed_email = fields.Char(string='Proposed By Email',related='proposed_id.work_email')
     job_title = fields.Char(string='Designation',related='proposed_id.job_title')
     div_bu_br = fields.Char(string='Division/Bu/Branch Name')
