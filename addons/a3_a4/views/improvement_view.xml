@@ -7,36 +7,47 @@
         <field name="arch" type="xml">
             <form string="">
                 <header>
+                    <button name="add" class="oe_highlight" string="Add" type="object" data-hotkey="a" states="draft" />
+                    <button name="approve" string="Approve" type="object" data-hotkey="p" states="add" />
+                    <button name="close" string="Close" type="object" data-hotkey="c" states="approve" />
+                    <button name="draft" string="Reset to Draft" type="object" data-hotkey="r" states="close" />
                     <field name="state" widget="statusbar" nolabel="1" options="{'clickable':'1'}" statusbar_visible="draft,add,approve,close" />       
                 </header>
                 <sheet>
-                    <div class="oe_title">
-                        <h1>
-                            <field name="name" readonly="1"/>
-                        </h1>
-                    </div>                   
-                    <group name="name" string="Improvement Suggestion Form">
+                    <h1 class="w-auto mb-2 fw-bold bg-primary text-white text-center">
+                        IMPROVEMENT SUGGESTION FORM
+                    </h1>                
+                    <group>
                         <field name="issue_date" />
                         <field name="proposed_id" />
                         <field name="proposed_email" />
                         <field name="job_title" />
                         <field name="div_bu_br" />
                         <field name="dept_name" />
+                        <field name="name" readonly="1"/>
                         <field name="facilitor_id" />
                         <field name="facilitor_email" />
                         <field name="dh_id" />
                         <field name="dh_email" />
                     </group>
-                    <group name="name" string="Improvement Theme">
-                        <field name="improvement_theme" />
-                        <field name="cur_con_analyze" />
-                        <field name="improvement_suggestion" />
-                    </group>
-                    <group>  
+                    <div class="w-auto mb-2">
+                        <h2 class="fw-bold bg-primary text-white">A. IMPROVEMENT THEME</h2>
+                        <field name="improvement_theme" nolabel="1" />
+                    </div>
+                    <div class="w-auto mb-2">
+                        <h2 class="fw-bold bg-primary text-white">B. CURRENT CONDITION ANALYZE</h2>
+                        <field name="cur_con_analyze" nolabel="1"/>
+                    </div>
+                    <div class="w-auto mb-2">
+                        <h2 class="fw-bold bg-primary text-white">C. IMPROVEMENT SUGGESTION</h2>
+                        <field name="improvement_suggestion" nolabel="1" />
+                    </div>
+                    <!-- <group>   -->
+                        <h2 class="w-auto mb-2 fw-bold bg-primary text-white">D. IMPROVEMENT SUGGESTION OBJECTIVE</h2>
                         <div class="row">
                             <div class="col">
                                 <h1>SQCDM</h1>
-                                <ul class="list-inline">
+                                <ul class="list-inline"> 
                                     <li>                                        
                                         <field name="safety_healthy" />
                                         <b>Safety/Healthy</b>
@@ -114,24 +125,30 @@
                                 </ul>
                             </div>
                         </div>
-                    </group>
-                    <group name="name" string="Improvement Scope">
-                        <field name="improvement_scope" />
-                    </group>                        
+                    <!-- </group> -->
+                    <div class="w-auto mb-2">
+                        <h2 class="fw-bold bg-primary text-white">E. IMPROVEMENT SCOPE</h2>
+                        <field name="improvement_scope" widget="radio" nolabel="1" />
+                    </div>                      
+                    <div class="w-auto mb-2">
+                        <h2 class="fw-bold bg-primary text-white">F. VISUAL CONDITION</h2>
+                    </div>
                     <group>
-                        <group name="name" string="Before">
+                        <group>
                             <field name="before" widget="image" />
                         </group>
-                        <group name="name" string="After">
+                        <group>
                             <field name="after" widget="image" />
                         </group>
-                    </group>                   
-                    <group name="name" string="Deliverables">
-                        <field name="deliverables" />
                     </group>
-                    <group name="name" string="Next Improvement Plan">
-                        <field name="next_improve_plan" />
-                    </group>                                 
+                    <div class="w-auto mb-2">
+                        <h2 class="fw-bold bg-primary text-white">G. DELIVERABLES</h2>
+                        <field name="deliverables" nolabel="1" />
+                    </div>
+                    <div class="w-auto mb-2">
+                        <h2 class="fw-bold bg-primary text-white">H. NEXT IMPROVEMENT PLAN</h2>
+                        <field name="next_improve_plan" nolabel="1" />
+                    </div>                                                
                     <group>
                         <field name="create_id" />
                         <field name="create_date" />

@@ -51,7 +51,23 @@ class ImprovementSuggestion(models.Model):
         ('add', 'Add'),
         ('approve', 'Approve'),
         ('close', 'Close')
-    ], string='State')
+    ], string='State',default="draft")
+
+    def add(self):
+        for rec in self:
+            rec.state = 'add'
+    
+    def approve(self):
+        for rec in self:
+            rec.state = 'approve'
+
+    def close(self):
+        for rec in self:
+            rec.state = 'close'
+
+    def draft(self):
+        for rec in self:
+            rec.state = 'draft'
 
     @api.model
     def create(self,values):
@@ -59,3 +75,4 @@ class ImprovementSuggestion(models.Model):
             values['name'] = self.env['ir.sequence'].next_by_code('improvement.suggestion') or 'New'
         res = super(ImprovementSuggestion, self).create(values)
         return res
+    
