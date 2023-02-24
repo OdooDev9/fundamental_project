@@ -4,18 +4,17 @@ from odoo import models,fields,api
 class ImprovementSuggestion(models.Model):
     _name = 'improvement.suggestion'
 
+    def _get_employee_id(self):
+        employee_rec = self.env['hr.employee'].search([('user_id', '=', self.env.uid)], limit=1)
+        print("=======================================><><><>",employee_rec.id)
+        return employee_rec.id
+
     name = fields.Char(string='Doc No', required=True, copy=False,default=lambda self: ('New'))
     issue_date = fields.Date(string='Issue Date:[Date]',default=datetime.today())
-
-    def get_emp_id(self):
-        emp_id = self.env['hr.employee'].search([('user_id', '=', uid)])                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ', '=', uid)])
-        print("********************************",emp_id)
-        return emp_id
-
-    proposed_id = fields.Many2one("hr.employee",string='Proposed By')
+    proposed_id = fields.Many2one("hr.employee",string='Proposed By',default=_get_employee_id,readonly=True)
     proposed_email = fields.Char(string='Proposed By Email',related='proposed_id.work_email')
     job_title = fields.Char(string='Designation',related='proposed_id.job_title')
-    div_bu_br = fields.Char(string='Division/Bu/Branch Name')
+    div_bu_br = fields.Char(string='Division/Bu/Branch Name',related='proposed_id.department_id.parent_id.name')
     dept_name = fields.Char(string='Department Name',related='proposed_id.department_id.name')
     facilitor_id = fields.Many2one('hr.employee',string='Facilitated By')
     facilitor_email = fields.Char(string='Facilitated By Email',related='facilitor_id.work_email')
@@ -59,6 +58,7 @@ class ImprovementSuggestion(models.Model):
         ('close', 'Close')
     ], string='State',default="draft")
 
+    
     def add(self):
         for rec in self:
             rec.state = 'add'
