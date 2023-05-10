@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="session_view_search" model="ir.ui.view">
+        <field name="name">session.view.search</field>
+        <field name="model">session</field>
+        <field name="arch" type="xml">
+            <search string="">
+                <field name="name" />
+                <field name="start_date" />
+                <field name="end_date" />
+                <field name="seat" />
+            </search>
+        </field>
+    </record>
+    <record id="session_view_tree" model="ir.ui.view">
+        <field name="name">session.view.tree</field>
+        <field name="model">session</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="name" />
+                <field name="start_date" />
+                <field name="end_date" />
+                <field name="seat" />
+            </tree>
+        </field>
+    </record>
+    <record id="session_view_form" model="ir.ui.view">
+        <field name="name">session.view.form</field>
+        <field name="model">session</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="start_date" />
+                            <field name="name" />
+                        </group>
+                        <group>    
+                            <field name="end_date" />
+                            <field name="seat" width="15"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="session_action" model="ir.actions.act_window">
+        <field name="name">Action Name</field>
+        <field name="res_model">session</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem
+        id="session_menu"
+        name="Session"
+        action="session_action"
+        parent="open_academy_menu"
+        sequence="10"/>
+
+</odoo>

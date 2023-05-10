@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<!-- 
+    <record id="course_title" model="course">
+        <field name="title">Fullstack Developer Course</field>
+        <field name="description" />A full stack developer course, with a special focus on the MEAN stack, offers comprehensive knowledge and broad-level training on front-end, middleware, and back-end software development technologies. You will also gain expertise in testing technologies such as JavaScript, Node. js, Angular, Docker, and Protractor.</field>
+    </record> -->
+
+</odoo>
